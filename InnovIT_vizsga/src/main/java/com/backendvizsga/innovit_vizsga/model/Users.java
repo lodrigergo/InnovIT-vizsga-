@@ -262,6 +262,7 @@ public class Users implements Serializable {
 
     return userList;
 }
+     
      public static Boolean isUserExists(String email){
         EntityManager em = emf.createEntityManager();
 
@@ -288,40 +289,23 @@ public class Users implements Serializable {
         }
     }
      
-     public List<Users> getAllAdmin(){
+    public static ArrayList<Users> getAllAdmin() {
         EntityManager em = emf.createEntityManager();
-        
+        ArrayList<Users> userList = new ArrayList<>();
+
         try {
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllAdmin");
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllAdmin", Users.class);
             spq.execute();
-            List<Users> toReturn = new ArrayList();
-            List<Object[]> resultList = spq.getResultList();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            for(Object[] record: resultList){
-                Users u = new Users(
-                       Integer.valueOf(record[0].toString()),
-                       record[1]. toString(),
-                       record[2]. toString(),
-                       record[3]. toString(),
-                       record[4].toString(),
-                       Boolean.parseBoolean(record[5].toString()),
-                       Boolean.parseBoolean(record[6].toString()),
-                      record[7] == null ? null : formatter.parse(record[7].toString()),
-                         record[8] == null ? null : formatter.parse(record[8].toString())
-                );
-                toReturn.add(u);
-                
-               
-            }
-            return toReturn;
-            
-        } catch (Exception ex) {
-            System.err.println("Hiba: " + ex.getLocalizedMessage());
-            return null;
-        }finally{
+            userList = new ArrayList<>(spq.getResultList());
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getLocalizedMessage());
+        } finally {
             em.clear();
             em.close();
         }
+
+        return userList;
     }
      
      public Users getUserById(Integer id) {
