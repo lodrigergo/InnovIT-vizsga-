@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -368,5 +369,48 @@ public class Cars implements Serializable {
 
         return carList;
     }
+    
+    public static ArrayList<Cars> getPage2() {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<Cars> carList = new ArrayList<>();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getPage2", Cars.class);
+            spq.execute();
+            carList = new ArrayList<>(spq.getResultList());
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getLocalizedMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+
+        return carList;
+    }
+    
+    public static ArrayList<Cars> getPageInput(Integer pageIN) {
+    EntityManager em = emf.createEntityManager();
+    ArrayList<Cars> carList = new ArrayList<>();
+
+    try {
+        // Tárolt eljárás hívása
+        StoredProcedureQuery spq = em.createStoredProcedureQuery("getPageInput", Cars.class);
+        spq.registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN);
+        spq.setParameter(1, pageIN);
+
+        // Lekérdezés végrehajtása
+        carList = new ArrayList<>(spq.getResultList());
+
+    } catch (Exception e) {
+        System.err.println("Error: " + e.getLocalizedMessage());
+    } finally {
+        em.clear();
+        em.close();
+    }
+
+    return carList;
+}
+
 
 }
