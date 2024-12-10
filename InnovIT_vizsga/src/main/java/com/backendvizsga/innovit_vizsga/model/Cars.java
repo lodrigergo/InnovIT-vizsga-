@@ -411,6 +411,51 @@ public class Cars implements Serializable {
 
     return carList;
 }
+    
+    public Boolean addCar(Integer id, String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image){
+        EntityManager em = emf.createEntityManager();
+        Boolean toReturn = false;
+        
+        try{
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("addCar");
+            
+            spq.registerStoredProcedureParameter("brandIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("modelIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("licensePlateIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("yearIN", Date.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("fuelTypeIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("priceIN", BigDecimal.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("transmissionIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("doorsIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("ACIN", Boolean.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("seatIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
+            
+            spq.setParameter("brandIN", brand);
+            spq.setParameter("modelIN", model);
+            spq.setParameter("licensePlateIN", licensePlate);
+            spq.setParameter("yearIN", year);
+            spq.setParameter("fuelTypeIN", fuelType);
+            spq.setParameter("priceIN", pricePerDay);
+            spq.setParameter("transmissionIN", transmission);
+            spq.setParameter("doorsIN", doors);
+            spq.setParameter("ACIN", ac);
+            spq.setParameter("seatIN", seats);
+            spq.setParameter("imageIN", image);
+            
+            spq.execute();
+            
+            toReturn = true;
+            
+        } catch(Exception ex){
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            toReturn = false;
+        } finally{
+            em.clear();
+            em.close();
+            return toReturn;
+        }
+    }
 
 
 }
