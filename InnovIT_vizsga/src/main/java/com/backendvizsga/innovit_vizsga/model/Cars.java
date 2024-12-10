@@ -7,6 +7,7 @@ package com.backendvizsga.innovit_vizsga.model;
 import static com.backendvizsga.innovit_vizsga.model.Users.emf;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,6 +43,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cars.findByYear", query = "SELECT c FROM Cars c WHERE c.year = :year"),
     @NamedQuery(name = "Cars.findByFuelType", query = "SELECT c FROM Cars c WHERE c.fuelType = :fuelType"),
     @NamedQuery(name = "Cars.findByPricePerDay", query = "SELECT c FROM Cars c WHERE c.pricePerDay = :pricePerDay"),
+    @NamedQuery(name = "Cars.findByTransmission", query = "SELECT c FROM Cars c WHERE c.transmission = :transmission"),
+    @NamedQuery(name = "Cars.findByDoors", query = "SELECT c FROM Cars c WHERE c.doors = :doors"),
+    @NamedQuery(name = "Cars.findByAc", query = "SELECT c FROM Cars c WHERE c.ac = :ac"),
+    @NamedQuery(name = "Cars.findBySeats", query = "SELECT c FROM Cars c WHERE c.seats = :seats"),
     @NamedQuery(name = "Cars.findByIsDeleted", query = "SELECT c FROM Cars c WHERE c.isDeleted = :isDeleted"),
     @NamedQuery(name = "Cars.findByCreatedAt", query = "SELECT c FROM Cars c WHERE c.createdAt = :createdAt"),
     @NamedQuery(name = "Cars.findByDeletedAt", query = "SELECT c FROM Cars c WHERE c.deletedAt = :deletedAt")})
@@ -86,18 +92,31 @@ public class Cars implements Serializable {
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
-    @Column(name = "image")
-    private String image;
+    @Column(name = "transmission")
+    private String transmission;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "doors")
+    private int doors;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "AC")
+    private boolean ac;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "seats")
+    private int seats;
     @Basic(optional = false)
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
-    @Column(name = "other")
-    private String other;
+    @Column(name = "image")
+    private String image;
     @Basic(optional = false)
     @NotNull
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "created_at")
@@ -107,38 +126,41 @@ public class Cars implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
 
-   public Cars(){
-       
-   }
-   
-   public Cars(Integer id){
-       EntityManager em = emf.createEntityManager();
-       
-       try{
-       Cars c = em.find(Cars.class, id);
-       
-       this.id = c.getId();
-       this.brand = c.getBrand();
-       this.model = c.getModel();
-       this.licensePlate = c.getLicensePlate();
-       this.year = c.getYear();
-       this.fuelType = c.getFuelType();
-       this.pricePerDay = c.getPricePerDay();
-       this.image = c.getImage();
-       this.other = c.getOther();
-       this.isDeleted = c.getIsDeleted();
-       this.createdAt = c.getCreatedAt();
-       this.deletedAt = c.getDeletedAt();
-       
-       }catch(Exception ex){
-           System.err.println("Hiba: " + ex.getLocalizedMessage());
-       }finally{
-           em.clear();
-           em.close();
-       }
-   }
+    public Cars() {
 
-    public Cars(Integer id, String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String image, String other, boolean isDeleted, Date createdAt) {
+    }
+
+    public Cars(Integer id) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            Cars c = em.find(Cars.class, id);
+
+            this.id = c.getId();
+            this.brand = c.getBrand();
+            this.model = c.getModel();
+            this.licensePlate = c.getLicensePlate();
+            this.year = c.getYear();
+            this.fuelType = c.getFuelType();
+            this.pricePerDay = c.getPricePerDay();
+            this.transmission = c.getTransmission();
+            this.doors = c.getDoors();
+            this.ac = c.getAc();
+            this.seats = c.getSeats();
+            this.image = c.getImage();
+            this.isDeleted = c.getIsDeleted();
+            this.createdAt = c.getCreatedAt();
+            this.deletedAt = c.getDeletedAt();
+
+        } catch (Exception ex) {
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
+
+    public Cars(Integer id, String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image, boolean isDeleted, Date createdAt) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -146,12 +168,14 @@ public class Cars implements Serializable {
         this.year = year;
         this.fuelType = fuelType;
         this.pricePerDay = pricePerDay;
+        this.transmission = transmission;
+        this.doors = doors;
+        this.ac = ac;
+        this.seats = seats;
         this.image = image;
-        this.other = other;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
     }
-
 
     public Integer getId() {
         return id;
@@ -209,20 +233,44 @@ public class Cars implements Serializable {
         this.pricePerDay = pricePerDay;
     }
 
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
+    }
+
+    public int getDoors() {
+        return doors;
+    }
+
+    public void setDoors(int doors) {
+        this.doors = doors;
+    }
+
+    public boolean getAc() {
+        return ac;
+    }
+
+    public void setAc(boolean ac) {
+        this.ac = ac;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public String getOther() {
-        return other;
-    }
-
-    public void setOther(String other) {
-        this.other = other;
     }
 
     public boolean getIsDeleted() {
@@ -273,7 +321,26 @@ public class Cars implements Serializable {
     public String toString() {
         return "com.backendvizsga.innovit_vizsga.model.Cars[ id=" + id + " ]";
     }
-    
+
+    public static ArrayList<Cars> getAllCar() {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<Cars> carList = new ArrayList<>();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllCar", Cars.class);
+            spq.execute();
+            carList = new ArrayList<>(spq.getResultList());
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getLocalizedMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+
+        return carList;
+    }
+
     public Cars getCarById(Integer id) {
         try {
             return new Cars(id);
@@ -282,7 +349,5 @@ public class Cars implements Serializable {
             return null;
         }
     }
-    
-    
-    
+
 }
