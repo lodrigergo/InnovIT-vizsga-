@@ -113,5 +113,22 @@ public class UserService {
     toReturn.put("statusCode", statusCode); 
     return toReturn;
 }
+   
+   public String registerUser(String name, String email, String password, String personalId){
+        if(isValidPassword(password)){
+            if(isValidEmail(email)){
+                Boolean modelResult = layer.registerUser(name, email, password, personalId);
+                if (modelResult){
+                    return "success";
+                }else {
+                    return  "fail";
+                }
+            } else {
+                return "invalidEmail";
+            } 
+             }else {
+                return "successEmail";
+        }
+    }
     
 }
