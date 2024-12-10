@@ -161,7 +161,7 @@ public class UserControllerResource {
         }
     }
     
-     @GET
+    @GET
     @Path("getUserById")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getUserById(@QueryParam("id") Integer id){
@@ -175,6 +175,9 @@ public class UserControllerResource {
         toReturn.put("personalId", response.getPersonalId());
         toReturn.put("isAdmin", response.getIsAdmin());
         toReturn.put("isDeleted", response.getIsDeleted());
+        toReturn.put("createdAt", response.getCreatedAt());
+        toReturn.put("deletedAt", response.getDeletedAt());
+
         
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
                 
@@ -194,6 +197,8 @@ public class UserControllerResource {
         toReturn.put("personalId", response.getPersonalId());
         toReturn.put("isAdmin", response.getIsAdmin());
         toReturn.put("isDeleted", response.getIsDeleted());
+        toReturn.put("createdAt", response.getCreatedAt());
+        toReturn.put("deletedAt", response.getDeletedAt());
         
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
                 
