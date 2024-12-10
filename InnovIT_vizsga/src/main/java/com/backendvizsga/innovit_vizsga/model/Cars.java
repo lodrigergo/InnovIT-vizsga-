@@ -349,5 +349,24 @@ public class Cars implements Serializable {
             return null;
         }
     }
+    
+    public static ArrayList<Cars> getPage1() {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<Cars> carList = new ArrayList<>();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getPage1", Cars.class);
+            spq.execute();
+            carList = new ArrayList<>(spq.getResultList());
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getLocalizedMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+
+        return carList;
+    }
 
 }
