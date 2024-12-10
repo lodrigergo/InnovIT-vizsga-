@@ -114,7 +114,7 @@ public class CarController {
         }
     }
     
-     @GET
+    @GET
     @Path("getCarById")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getCarById(@QueryParam("id") Integer id){
@@ -194,7 +194,113 @@ public class CarController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
         }
     }
-
     
+    @GET
+    @Path("getPage2")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPage2() {
+        JSONObject responseObj = new JSONObject();
+
+        try {
+            
+            ArrayList<Cars> carList = layer.getPage2();  
+
+            // Initialize a JSON array to store user data
+            JSONArray carsArray = new JSONArray();
+
+            // Iterate over the user list and convert each user to a JSONObject
+            for (Cars c : carList) {
+                JSONObject carJson = new JSONObject();
+                carJson.put("id", c.getId());
+                carJson.put("brand",c.getBrand());
+                carJson.put("model", c.getModel());
+                carJson.put("licensePlate", c.getLicensePlate());
+                carJson.put("year",c.getYear());
+                carJson.put("fuelType", c.getFuelType());  
+                carJson.put("pricePerDay", c.getPricePerDay());  
+                carJson.put("transmission", c.getTransmission());  
+                carJson.put("doors", c.getDoors());  
+                carJson.put("AC", c.getAc());  
+                carJson.put("seats", c.getSeats());  
+                carJson.put("image", c.getImage());  
+               
+                carJson.put("isDeleted", c.getIsDeleted());  
+                carJson.put("createdAt", c.getCreatedAt());
+                carJson.put("deletedAt", c.getDeletedAt());
+             
+
+                // Add the user JSON object to the array
+                carsArray.put(carJson);
+            }
+
+            // Add the users array to the response object
+            responseObj.put("statusCode", 200);
+            responseObj.put("cars", carsArray);
+
+            // Return the response with a 200 OK status
+            return Response.ok(responseObj.toString(), MediaType.APPLICATION_JSON).build();
+
+        } catch (Exception e) {
+            // Handle any exceptions
+            responseObj.put("statusCode", 500);
+            responseObj.put("message", "Failed to retrieve cars");
+            responseObj.put("error", e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+
+    @GET
+    @Path("getPageInput")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPageInput() {
+        JSONObject responseObj = new JSONObject();
+
+        try {
+            
+            ArrayList<Cars> carList = layer.getPageInput(Integer.SIZE);  
+
+            // Initialize a JSON array to store user data
+            JSONArray carsArray = new JSONArray();
+
+            // Iterate over the user list and convert each user to a JSONObject
+            for (Cars c : carList) {
+                JSONObject carJson = new JSONObject();
+                carJson.put("id", c.getId());
+                carJson.put("brand",c.getBrand());
+                carJson.put("model", c.getModel());
+                carJson.put("licensePlate", c.getLicensePlate());
+                carJson.put("year",c.getYear());
+                carJson.put("fuelType", c.getFuelType());  
+                carJson.put("pricePerDay", c.getPricePerDay());  
+                carJson.put("transmission", c.getTransmission());  
+                carJson.put("doors", c.getDoors());  
+                carJson.put("AC", c.getAc());  
+                carJson.put("seats", c.getSeats());  
+                carJson.put("image", c.getImage());  
+               
+                carJson.put("isDeleted", c.getIsDeleted());  
+                carJson.put("createdAt", c.getCreatedAt());
+                carJson.put("deletedAt", c.getDeletedAt());
+             
+
+                // Add the user JSON object to the array
+                carsArray.put(carJson);
+            }
+
+            // Add the users array to the response object
+            responseObj.put("statusCode", 200);
+            responseObj.put("cars", carsArray);
+
+            // Return the response with a 200 OK status
+            return Response.ok(responseObj.toString(), MediaType.APPLICATION_JSON).build();
+
+        } catch (Exception e) {
+            // Handle any exceptions
+            responseObj.put("statusCode", 500);
+            responseObj.put("message", "Failed to retrieve cars");
+            responseObj.put("error", e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
     
 }

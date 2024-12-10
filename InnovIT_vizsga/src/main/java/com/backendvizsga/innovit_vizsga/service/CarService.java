@@ -44,6 +44,22 @@ public class CarService {
         return carList;
     }
     
+    public ArrayList<Cars> getPage2() {
+        ArrayList<Cars> carList = new ArrayList<>();
+        try {
+            carList = layer.getPage2();
+
+        } catch (Exception e) {
+            System.err.println("Error fetching cars: " + e.getMessage());
+        }
+
+        return carList;
+    }
+    
+     public ArrayList<Cars> getPageInput(Integer pageIN){
+        return layer.getPageInput(pageIN);
+    }
+    
    
     
 }
