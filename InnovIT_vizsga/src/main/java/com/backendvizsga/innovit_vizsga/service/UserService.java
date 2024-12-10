@@ -76,7 +76,7 @@ public class UserService {
     }
      
      public Users getUserDetailsByCarId(Integer car_id){
-        return layer.getUserById(car_id);
+        return layer.getUserDetailsByCarId(car_id);
     }
 
    public JSONObject registerUser(Users u) {

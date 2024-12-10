@@ -308,7 +308,7 @@ public class Users implements Serializable {
         return userList;
     }
      
-     public Users getUserById(Integer id) {
+      public Users getUserById(Integer id) {
         try {
             return new Users(id);
         } catch (Exception e) {
