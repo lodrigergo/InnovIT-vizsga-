@@ -59,46 +59,16 @@ public class UserService {
         return userList;
     }
     
-     public JSONObject getAllAdmin(){
-        JSONObject toReturn = new JSONObject();
-        String status = "success";
-        int statusCode = 200;
+    public ArrayList<Users> getAllAdmin() {
+        ArrayList<Users> userList = new ArrayList<>();
+        try {
+            userList = layer.getAllAdmin();
 
-        List<Users> modelResult = layer.getAllAdmin();
-        
-        if(modelResult == null){
-            status = "ModelExeption";
-            statusCode = 500;
-        }else if (modelResult.isEmpty()){
-            status = "NoAdminFound";
-            statusCode = 417;
-        }else {
-            JSONArray result = new JSONArray();
-            
-            for(Users actualUser: modelResult){
-                JSONObject toAdd = new JSONObject();
-                
-                toAdd.put("id", actualUser.getId());
-                toAdd.put("name", actualUser.getName());
-                toAdd.put("email", actualUser.getEmail());
-                toAdd.put("password", actualUser.getPassword());
-                toAdd.put("personalId", actualUser.getPersonalId());
-                toAdd.put("isAdmin", actualUser.getIsAdmin());
-                toAdd.put("isDeleted", actualUser.getIsDeleted());
-                toAdd.put("createdAt", actualUser.getCreatedAt());
-                toAdd.put("deletedAt", actualUser.getDeletedAt());
-                
-                result.put(toAdd);
-            }
-            
-            toReturn.put("result", result);
+        } catch (Exception e) {
+            System.err.println("Error fetching admins: " + e.getMessage());
         }
 
-
-
-        toReturn.put("status", status);
-        toReturn.put("statusCode", statusCode); 
-        return toReturn;
+        return userList;
     }
      
      public Users getUserById(Integer id){
