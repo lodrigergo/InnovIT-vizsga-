@@ -12,6 +12,14 @@ document.getElementById('home-link').addEventListener('click', function(event) {
     location.reload(); 
 });
 
+// Az "About" link kezelése
+document.querySelector('a[href="#about"]').addEventListener('click', function (event) {
+    event.preventDefault(); 
+    document.querySelector('#about').scrollIntoView({
+        behavior: 'smooth'
+    });
+});
+
 
 // Az összes vehicle-option kiválasztása
 const vehicleOptions = document.querySelectorAll('.vehicle-option');
@@ -22,15 +30,6 @@ vehicleOptions.forEach(option => {
     option.addEventListener('click', function() {
         vehicleOptions.forEach(opt => opt.classList.remove('active'));
         this.classList.add('active');
-    });
-});
-
-
-// Az "About" link kezelése
-document.querySelector('a[href="#about"]').addEventListener('click', function (event) {
-    event.preventDefault(); 
-    document.querySelector('#about').scrollIntoView({
-        behavior: 'smooth'
     });
 });
 
@@ -100,13 +99,6 @@ loginBtn.addEventListener('click', function () {
 
 // Login panel elrejtése az X gombra kattintva
 closeLoginPanel.addEventListener('click', function () {
-    loginPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-});
-
-
-// Login panel elrejtése félrekattintáskor
-overlay.addEventListener('click', function () {
     loginPanel.classList.remove('open'); 
     overlay.classList.remove('show'); 
 });
@@ -217,20 +209,6 @@ emailInput.addEventListener('input', function () {
 });
 
 
-// // Jelszó validálás frissítése
-// passwordInput.addEventListener('input', function () {
-//     const passwordValue = passwordInput.value;
-
-//     if (passwordValue.length > 20) {
-//         displayError(passwordInput, 'Password cannot exceed 20 characters');
-//         updateButtonState(); 
-//     } else {
-//         removeError(passwordInput);
-//         updateButtonState(); 
-//     }
-// });
-
-
 // Gomb állapotának frissítése
 function updateButtonState() {
     const emailValue = emailInput.value.trim();
@@ -283,12 +261,6 @@ createAccountBtn.addEventListener('click', function () {
 closeRegisterPanel.addEventListener('click', function () {
     registerPanel.classList.remove('open'); 
     overlay.classList.remove('show'); 
-});
-
-
-// Login panel bezárása az × gombra kattintva
-closeLoginPanel.addEventListener('click', function () {
-    loginPanel.classList.remove('open'); 
 });
 
 
@@ -633,4 +605,5 @@ const handleScrollAnimation = () => {
 window.addEventListener('scroll', () => {
     handleScrollAnimation();
 });
+
 
