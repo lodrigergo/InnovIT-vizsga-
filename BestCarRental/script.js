@@ -137,11 +137,29 @@ emailInput.addEventListener('keypress', function (event) {
 passwordInput.addEventListener('input', function () {
     const passwordValue = passwordInput.value;
 
-    if (passwordValue.length > 20) {
+    if (passwordValue.length < 8) {
+        displayError(passwordInput, 'Password must be at least 8 characters long');
+        updateButtonState(); 
+    } else if (passwordValue.length > 20) {
         displayError(passwordInput, 'Password cannot exceed 20 characters');
+        updateButtonState(); 
     } else {
         removeError(passwordInput);
+        updateButtonState(); 
     }
+});
+
+passwordInput.addEventListener('blur', function () {
+    const passwordValue = passwordInput.value;
+
+    if (passwordValue === "") {
+        removeError(passwordInput);
+    } else if (passwordValue.length >= 8 && passwordValue.length <= 20) {
+        removeError(passwordInput);
+    } else {
+        displayError(passwordInput, 'Password must be 8-20 characters long');
+    }
+    updateButtonState(); 
 });
 
 
@@ -164,7 +182,7 @@ function displayError(inputElement, message) {
     }
 
     errorElement.textContent = message; 
-    errorElement.style.color = 'red'; 
+    errorElement.style.color = 'red';
 }
 
 
@@ -199,18 +217,18 @@ emailInput.addEventListener('input', function () {
 });
 
 
-// Jelszó validálás frissítése
-passwordInput.addEventListener('input', function () {
-    const passwordValue = passwordInput.value;
+// // Jelszó validálás frissítése
+// passwordInput.addEventListener('input', function () {
+//     const passwordValue = passwordInput.value;
 
-    if (passwordValue.length > 20) {
-        displayError(passwordInput, 'Password cannot exceed 20 characters');
-        updateButtonState(); 
-    } else {
-        removeError(passwordInput);
-        updateButtonState(); 
-    }
-});
+//     if (passwordValue.length > 20) {
+//         displayError(passwordInput, 'Password cannot exceed 20 characters');
+//         updateButtonState(); 
+//     } else {
+//         removeError(passwordInput);
+//         updateButtonState(); 
+//     }
+// });
 
 
 // Gomb állapotának frissítése
@@ -219,12 +237,12 @@ function updateButtonState() {
     const passwordValue = passwordInput.value;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (emailPattern.test(emailValue) && passwordValue.length > 0 && passwordValue.length <= 20) {
-        logInButton.disabled = false; 
-        logInButton.style.opacity = '1'; 
+    if (passwordValue.length >= 8 && passwordValue.length <= 20) {
+        loginSubmitButton.disabled = false; 
+        loginSubmitButton.style.opacity = '1'; 
     } else {
-        logInButton.disabled = true; 
-        logInButton.style.opacity = '0.6'; 
+        loginSubmitButton.disabled = true; 
+        loginSubmitButton.style.opacity = '0.6'; 
     }
 }
 
@@ -371,8 +389,8 @@ function displayError(inputElement, message) {
         inputElement.parentElement.appendChild(errorElement);
     }
 
-    errorElement.textContent = message;
-    errorElement.style.color = 'red';
+    errorElement.textContent = message; 
+    errorElement.style.color = 'red'; 
 }
 
 function removeError(inputElement) {
@@ -435,14 +453,16 @@ loginButton.addEventListener('click', function () {
 });
 
 
+
 // Login panelben a bejelentkezéskor
 const loginSubmitButton = document.querySelector('.btn.login-btn');
 loginSubmitButton.addEventListener('click', function (event) {
     event.preventDefault(); 
+    localStorage.setItem('isLoggedIn', 'true'); 
     loginPanel.classList.remove('open'); 
-    document.getElementById('overlay').classList.remove('show'); 
+    overlay.classList.remove('show'); 
     loginButton.style.display = 'none'; 
-    profileIcon.style.display = 'block'; 
+    profileIcon.style.display = 'block';  
 });
 
 
@@ -521,12 +541,37 @@ loginButton.addEventListener('click', function () {
 
 // Login panelben a bejelentkezéskor
 loginSubmitButton.addEventListener('click', function (event) {
-    event.preventDefault(); 
-    localStorage.setItem('isLoggedIn', 'true'); 
-    loginPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-    loginButton.style.display = 'none'; 
-    profileIcon.style.display = 'block'; 
+    event.preventDefault();
+
+    const emailValue = emailInput.value.trim();
+    const passwordValue = passwordInput.value;
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    let valid = true;
+
+    if (!emailPattern.test(emailValue)) {
+        displayError(emailInput, 'Invalid email address');
+        valid = false;
+    } else {
+        removeError(emailInput);
+    }
+
+    // Jelszó ellenőrzése
+    if (passwordValue.length < 8 || passwordValue.length > 20) {
+        displayError(passwordInput, 'Password must be 8-20 characters long');
+        valid = false;
+    } else {
+        removeError(passwordInput);
+    }
+
+    if (valid) {
+        localStorage.setItem('isLoggedIn', 'true');
+        loginPanel.classList.remove('open');
+        overlay.classList.remove('show');
+        loginButton.style.display = 'none';
+        profileIcon.style.display = 'block';
+    }
 });
 
 
@@ -551,10 +596,16 @@ logoutButton.addEventListener('click', function () {
     overlay.classList.remove('show'); 
     loginButton.style.display = 'block'; 
     profileIcon.style.display = 'none'; 
+
+    emailInput.value = "";
+    passwordInput.value = "";
+
+    removeError(emailInput);
+    removeError(passwordInput);
 });
 
 
-// Válaszd ki az összes elem, amit animálni szeretnél
+// Az összes kiválaszott animált elem
 const scrollElements = document.querySelectorAll('.scroll-animate');
 const elementInView = (el, offset = 0) => {
     const elementTop = el.getBoundingClientRect().top;
@@ -582,3 +633,4 @@ const handleScrollAnimation = () => {
 window.addEventListener('scroll', () => {
     handleScrollAnimation();
 });
+
