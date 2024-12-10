@@ -6,7 +6,9 @@ package com.backendvizsga.innovit_vizsga.service;
 
 import com.backendvizsga.innovit_vizsga.model.Cars;
 import com.backendvizsga.innovit_vizsga.model.Users;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -59,6 +61,9 @@ public class CarService {
      public ArrayList<Cars> getPageInput(Integer pageIN){
         return layer.getPageInput(pageIN);
     }
+     
+     
+    
     
    
     
