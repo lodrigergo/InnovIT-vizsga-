@@ -106,6 +106,13 @@ public class Users implements Serializable {
         this.personalId=personalId;
         this.isAdmin=isAdmin;
     }
+    
+     public Users(String name,String email,String password,String personalId){
+        this.name= name;
+        this.email=email;
+        this.password=password;
+        this.personalId=personalId;
+    }
 
     public Users(Integer id) {
         EntityManager em = emf.createEntityManager();
@@ -372,15 +379,15 @@ public class Users implements Serializable {
 
         try {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("registerUser");
+            spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("nameIn", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
-             spq.registerStoredProcedureParameter("personal_idIN", String.class, ParameterMode.IN);
+             spq.registerStoredProcedureParameter("personalIdIN", String.class, ParameterMode.IN);
 
-            spq.setParameter("emailIN", u.getEmail());
-             spq.setParameter("nameIN", u.getName());
+            spq.setParameter("nameIN", u.getName());
+             spq.setParameter("emailIN", u.getEmail());
               spq.setParameter("passwordIN", u.getPassword());
-            spq.setParameter("personalId", u.getPersonalId());
+            spq.setParameter("personalIdIN", u.getPersonalId());
            
            
             
@@ -398,38 +405,7 @@ public class Users implements Serializable {
         }
     }
      
-     public Boolean registerUser(String name, String email, String password, String personalId){
-        EntityManager em = emf.createEntityManager();
-        Boolean toReturn = false;
-        
-        try{
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("registerUser");
-            
-            spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("personal_idIN", String.class, ParameterMode.IN);
-            
-            
-            spq.setParameter("nameIN", name);
-            spq.setParameter("emailIN", email);
-            spq.setParameter("passwordIN", password);
-            spq.setParameter("personal_idIN", personalId);
-            
-            spq.execute();
-            
-            toReturn = true;
-            
-        } catch(Exception ex){
-            System.err.println("Hiba: " + ex.getLocalizedMessage());
-            toReturn = false;
-        } finally{
-            em.clear();
-            em.close();
-            
-        }
-        return toReturn;
-    }
+     
      
     
 }

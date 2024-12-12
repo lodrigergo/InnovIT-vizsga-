@@ -219,13 +219,19 @@ public class UserControllerResource {
   @POST
     @Path("registerUser")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(Users u){
-        JSONObject toReturn = new JSONObject();
-//        String result = userServiceLayer.addUser(u.getFirstName(), u.getLastName(), u.getEmail(), u.getPassword(), u.getRoleId(), u.getIsAdmin());
+    //@Produces(MediaType.APPLICATION_JSON)
+    public Response registerUser(String bodyString) {
+        JSONObject body = new JSONObject(bodyString);
         
-//        toReturn.put("result", result);
+        Users u = new Users(
+                body.getString("name"),
+                body.getString("email"),
+                body.getString("password"),
+                body.getString("personalId")     
+        );
         
-        return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+        JSONObject obj = layer.registerUser(u);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
    
     

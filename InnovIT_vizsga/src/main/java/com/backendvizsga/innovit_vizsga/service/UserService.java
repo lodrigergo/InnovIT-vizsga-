@@ -126,51 +126,47 @@ public class UserService {
     String status = "success";
     int statusCode = 200;
 
-    if(isValidEmail(u.getEmail())){
-        if(isValidPassword(u.getPassword())){
-            boolean userIsExists = Users.isUserExists(u.getEmail());
-            if(Users.isUserExists(u.getEmail()) == null){
-                status = "modelExeption";
+     //Ellenőrizzük az e-mail formátumot
+    if (isValidEmail(u.getEmail())) {
+        // Ellenőrizzük a jelszó formátumot
+        if (isValidPassword(u.getPassword())) {
+            // Ellenőrizzük, hogy létezik-e a felhasználó
+            Boolean userIsExists = Users.isUserExists(u.getEmail());
+
+            if (userIsExists == null) {
+                // Ha a metódus null értéket adott vissza
+                status = "DatabaseError";
                 statusCode = 500;
-            }else if(userIsExists == true){
-            status = "UserAlreadyExists";
-            statusCode = 417;
-        }else{
+            } else if (userIsExists) {
+                // Ha a felhasználó már létezik
+                status = "UserAlreadyExists";
+                statusCode = 417;
+            } else {
+                // Új felhasználó regisztrálása
                 boolean registerUser = layer.registerUser(u);
-                if(registerUser == false){
-                    status = "fail";
+                if (!registerUser) {
+                    // Ha a regisztráció sikertelen
+                    status = "RegistrationFailed";
                     statusCode = 417;
                 }
-                }
-        }else{
+            }
+        } else {
+            // Ha a jelszó nem érvényes
             status = "InvalidPassword";
             statusCode = 417;
         }
-    }else{
+    } else {
+        // Ha az email nem érvényes
         status = "InvalidEmail";
         statusCode = 417;
     }
 
     toReturn.put("status", status);
-    toReturn.put("statusCode", statusCode); 
+    toReturn.put("statusCode", statusCode);
     return toReturn;
 }
+
    
-   public String registerUser(String name, String email, String password, String personalId){
-        if(isValidPassword(password)){
-            if(isValidEmail(email)){
-                Boolean modelResult = layer.registerUser(name, email, password, personalId);
-                if (modelResult){
-                    return "success";
-                }else {
-                    return  "fail";
-                }
-            } else {
-                return "invalidEmail";
-            } 
-             }else {
-                return "successEmail";
-        }
-    }
+   
     
 }
