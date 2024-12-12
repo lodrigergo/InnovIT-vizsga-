@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Car Rental</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Az oldal navbárja és menüje -->
+    <header class="navbar">
+        <div class="container">
+            <img src="./Photos/logo for the website.webp" alt="Best Car Rental Logo" class="logo" id="logo">
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home" id="home-link">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#">Cars</a></li>
+                    <li><a href="#">Reservations</a></li>
+                </ul>
+            </nav>
+            <button class="login-btn">Login/Registration</button>
+            <img src="./Photos/profile icon.webp" alt="Profile Icon" id="profile-icon" style="display: none; width: 40px; height: 40px; border-radius: 30%; margin-right: 20px;">
+        </div>
+    </header>
+  
+    
+<!-- Az oldal fö szakasza -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Rent a Car Online &</h1>
+            <p>Enjoy the Best Deals, Rates & Accessories</p>
+            <div class="search-box">
+                <form action="#">
+                    <div class="form-row">
+                        <label for="vehicle-type">What type of vehicle?</label>
+                        <div class="vehicle-type">
+                            <button type="button" class="vehicle-option active">Cars</button>
+                            <button type="button" class="vehicle-option">Trucks</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label for="location">Pick-up and drop-off location</label>
+                        <input type="text" id="location" placeholder="Pick up and drop off location">
+                    </div>
+                    <div class="form-row date-time">
+                        <div>
+                            <label for="pickup-date">Date and time of recording</label>
+                            <input type="date" id="pickup-date">
+                            <input type="time" id="pickup-time">
+                        </div>
+                        <div>
+                            <label for="dropoff-date">Release date and time</label>
+                            <input type="date" id="dropoff-date">
+                            <input type="time" id="dropoff-time">
+                        </div>
+                    </div>
+                    <button type="submit" class="search-btn">Search</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+<!-- Bejelentkezési panel rész -->
+    <div id="overlay" class="overlay"></div>
+    <div id="login-panel" class="login-panel">
+        <div class="login-header">
+            <h2>LOGIN</h2>
+            <span id="close-login-panel" class="close-btn">&times;</span>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="email">
+                    <i class="fa fa-envelope"></i> Email:
+                </label>
+                <input type="email" id="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="password">
+                    <i class="fa fa-key"></i> Password:
+                </label>
+                <input type="password" id="password" placeholder="Password">
+            </div>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+            <button type="submit" class="btn login-btn">Log In</button>
+            <button type="button" class="btn create-account-btn">Create Account</button>
+        </form>
+    </div>
+
+
+<!-- Regisztrációs panel rész -->
+    <div id="register-panel" class="register-panel">
+        <div class="register-header">
+            <h2>Register</h2>
+            <span id="close-register-panel" class="close-btn">&times;</span>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="register-email" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="register-password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" placeholder="Confirm Password">
+            </div>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+            <button type="submit" class="btn register-create-account-btn" disabled>Create Account</button>
+            <button type="button" class="btn login-btn">Login</button>
+        </form>
+    </div>
+
+
+ <!-- About rész -->
+    <section id="about">
+        <div class="about-header">
+            <h2>About</h2>
+            <br>
+            <p>Introducing our latest collection that brings a little comfort to your holiday</p>
+            <br><br>
+        </div>
+        <div class="about-features">
+            <div class="feature-item">
+                <img src="./Photos/Comfortable-Car.jpg" alt="Comfort">
+                <h3>Comfort</h3>
+                <p>Experience unmatched comfort with our reliable and well-maintained rental cars.</p>
+                <a href="#">More Info →</a>
+            </div>
+            <div class="feature-item">
+                <img src="./Photos/62d84b3d3ba4466e76043bb4_Benefits of flexibility .png" alt="Flexibility">
+                <h3>Flexibility</h3>
+                <p>Enjoy ultimate flexibility with rental options tailored to your schedule and needs.</p>
+                <a href="#">More Info →</a>
+            </div>
+            <div class="feature-item">
+                <img src="./Photos/Great-Customer-Support-jpg.webp" alt="Customer Support">
+                <h3>Customer Support</h3>
+                <p>Our 24/7 customer support ensures we're always here when you need us.</p>
+                <a href="#">More Info →</a>
+            </div>
+        </div>
+        <br>
+        <div class="about-cards">
+            <div class="about-card">
+                <h3>Best Car Rental</h3>
+                <p>One of our best-selling cars is the Volkswagen Golf 2018 version.</p>
+                <ul>
+                    <li>Comfort</li>
+                    <li>Favorable price</li>
+                    <li>Reliability</li>
+                </ul>
+                <img class="VW" src="./Photos/50-volkswagen-golf-2024-front-driving.webp" alt="Volkswagen Golf">
+                <br>
+                <button class="vwButton">CHECK OUT</button>
+            </div>
+            <div class="about-card highlighted">
+                <h3>Best Car Rental</h3>
+                <p>One of the cheapest vehicles in our range is the Volvo XC90, 2019 version.</p>
+                <ul>
+                    <li>It is affordable</li>
+                    <li>Comfort</li>
+                    <li>Reliability</li>
+                </ul>
+                <img class="Volvo" src="./Photos/2019-Volvo-XC90-1024x696.jpg" alt="Volvo XC90">
+                <br>
+                <button class="volvoButton">CHECK OUT</button>
+            </div>
+        </div>
+        <br>
+        <blockquote class="about-quote">
+            "On the road, responsibility is the best companion, attention is the surest travel companion. Drive so everyone gets home."
+        </blockquote>
+    </section>
+
+<!-- Információs panel a kényelemről -->
+    <div class="info-panel" id="comfort-info-panel">
+        <h3>Comfortable travel</h3>
+        <p>
+            Comfortable travel begins with a vehicle designed to meet your needs and preferences.
+            Our cars are equipped with modern features to ensure a smooth and enjoyable ride. From
+            spacious interiors to advanced climate control, every detail is tailored for your comfort.
+        </p>
+        <img src="./Photos/for about.webp" alt="VW Golf Comfort">
+        <button class="info-btn">On to the car</button>
+    </div>
+
+
+<!-- Vásárlói vélemények rész -->
+    <section id="customer-opinions" class="customer-opinions">
+        <h2>Our customers opinion</h2>
+        <p>The heart of our business is excellent customer service. Hear what our satisfied customers have kindly shared.</p>
+        <div class="opinions-container">
+            <div class="opinion-card">
+                <div class="stars">
+                    ★★★★★
+                </div>
+                <p>Best Car Rental's offers were very useful for me. They also excel in quality, speed and comfort.</p>
+                <div class="customer-info">
+                    <img src="https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="Customer Avatar">
+                    <div>
+                        <strong>Oliver Smith</strong>
+                        <p>Taxi driver</p>
+                    </div>
+                </div>
+            </div>
+            <div class="opinion-card">
+                <div class="stars">
+                    ★★★★★
+                </div>
+                <p>I can only recommend them, everything was as described in the rented car. The tank was full as it was write.</p>
+                <div class="customer-info">
+                    <img src="https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="Customer Avatar">
+                    <div>
+                        <strong>James Taylor</strong>
+                        <p>Truck driver</p>
+                    </div>
+                </div>
+            </div>
+            <div class="opinion-card">
+                <div class="stars">
+                    ★★★★★
+                </div>
+                <p>My company needed a car quickly and I saw their ad and it's still the day I managed to rent one in minutes.</p>
+                <div class="customer-info">
+                    <img src="https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="Customer Avatar">
+                    <div>
+                        <strong>Emily Brown</strong>
+                        <p>Entrepreneur</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<!-- Profil panel bejelentkezés után -->
+    <div id="profile-panel" class="profile-panel">
+        <div class="profile-header">
+            <img src="./Photos/avatar.jpg" alt="Profile Icon" class="profile-image">
+            <h2>USERNAME</h2>
+            <span id="close-profile-panel" class="close-btn">&times;</span>
+        </div>
+        <div class="profile-content">
+            <h3>WELCOME</h3>
+            <ul>
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#about"><i class="fa fa-user"></i> About</a></li>
+                <li><a href="#"><i class="fa fa-car"></i> Cars</a></li>
+                <li><a href="#"><i class="fa fa-calendar"></i> Reservation</a></li>
+                <li><a href="#"><i class="fa fa-adjust"></i> Light / Dark</a></li>
+                <li><a href="#"><i class="fa fa-bell"></i> Notification</a></li>
+                <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
+            </ul>
+            <hr>
+            <button class="logout-btn">Log Out</button>
+        </div>
+    </div>
+
+    
+<!-- Footer rész-->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Best Car Rental</h3>
+                <p>
+                    We are a trusted car rental company dedicated to providing reliable vehicles 
+                    and exceptional service to meet all your travel needs. Explore hassle-free rentals 
+                    with flexible options and competitive rates.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Take it up with us connection</h3>
+                <p><strong>Contact</strong></p>
+                <p>06/20 123 4567</p>
+                <p><a href="https://mail.google.com/mail/u/1/" target="_blank">bestcarrentalmadeinhungary@gmail.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Who are we?</h3>
+                <p><a href="#about">About</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow us!</h3>
+                <p><a href="https://www.facebook.com/profile.php?id=100010122408583&locale=hu_HU" target="_blank">Facebook</a></p>
+                <p><a href="https://www.instagram.com/timar._david/" target="_blank">Instagram</a></p>
+                <p><a href="https://x.com/home" target="_blank">Twitter</a></p>
+            </div>
+        </div>
+    </footer>
+    
+
+<script src="script.js"></script>
+</body>
+</html>
