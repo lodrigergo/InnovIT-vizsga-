@@ -4,6 +4,7 @@
  */
 package com.backendvizsga.innovit_vizsga.service;
 
+import com.backendvizsga.innovit_vizsga.config.JWT;
 import com.backendvizsga.innovit_vizsga.model.Users;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,47 @@ public class UserService {
 
         return hasLowercase && hasUppercase && hasDigit && hasSpecialChar;
     }
+    
+    public Users login_old(String email, String password){
+        return layer.login(email, password);
+    }
+    
+    public JSONObject login(String email, String password) {
+    JSONObject toReturn = new JSONObject();
+    String status = "success";
+    int statusCode = 200;
+
+    if (isValidEmail(email)) {
+        Users modelResult = layer.login(email, password);
+
+        if (modelResult == null) {
+            status = "modelException";
+            statusCode = 417;
+        } else {
+            JSONObject result = new JSONObject();
+            result.put("id", modelResult.getId());
+            result.put("name", modelResult.getName());
+            result.put("email", modelResult.getEmail());
+            result.put("password", modelResult.getPassword());
+            result.put("personalId", modelResult.getPersonalId());
+            result.put("isAdmin", modelResult.getIsAdmin());
+            result.put("isDeleted", modelResult.getIsDeleted());
+            result.put("createdAt", modelResult.getCreatedAt());
+            result.put("deletedAt", modelResult.getDeletedAt());
+            result.put("jwt", JWT.createJWT(modelResult));
+
+            toReturn.put("result", result);
+        }
+    } else {
+        status = "invalidEmail";
+        statusCode = 417;
+    }
+
+    toReturn.put("status", status);
+    toReturn.put("statusCode", statusCode); 
+
+    return toReturn;
+}
     
     public ArrayList<Users> getAllUser() {
         ArrayList<Users> userList = new ArrayList<>();
