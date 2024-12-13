@@ -736,6 +736,7 @@ body {
     bottom: 20px;
     left: 20px; 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 400px;
 }
 
 .about-card button:hover {
@@ -810,65 +811,6 @@ body {
     object-fit: cover; 
     border-radius: 10px; 
     margin-bottom: 20px; 
-}
-
-/* Info Panel alapértelmezett rejtése */
-.info-panel {
-    display: none;
-    position: absolute;
-    top: 110%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 400px;
-    z-index: 1000;
-    text-align: left;
-    color: #333;
-}
-
-/* Info Panel belső elemek */
-.info-panel img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.info-panel h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.info-panel p {
-    font-size: 16px;
-    margin-bottom: 15px;
-    line-height: 1.5;
-}
-
-.info-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: white;
-    border: 1px solid #007bff;
-    color: #007bff;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    text-align: center;
-}
-
-.info-btn:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.feature-item:hover .info-panel {
-    display: block;
 }
 
 /* Customer beállitása*/
@@ -1070,7 +1012,9 @@ body {
 .footer {
     background-color: #000; 
     color: #fff; 
-    padding: 40px 20px; 
+    padding: 40px 20px;
+    justify-content: space-between; 
+    flex-wrap: wrap;
 }
 
 .footer-container {
@@ -1082,13 +1026,28 @@ body {
 
 .footer-section {
     flex: 1; 
-    min-width: 200px; 
+    min-width: 250px; 
+    max-width: 300px;
 }
 
 .footer-section h3 {
+    display: flex;
+    align-items: center; 
     font-size: 18px; 
     font-weight: bold;
-    margin-bottom: 10px; /
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.horizontal {
+    margin-left: 20px;
+}
+
+.footer-section .aligned-text {
+    margin-left: 20px; 
+    text-align: justify; 
+    color: #ddd; 
+    line-height: 1.3; 
 }
 
 .footer-section p {
@@ -1097,40 +1056,26 @@ body {
     margin-bottom: 10px;
 }
 
+
 .footer-section a {
     color: #fff; 
-    text-decoration: underline; 
     font-size: 14px;
+    text-decoration: none;
+}
+
+.footer-section a i {
+    font-size: 14px;; 
+    margin-right: 8px; 
+    color: #fff;
 }
 
 .footer-section a:hover {
-    color: #ccc; 
+    color: #007bff;
+    transition: 0.5s;
 }
 
 #profile-icon {
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-
-.more-info-3d {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #ffc107; /* Sárga háttér */
-    color: #000;
-    text-decoration: none;
-    border-radius: 5px;
-    box-shadow: 0 4px 0 #d39e00; /* 3D hatás */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.more-info-3d:hover {
-    transform: translateY(-2px); /* Enyhén kiemelkedik */
-    box-shadow: 0 6px 0 #d39e00; /* Mélyebb árnyék */
-}
-
-.more-info-3d:active {
-    transform: translateY(2px); /* Nyomott állapot */
-    box-shadow: 0 2px 0 #d39e00;
-}
-
 

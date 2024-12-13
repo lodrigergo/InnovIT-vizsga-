@@ -393,26 +393,6 @@ loginCreateAccountBtn.addEventListener('click', function () {
 });
 
 
-// Változók megadása
-const comfortMoreInfo = document.querySelector('.feature-item a');
-const comfortInfoPanel = document.getElementById('comfort-info-panel');
-
-
-// A panel megjelenítése
-comfortMoreInfo.addEventListener('mouseenter', function () {
-    comfortInfoPanel.style.display = 'block';
-});
-
-
-// A panel elrejtése, amikor az egér elhagyja a gombot vagy a panelt
-comfortMoreInfo.addEventListener('mouseleave', function () {
-    comfortInfoPanel.style.display = 'none';
-});
-comfortInfoPanel.addEventListener('mouseleave', function () {
-    comfortInfoPanel.style.display = 'none';
-});
-
-
 // Az elemek kiválasztása
 const loginButton = document.querySelector('.login-btn'); 
 const profileIcon = document.getElementById('profile-icon'); 
@@ -575,6 +555,7 @@ logoutButton.addEventListener('click', function () {
     removeError(emailInput);
     removeError(passwordInput);
 });
+
 
 
 // Az összes kiválaszott animált elem
