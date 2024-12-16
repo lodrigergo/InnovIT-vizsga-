@@ -1,5 +1,4 @@
 
-
 /* NAVBAR */
 .navbar {
     background: rgba(0, 0, 0, 0.7);
@@ -70,7 +69,7 @@
     animation-delay: 0.7s; 
 }
 .nav-links a:nth-child(3) {
-    animation-delay: 0.9s; /
+    animation-delay: 0.9s; 
 }
 .nav-links a:nth-child(4) {
     animation-delay: 1.1s; 
@@ -99,7 +98,7 @@
 @keyframes heroContentFloatIn {
     0% {
         transform: translateX(-100px); 
-        opacity: 0; 
+        opacity: 0;
     }
     100% {
         transform: translateX(0);
@@ -197,3 +196,24 @@
     background: darkred;
     transition: 0.3s;
 }
+
+
+.side-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 300px;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.side-panel.ng-trigger {
+    transform: translateX(0);
+}
+
+
