@@ -5,9 +5,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    display: none;
-    transition: opacity 0.3s ease;
+    z-index: 999; 
 }
 
 .overlay.active {
@@ -18,19 +16,19 @@
 .login-panel {
     position: fixed;
     top: 0;
-    right: -100%;
-    width: 300px;
+    width: 400px;
     height: 100%;
     background: #fff;
     z-index: 1000;
     padding: 20px;
-    right: 0 !important;
-  transform: none !important;
-    transition: transform 0.3s ease-in-out;
+    right: 0;
+    transition: 0.5s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
   }
   
-  #login-panel.active {
-    transform: translateX(0) 
+.login-panel.active {
+    transform: translateX(0);
   }
   
 .login-panel.open {
@@ -57,7 +55,7 @@
     position: absolute; 
     top: 10px; 
     right: 10px; 
-    font-size: 32px;
+    font-size: 28px;
     cursor: pointer; 
     font-weight: bold;
     color: black;
@@ -69,9 +67,9 @@
     color: red; 
 }
 
-
 .form-group {
     margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .form-group label {
@@ -89,7 +87,7 @@
 }
 
 .form-group input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -98,18 +96,35 @@
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .btn:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+.form-group input:hover {
+    border: 1px solid #025bb9;
+}
 
 .forgot-password {
-    display: block;
+    display: flex;
+    justify-content: center;
     margin-bottom: 20px;
-    font-size: 14px;
-    color: black;
+    font-size: 16px;
+    color: #007bff;
     text-decoration: none;
     font-weight: bold;
 }
 
 .forgot-password:hover {
     text-decoration: underline;
+    color: #007bff;
 }
 
 .btn {
@@ -144,30 +159,4 @@
 .create-account-btn:hover {
     background-color: #f9f9f9;
     color: black;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
-    z-index: 1999;
-    display: none;
-}
-
-.overlay.show {
-    display: block; 
-}
-
-.error-message {
-    margin-top: 5px;
-    font-size: 14px;
-    color: red;
-}
-
-.btn:disabled {
-    cursor: not-allowed; 
-    opacity: 0.6; 
 }

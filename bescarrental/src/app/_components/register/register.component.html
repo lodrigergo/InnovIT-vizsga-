@@ -1,7 +1,9 @@
-<!-- <div id="register-panel" class="register-panel">
+<div *ngIf="isVisible">
+    <div id="overlay" class="overlay" (click)="closePanel()"></div>
+    <div id="register-panel" class="register-panel open" (click)="$event.stopPropagation()">
     <div class="register-header">
         <h2>Register</h2>
-        <span id="close-register-panel" class="close-btn">&times;</span>
+        <span id="close-register-panel" class="close-btn" (click)="closePanel()">&times;</span>
     </div>
     <form>
         <div class="form-group">
@@ -21,7 +23,9 @@
             <input type="password" id="confirm-password" placeholder="Confirm Password">
         </div>
         <a href="#" class="forgot-password">Forgot Password?</a>
+        <br>
         <button type="submit" class="btn register-create-account-btn" disabled>Create Account</button>
         <button type="button" class="btn login-btn">Login</button>
     </form>
-</div> -->
+</div>
+<div *ngIf="isVisible"></div>
