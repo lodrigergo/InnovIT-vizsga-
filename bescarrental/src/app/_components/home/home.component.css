@@ -95,7 +95,7 @@ body {
 }
 
 .vehicle-option.active:hover {
-    background-color: blue;
+    background-color: rgb(18, 83, 223);
     transition: 0.3s;
 }
 

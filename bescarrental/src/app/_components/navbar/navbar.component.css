@@ -277,20 +277,22 @@
 
     .nav-links.active {
         display: flex;
+        flex-direction: column;
     }
 
     .login-btn {
         margin-top: 10px;
         width: 100%;
     }
+
 }
 
 @media (max-width: 1024px) {
     .nav-links a {
-        font-size: 18px; /* Táblagépen kisebb betűméret */
+        font-size: 18px; 
     }
 
     .login-btn {
-        font-size: 12px; /* Kisebb gombméret */
+        font-size: 12px; 
     }
 }

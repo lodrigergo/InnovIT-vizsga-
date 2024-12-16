@@ -22,6 +22,7 @@ export class NavbarComponent {
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;
+    console.log('Navbar toggled:', this.isNavbarOpen);
   }
   
   constructor(private cdr: ChangeDetectorRef) {}
