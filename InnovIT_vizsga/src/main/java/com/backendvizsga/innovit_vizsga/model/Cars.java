@@ -177,6 +177,20 @@ public class Cars implements Serializable {
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
     }
+    
+     public Cars(String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image) {
+        this.brand = brand;
+        this.model = model;
+        this.licensePlate = licensePlate;
+        this.year = year;
+        this.fuelType = fuelType;
+        this.pricePerDay = pricePerDay;
+        this.transmission = transmission;
+        this.doors = doors;
+        this.ac = ac;
+        this.seats = seats;
+        this.image = image;
+    }
 
     public Integer getId() {
         return id;
@@ -455,6 +469,8 @@ public class Cars implements Serializable {
             em.close();
             return toReturn;
         }
+        
+        
     }
 
 

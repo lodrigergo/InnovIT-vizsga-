@@ -216,7 +216,7 @@ public class UserControllerResource {
     }
     
     
-  @POST
+    @POST
     @Path("registerUser")
     @Consumes(MediaType.APPLICATION_JSON)
     //@Produces(MediaType.APPLICATION_JSON)
