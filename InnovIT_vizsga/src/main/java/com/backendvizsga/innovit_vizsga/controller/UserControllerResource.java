@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -232,6 +233,27 @@ public class UserControllerResource {
         
         JSONObject obj = layer.registerUser(u);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @DELETE
+    @Path("deleteUserById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteUserById(@QueryParam("id") Integer id){
+        Boolean response = layer.deleteUserById(id);
+        JSONObject toReturn = new JSONObject();
+        
+        String result = "";
+        
+        if(response == false){
+            result = "fail";
+        } else{
+            result = "success";
+        }
+        
+        toReturn.put("result", result);
+        
+        return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+                
     }
    
     

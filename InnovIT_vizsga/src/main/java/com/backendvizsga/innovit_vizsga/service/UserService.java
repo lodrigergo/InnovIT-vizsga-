@@ -166,7 +166,16 @@ public class UserService {
     return toReturn;
 }
 
-   
+   public Boolean deleteUserById(Integer id){
+        Users u = getUserById(id);
+        
+        if(u != null){
+            return layer.deleteUserById(id);
+        } else{
+            System.err.println("A user nem létezik");
+            return false;
+        }
+    }
    
     
 }
