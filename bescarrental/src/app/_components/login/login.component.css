@@ -160,3 +160,9 @@
     background-color: #f9f9f9;
     color: black;
 }
+
+@media (max-width: 767px) {
+    .login-panel {
+        width: 250px;
+    }
+}

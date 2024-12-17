@@ -55,6 +55,9 @@
     text-align: center;
     padding: 40px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; 
+    text-align: left;
 }
 
 .feature-item:hover {
@@ -70,23 +73,18 @@
     margin-bottom: 15px;
 }
 
-
-.feature-item {
-    display: flex;
-    flex-direction: column; 
-    text-align: left;
-}
-
 .feature-item h3 {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .feature-item p {
     font-size: 16px;
     color: #666;
-    margin-bottom: 10px; 
+    margin-bottom: 15px; 
 }
 
 .feature-item a {
@@ -114,14 +112,15 @@
     gap: 20px;
     justify-content: center;
     margin-bottom: 40px;
+    align-items: center;
 }
 
 .about-card {
     display: flex; 
     flex-direction: column;
-    justify-content: space-between; 
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    justify-content: space-between; 
+    border: 1px solid #000000;
     border-radius: 10px;
     padding: 20px;
     max-width: 600px;
@@ -134,16 +133,13 @@
     background-color: #007bff;
     color: #fff;
     border: none;
-    padding: 15px 20px;
+    padding: 10px 10px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    position: absolute; 
-    bottom: 20px;
-    left: 20px; 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 400px;
+    width: 200px;
 }
 
 .about-card button:hover {
@@ -160,7 +156,7 @@
     flex-direction: column;
     justify-content: space-between; 
     background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
     border-radius: 10px;
     padding: 20px;
     max-width: 600px;
@@ -212,12 +208,10 @@
 }
 
 .VW, .Volvo {
-    width: 400px; 
-    height: auto; 
-    max-height: 200px; 
+    max-height: 250px;
     object-fit: cover; 
     border-radius: 10px; 
-    margin-bottom: 20px; 
+    margin-bottom: 5px; 
 }
 
 /* Customer beállitása*/
@@ -300,4 +294,77 @@
     font-size: 12px; 
     color: #666; 
     margin: 0;
+}
+
+@media (max-width: 767px) {
+    #about {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-cards {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .about-card.highlighted {
+        width: 465px;
+    }
+
+    .about-features {
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+        gap: 20px; 
+        justify-content: center;
+        align-items: center; 
+    }
+    
+    .about-features .feature-item:nth-child(3) {
+        grid-column: 1 / -1; 
+        justify-self: center;
+    }
+
+    .opinions-container {
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        justify-content: center; 
+        align-items: center;
+    }
+    
+    .opinions-container .opinion-card:nth-child(3) {
+        grid-column: 1 / -1; 
+        justify-self: center;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    #about {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-cards {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .about-card.highlighted {
+        width: 465px;
+    }
+
+    .about-features {
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+        gap: 20px; 
+        justify-content: center;
+        align-items: center; 
+    }
+    
+    .about-features .feature-item:nth-child(3) {
+        grid-column: 1 / -1; 
+        justify-self: center;
+    }
 }

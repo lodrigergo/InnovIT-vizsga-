@@ -13,8 +13,7 @@ import { RegisterComponent } from '../register/register.component';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-    
+export class LoginComponent { 
   @Input() isVisible: boolean = false;
   @Output() createAccountClick = new EventEmitter<void>();
 
@@ -30,6 +29,11 @@ export class LoginComponent {
       email: '',
       password: ''
     });
+  }
+
+  handleBackToLogin() {
+    this.showPanel();
+    console.log('Login panel opened');
   }
 
   onCreateAccountClick() {
@@ -68,5 +72,4 @@ export class LoginComponent {
       console.log('Form is invalid');
     }
   }
-  
 }

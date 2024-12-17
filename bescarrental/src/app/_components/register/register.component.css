@@ -76,6 +76,10 @@
     background-color: #f9f9f9;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+
+  .form-group input:hover {
+    border: 1px solid #025bb9;
+  }
   
   /* Gombok */
   .btn {
@@ -128,4 +132,9 @@
     text-decoration: underline;
     color: #007bff;
 }
-  
+
+@media only screen and (max-width: 768px) {
+   .register-panel {
+      width: 250px;
+    }
+}

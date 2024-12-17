@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,9 +9,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-
-
   @Input() isVisible: boolean = false;
+  @Output() backToLoginClick = new EventEmitter<void>();
 
   ngOnChanges() {
     console.log('RegisterComponent visibility changed:', this.isVisible);
@@ -19,6 +18,25 @@ export class RegisterComponent {
   
   closePanel() {
     this.isVisible = false;
-    console.log('Register panel closed');
+    this.clearFields();
   }
+
+  clearFields() {
+    (document.getElementById('username') as HTMLInputElement).value = '';
+    (document.getElementById('register-email') as HTMLInputElement).value = '';
+    (document.getElementById('register-password') as HTMLInputElement).value = '';
+    (document.getElementById('confirm-password') as HTMLInputElement).value = '';
+  }
+
+  navigateToLogin() {
+    this.closePanel();
+    this.backToLoginClick.emit();
+    console.log('Navigating back to login panel');
+  }
+
+  preventDefault(event: Event) {
+    event.preventDefault();
+    console.log('Form submission prevented');
+  }
+  
 }
