@@ -154,15 +154,22 @@ public class CarService {
             statusCode = 500;
             toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
         }
-     
-
-
-     
 
     toReturn.put("status", status);
     toReturn.put("statusCode", statusCode);
     return toReturn;
 }
+    
+    public Boolean deleteCarById(Integer id){
+        Cars c = getCarById(id);
+        
+        if(c != null){
+            return layer.deleteCarById(id);
+        } else{
+            System.err.println("A car nem létezik");
+            return false;
+        }
+    }
      
      
     
