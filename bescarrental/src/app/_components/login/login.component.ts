@@ -4,8 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from '../register/register.component';
 import { LoginService } from '../../_services/login.service';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 
 
@@ -20,9 +18,32 @@ export class LoginComponent {
   @Input() isVisible: boolean = false;
   @Output() createAccountClick = new EventEmitter<void>();
 
+
+  showPanel() {
+    this.isVisible = true;
+    this.loginForm.reset();
+  }
+  
+  closePanel() {
+    this.isVisible = false;
+    this.loginForm.reset({
+      email: '',
+      password: ''
+    });
+  }
+
+  onCreateAccountClick() {
+    this.createAccountClick.emit();
+  }
+  
+
+  ngOnChanges() {
+    console.log('LoginComponent visibility changed:', this.isVisible);
+  }
+
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) {
+  constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: [
@@ -40,52 +61,11 @@ export class LoginComponent {
     return this.loginForm.get('password');
   }
 
-  showPanel() {
-    this.isVisible = true;
-    this.loginForm.reset();
-  }
-  
-  closePanel() {
-    this.isVisible = false;
-    this.loginForm.reset({
-      email: '',
-      password: ''
-    });
-  }
-
-  handleBackToLogin() {
-    this.showPanel();
-    console.log('Login panel opened');
-  }
-
-  onCreateAccountClick() {
-    this.createAccountClick.emit();
-  }
-  
-  ngOnChanges() {
-    console.log('LoginComponent visibility changed:', this.isVisible);
-  }
-
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-
-      this.loginService.login(email, password).pipe(
-        catchError(error => {
-          console.error('Login failed:', error);
-          alert('Login failed. Please check your credentials and try again.');
-          return of(null);
-        })
-      ).subscribe(response => {
-        if (response) {
-          console.log('Login successful:', response);
-          alert('Login successful!');
-          this.closePanel();
-        }
-      });
+      console.log('Form submitted:', this.loginForm.value);
     } else {
       console.log('Form is invalid');
-      alert('Please fill in all required fields correctly.');
     }
   }
 }
