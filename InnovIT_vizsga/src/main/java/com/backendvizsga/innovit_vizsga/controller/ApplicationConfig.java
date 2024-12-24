@@ -28,6 +28,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.backendvizsga.innovit_vizsga.controller.BookingsController.class);
         resources.add(com.backendvizsga.innovit_vizsga.controller.CarController.class);
         resources.add(com.backendvizsga.innovit_vizsga.controller.GenericResource.class);
         resources.add(com.backendvizsga.innovit_vizsga.controller.UserControllerResource.class);
