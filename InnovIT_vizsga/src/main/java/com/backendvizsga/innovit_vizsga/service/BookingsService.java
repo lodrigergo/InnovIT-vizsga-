@@ -6,6 +6,7 @@ package com.backendvizsga.innovit_vizsga.service;
 
 import com.backendvizsga.innovit_vizsga.model.Bookings;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import org.json.JSONObject;
 
@@ -66,5 +67,17 @@ public class BookingsService {
     toReturn.put("statusCode", statusCode);
     return toReturn;
 }
+    
+    public ArrayList<Bookings> getAllBookings() {
+        ArrayList<Bookings> bookingList = new ArrayList<>();
+        try {
+            bookingList = layer.getAllBookings();
+
+        } catch (Exception e) {
+            System.err.println("Error fetching cars: " + e.getMessage());
+        }
+
+        return bookingList;
+    }
     
 }

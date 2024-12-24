@@ -7,6 +7,7 @@ package com.backendvizsga.innovit_vizsga.model;
 import static com.backendvizsga.innovit_vizsga.model.Users.emf;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -259,6 +260,25 @@ public class Bookings implements Serializable {
             em.close();
             return toReturn;
         }
+    }
+    
+    public static ArrayList<Bookings> getAllBookings() {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<Bookings> bookingList = new ArrayList<>();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllBookings", Bookings.class);
+            spq.execute();
+            bookingList = new ArrayList<>(spq.getResultList());
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getLocalizedMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+
+        return bookingList;
     }
     
 }

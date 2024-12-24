@@ -8,6 +8,7 @@ import com.backendvizsga.innovit_vizsga.model.Bookings;
 import com.backendvizsga.innovit_vizsga.service.BookingsService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -19,6 +20,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -91,5 +93,54 @@ public class BookingsController {
         
         JSONObject obj = layer.addBookings(b);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @GET
+    @Path("getAllBookings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllBookings() {
+        JSONObject responseObj = new JSONObject();
+
+        try {
+            
+            ArrayList<Bookings> bookingList = layer.getAllBookings();  
+
+            // Initialize a JSON array to store user data
+            JSONArray carsArray = new JSONArray();
+
+            // Iterate over the user list and convert each user to a JSONObject
+            for (Bookings b : bookingList) {
+                JSONObject bookingJson = new JSONObject();
+                bookingJson.put("id", b.getId());
+                bookingJson.put("userId",b.getUserId());
+                bookingJson.put("carId", b.getCarId());
+                bookingJson.put("pickupDate", b.getPickupDate());
+                bookingJson.put("returnDate", b.getReturnDate());
+                bookingJson.put("totalPrice", b.getTotalPrice());
+                bookingJson.put("fullToFull", b.getFullToFulll());
+                bookingJson.put("isDeleted", b.getIsDeleted());
+                bookingJson.put("createdAt", b.getCreatedAt());
+                bookingJson.put("deletedAt", b.getDeletedAt());  
+               
+             
+
+                // Add the user JSON object to the array
+                carsArray.put(bookingJson);
+            }
+
+            // Add the users array to the response object
+            responseObj.put("statusCode", 200);
+            responseObj.put("Bookings", carsArray);
+
+            // Return the response with a 200 OK status
+            return Response.ok(responseObj.toString(), MediaType.APPLICATION_JSON).build();
+
+        } catch (Exception e) {
+            // Handle any exceptions
+            responseObj.put("statusCode", 500);
+            responseObj.put("message", "Failed to retrieve bookings");
+            responseObj.put("error", e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
+        }
     }
 }
