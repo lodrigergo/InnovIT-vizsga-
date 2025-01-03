@@ -14,10 +14,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONArray;
@@ -143,4 +145,72 @@ public class BookingsController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
         }
     }
+    @GET
+    @Path("getBookingByUserId")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getBookingByUserId(@QueryParam("user_id") Integer user_id) {
+        Bookings response = layer.getBookingByUserId(user_id);
+        if (response == null) {
+            JSONObject error = new JSONObject();
+            error.put("error", "Nem található foglalás ezzel a user_id-vel: " + user_id);
+            return Response.status(Response.Status.NOT_FOUND).entity(error.toString()).type(MediaType.APPLICATION_JSON).build();
+        }
+
+        JSONObject toReturn = new JSONObject();
+        toReturn.put("id", response.getId());
+        toReturn.put("userId", response.getUserId());
+        toReturn.put("carId", response.getCarId());
+        toReturn.put("pickupDate", response.getPickupDate());
+        toReturn.put("returnDate", response.getReturnDate());
+        toReturn.put("totalPrice", response.getTotalPrice());
+        toReturn.put("fullToFull", response.getFullToFulll());
+        toReturn.put("isDeleted", response.getIsDeleted());
+        toReturn.put("createdAt", response.getCreatedAt());
+        toReturn.put("deletedAt", response.getDeletedAt());
+
+        return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+     @GET
+    @Path("getBookingById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getBookingById(@QueryParam("id") Integer id){
+        Bookings response = layer.getBookingById(id);
+        JSONObject toReturn = new JSONObject();
+        
+        toReturn.put("id", response.getId());
+        toReturn.put("userId", response.getUserId());
+        toReturn.put("carId", response.getCarId());
+        toReturn.put("pickupDate", response.getPickupDate());
+        toReturn.put("returnDate", response.getReturnDate());
+        toReturn.put("totalPrice", response.getTotalPrice());
+        toReturn.put("fullToFull", response.getFullToFulll());
+        toReturn.put("isDeleted", response.getIsDeleted());
+        toReturn.put("createdAt", response.getCreatedAt());
+        toReturn.put("deletedAt", response.getDeletedAt());
+
+        
+        return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+                
+    }
+    @DELETE
+    @Path("deleteBookingById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteBookingById(@QueryParam("id") Integer id){
+        Boolean response = layer.deleteBookingById(id);
+        JSONObject toReturn = new JSONObject();
+        
+        String result = "";
+        
+        if(response == false){
+            result = "fail";
+        } else{
+            result = "success";
+        }
+        
+        toReturn.put("result", result);
+        
+        return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+                
+    }
 }
+

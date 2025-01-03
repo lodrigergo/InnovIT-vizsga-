@@ -4,7 +4,6 @@ com\backendvizsga\innovit_vizsga\model\Cars.class
 com\backendvizsga\innovit_vizsga\controller\UserControllerResource.class
 com\backendvizsga\innovit_vizsga\model\Login.class
 com\backendvizsga\innovit_vizsga\model\CarAvailability.class
-com\backendvizsga\innovit_vizsga\controller\BookingsController.class
 com\backendvizsga\innovit_vizsga\model\CarExtras.class
 com\backendvizsga\innovit_vizsga\model\BookingXCarExtras.class
 com\backendvizsga\innovit_vizsga\controller\ApplicationConfig.class
@@ -12,7 +11,6 @@ com\backendvizsga\innovit_vizsga\controller\CarController.class
 com\backendvizsga\innovit_vizsga\model\Bookings.class
 com\backendvizsga\innovit_vizsga\model\CarService.class
 com\backendvizsga\innovit_vizsga\model\Users.class
-com\backendvizsga\innovit_vizsga\service\BookingsService.class
 com\backendvizsga\innovit_vizsga\controller\GenericResource.class
 com\backendvizsga\innovit_vizsga\model\Payment.class
 com\backendvizsga\innovit_vizsga\service\UserService.class
