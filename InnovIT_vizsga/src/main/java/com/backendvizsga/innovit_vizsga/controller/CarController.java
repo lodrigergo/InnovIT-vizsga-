@@ -8,12 +8,17 @@ import com.backendvizsga.innovit_vizsga.model.Cars;
 import com.backendvizsga.innovit_vizsga.model.Users;
 import com.backendvizsga.innovit_vizsga.service.CarService;
 import com.backendvizsga.innovit_vizsga.service.UserService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
@@ -27,7 +32,7 @@ import org.json.JSONObject;
  *
  * @author User
  */
-@Path("CarController")
+@Path("car")
 public class CarController {
 
     @Context
@@ -58,6 +63,11 @@ public class CarController {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
+    }
+    
+    private Date parseYearString(String yearString) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy"); 
+        return sdf.parse(yearString);
     }
     
     @GET
@@ -303,4 +313,51 @@ public class CarController {
         }
     }
     
+    @POST
+    @Path("addCar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.APPLICATION_JSON)
+    public Response addCar(String bodyString) throws ParseException {
+        JSONObject body = new JSONObject(bodyString);
+        
+        String yearString = body.getString("year");
+        Date year = parseYearString(yearString); // String -> Date átalakítás
+        Cars c = new Cars(
+                body.getString("brand"),
+                body.getString("model"),
+                body.getString("licensePlate"),
+                year,
+                body.getString("fuelType"),    
+                body.getBigDecimal("price"),   
+                body.getString("transmission"),    
+                body.getInt("doors"),    
+                body.getBoolean("AC"), 
+                body.getInt("seat"),     
+                body.getString("image")     
+        );
+        
+        JSONObject obj = layer.addCar(c);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @DELETE
+    @Path("deleteCarById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteCarById(@QueryParam("id") Integer id){
+        Boolean response = layer.deleteCarById(id);
+        JSONObject toReturn = new JSONObject();
+        
+        String result = "";
+        
+        if(response == false){
+            result = "fail";
+        } else{
+            result = "success";
+        }
+        
+        toReturn.put("result", result);
+        
+        return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+                
+    }
 }

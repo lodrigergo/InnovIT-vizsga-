@@ -4,17 +4,22 @@
  */
 package com.backendvizsga.innovit_vizsga.model;
 
+import static com.backendvizsga.innovit_vizsga.model.Users.emf;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -105,6 +110,15 @@ public class Bookings implements Serializable {
         this.fullToFulll = fullToFulll;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
+    }
+    
+    public Bookings(int userId, int carId, Date pickupDate, Date returnDate, BigDecimal totalPrice, boolean fullToFulll) {
+        this.userId = userId;
+        this.carId = carId;
+        this.pickupDate = pickupDate;
+        this.returnDate = returnDate;
+        this.totalPrice = totalPrice;
+        this.fullToFulll = fullToFulll;
     }
 
     public Integer getId() {
@@ -210,6 +224,61 @@ public class Bookings implements Serializable {
     @Override
     public String toString() {
         return "com.backendvizsga.innovit_vizsga.model.Bookings[ id=" + id + " ]";
+    }
+    
+    public Boolean addBookings(Integer user_id, Integer car_id, Date pickupDate, Date returnDate, BigDecimal totalPrice, boolean fullToFull){
+        EntityManager em = emf.createEntityManager();
+        Boolean toReturn = false;
+        
+        try{
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("addBookings");
+            
+            spq.registerStoredProcedureParameter("userIdIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("carIdIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("pickupDateIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("returnDateIN", Date.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("totalPriceIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("fullToFullIN", BigDecimal.class, ParameterMode.IN);
+            
+            
+            spq.setParameter("userIdIN", user_id);
+            spq.setParameter("carIdIN", car_id);
+            spq.setParameter("pickupDateIN", pickupDate);
+            spq.setParameter("returnDateIN", returnDate);
+            spq.setParameter("totalPriceIN", totalPrice);
+            spq.setParameter("fullToFullIN", fullToFull);
+            
+            spq.execute();
+            
+            toReturn = true;
+            
+        } catch(Exception ex){
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            toReturn = false;
+        } finally{
+            em.clear();
+            em.close();
+            return toReturn;
+        }
+    }
+    
+    public static ArrayList<Bookings> getAllBookings() {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<Bookings> bookingList = new ArrayList<>();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllBookings", Bookings.class);
+            spq.execute();
+            bookingList = new ArrayList<>(spq.getResultList());
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getLocalizedMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+
+        return bookingList;
     }
     
 }

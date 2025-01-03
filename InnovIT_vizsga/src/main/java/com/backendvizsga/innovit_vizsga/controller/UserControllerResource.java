@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -62,6 +63,17 @@ public class UserControllerResource {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
+    }
+    
+    @POST
+    @Path("login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.APPLICATION_JSON)
+    public Response login(String bodyString) {
+        JSONObject body = new JSONObject(bodyString);
+        
+        JSONObject obj = layer.login(body.getString("email"), body.getString("password"));
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
     @GET
@@ -205,16 +217,43 @@ public class UserControllerResource {
     }
     
     
-  @POST
+    @POST
     @Path("registerUser")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(Users u){
-        JSONObject toReturn = new JSONObject();
-//        String result = userServiceLayer.addUser(u.getFirstName(), u.getLastName(), u.getEmail(), u.getPassword(), u.getRoleId(), u.getIsAdmin());
+    //@Produces(MediaType.APPLICATION_JSON)
+    public Response registerUser(String bodyString) {
+        JSONObject body = new JSONObject(bodyString);
         
-//        toReturn.put("result", result);
+        Users u = new Users(
+                body.getString("name"),
+                body.getString("email"),
+                body.getString("password"),
+                body.getString("personalId")     
+        );
+        
+        JSONObject obj = layer.registerUser(u);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
+    @DELETE
+    @Path("deleteUserById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteUserById(@QueryParam("id") Integer id){
+        Boolean response = layer.deleteUserById(id);
+        JSONObject toReturn = new JSONObject();
+        
+        String result = "";
+        
+        if(response == false){
+            result = "fail";
+        } else{
+            result = "success";
+        }
+        
+        toReturn.put("result", result);
         
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+                
     }
    
     

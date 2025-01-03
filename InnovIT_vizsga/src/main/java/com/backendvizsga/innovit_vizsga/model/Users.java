@@ -106,6 +106,13 @@ public class Users implements Serializable {
         this.personalId=personalId;
         this.isAdmin=isAdmin;
     }
+    
+     public Users(String name,String email,String password,String personalId){
+        this.name= name;
+        this.email=email;
+        this.password=password;
+        this.personalId=personalId;
+    }
 
     public Users(Integer id) {
         EntityManager em = emf.createEntityManager();
@@ -244,6 +251,48 @@ public class Users implements Serializable {
         return "com.backendvizsga.innovit_vizsga.model.Users[ id=" + id + " ]";
     }
     
+    public Users login(String email, String password){
+        EntityManager em = emf.createEntityManager();
+        try {
+            
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("login");
+            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
+            
+            spq.setParameter("emailIN", email);
+            spq.setParameter("passwordIN", password);
+            
+            spq.execute();
+            
+            List<Object[]> resultList = spq.getResultList();
+            Users toReturn = new Users();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for(Object[] o : resultList){
+                Users u = new Users(
+                       Integer.valueOf(o[0].toString()),
+                       o[1]. toString(),
+                       o[2]. toString(),
+                       o[3]. toString(),
+                       o[4]. toString(),
+                       Boolean.valueOf(o[6].toString()),
+                      Boolean.valueOf(o[7].toString()),
+                      formatter.parse(o[8].toString()),
+                      o[9] == null ? null : formatter.parse(o[9].toString())
+                );
+                toReturn = u;
+            }
+            return toReturn;
+            
+            
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
+    
      public static ArrayList<Users> getAllUser() {
     EntityManager em = emf.createEntityManager();
     ArrayList<Users> userList = new ArrayList<>();
@@ -330,15 +379,15 @@ public class Users implements Serializable {
 
         try {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("registerUser");
+            spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("nameIn", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
-             spq.registerStoredProcedureParameter("personal_idIN", String.class, ParameterMode.IN);
+             spq.registerStoredProcedureParameter("personalIdIN", String.class, ParameterMode.IN);
 
-            spq.setParameter("emailIN", u.getEmail());
-             spq.setParameter("nameIN", u.getName());
+            spq.setParameter("nameIN", u.getName());
+             spq.setParameter("emailIN", u.getEmail());
               spq.setParameter("passwordIN", u.getPassword());
-            spq.setParameter("personalId", u.getPersonalId());
+            spq.setParameter("personalIdIN", u.getPersonalId());
            
            
             
@@ -353,41 +402,37 @@ public class Users implements Serializable {
         }finally{
             em.clear();
             em.close();
-        }
+        }   
     }
      
-     public Boolean registerUser(String name, String email, String password, String personalId){
+     public Boolean deleteUserById(Integer id) {
         EntityManager em = emf.createEntityManager();
         Boolean toReturn = false;
-        
-        try{
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("registerUser");
-            
-            spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("personal_idIN", String.class, ParameterMode.IN);
-            
-            
-            spq.setParameter("nameIN", name);
-            spq.setParameter("emailIN", email);
-            spq.setParameter("passwordIN", password);
-            spq.setParameter("personal_idIN", personalId);
-            
+
+        try {
+
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("deleteUserById");
+            spq.registerStoredProcedureParameter("user_idIN", Integer.class, ParameterMode.IN);
+            spq.setParameter("user_idIN", id);
+
             spq.execute();
             
             toReturn = true;
-            
-        } catch(Exception ex){
-            System.err.println("Hiba: " + ex.getLocalizedMessage());
+
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
             toReturn = false;
-        } finally{
+        } finally {
             em.clear();
             em.close();
-            
+            return toReturn;
         }
-        return toReturn;
+
     }
+    
+    
+     
+     
      
     
 }
