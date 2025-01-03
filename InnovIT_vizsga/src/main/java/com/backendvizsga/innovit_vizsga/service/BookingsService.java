@@ -96,4 +96,8 @@ public class BookingsService {
 
     return booking;
 }
+       public Bookings getBookingById(Integer id){
+        return layer.getBookingById(id);
+    }
+
 }

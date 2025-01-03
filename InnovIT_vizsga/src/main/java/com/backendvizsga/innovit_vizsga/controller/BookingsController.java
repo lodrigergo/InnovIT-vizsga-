@@ -169,4 +169,26 @@ public class BookingsController {
 
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
     }
+     @GET
+    @Path("getBookingById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getBookingById(@QueryParam("id") Integer id){
+        Bookings response = layer.getBookingById(id);
+        JSONObject toReturn = new JSONObject();
+        
+        toReturn.put("id", response.getId());
+        toReturn.put("userId", response.getUserId());
+        toReturn.put("carId", response.getCarId());
+        toReturn.put("pickupDate", response.getPickupDate());
+        toReturn.put("returnDate", response.getReturnDate());
+        toReturn.put("totalPrice", response.getTotalPrice());
+        toReturn.put("fullToFull", response.getFullToFulll());
+        toReturn.put("isDeleted", response.getIsDeleted());
+        toReturn.put("createdAt", response.getCreatedAt());
+        toReturn.put("deletedAt", response.getDeletedAt());
+
+        
+        return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
+                
+    }
 }

@@ -288,5 +288,13 @@ public class Bookings implements Serializable {
             return null;
         }
     }
+      public Bookings getBookingById(Integer id) {
+        try {
+            return new Bookings(id);
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        }
+    }
     
 }
