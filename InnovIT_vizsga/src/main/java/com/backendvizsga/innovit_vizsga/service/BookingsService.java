@@ -80,4 +80,16 @@ public class BookingsService {
         return bookingList;
     }
     
+     public ArrayList<Bookings> getAllBookingsss() {
+        ArrayList<Bookings> bookingList = new ArrayList<>();
+        try {
+            bookingList = layer.getAllBookings();
+
+        } catch (Exception e) {
+            System.err.println("Error fetching cars: " + e.getMessage());
+        }
+
+        return bookingList;
+    }
+    
 }
