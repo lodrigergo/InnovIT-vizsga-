@@ -429,31 +429,6 @@ public class Users implements Serializable {
         }
 
     }
-     
-     public Boolean deleteuser(Integer id) {
-        EntityManager em = emf.createEntityManager();
-        Boolean toReturn = false;
-
-        try {
-
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("deleteUserById");
-            spq.registerStoredProcedureParameter("user_idIN", Integer.class, ParameterMode.IN);
-            spq.setParameter("user_idIN", id);
-
-            spq.execute();
-            
-            toReturn = true;
-
-        } catch (Exception e) {
-            System.err.println("Hiba: " + e.getLocalizedMessage());
-            toReturn = false;
-        } finally {
-            em.clear();
-            em.close();
-            return toReturn;
-        }
-
-    }
     
     
      
