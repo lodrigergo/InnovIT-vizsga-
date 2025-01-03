@@ -8,6 +8,7 @@ import com.backendvizsga.innovit_vizsga.model.Bookings;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import org.json.JSONObject;
 
 /**
@@ -79,5 +80,20 @@ public class BookingsService {
 
         return bookingList;
     }
-    
+    public Bookings getBookingByUserId(Integer user_id) {
+    // Ellenőrizd, hogy a user_id nem null
+    if (user_id == null) {
+        throw new IllegalArgumentException("A user_id nem lehet null!");
+    }
+
+    // Adatok lekérése az adatbázisból
+    Bookings booking = layer.getBookingByUserId(user_id);
+
+    // Ha nincs foglalás az adott user_id-val
+    if (booking == null) {
+        throw new NoSuchElementException("Nincs ilyen user_id-val rendelkező foglalás: " + user_id);
+    }
+
+    return booking;
+}
 }
