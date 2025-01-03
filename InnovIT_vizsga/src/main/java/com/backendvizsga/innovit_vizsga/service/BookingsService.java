@@ -99,5 +99,18 @@ public class BookingsService {
        public Bookings getBookingById(Integer id){
         return layer.getBookingById(id);
     }
+  public Boolean deleteBookingById(Integer id) {
+    Bookings b = getBookingById(id);
+
+    if (b != null) {
+        return layer.deleteBookingById(id); 
+    } else {
+        System.err.println("A foglalás nem létezik");
+        return false;
+    }
+}
+
+
 
 }
+
