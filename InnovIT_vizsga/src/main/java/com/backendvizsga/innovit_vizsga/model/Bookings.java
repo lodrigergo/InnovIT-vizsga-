@@ -96,9 +96,6 @@ public class Bookings implements Serializable {
     public Bookings() {
     }
 
-    public Bookings(Integer id) {
-        this.id = id;
-    }
 
     public Bookings(Integer id, int userId, int carId, Date pickupDate, Date returnDate, BigDecimal totalPrice, boolean fullToFulll, boolean isDeleted, Date createdAt) {
         this.id = id;
@@ -119,6 +116,28 @@ public class Bookings implements Serializable {
         this.returnDate = returnDate;
         this.totalPrice = totalPrice;
         this.fullToFulll = fullToFulll;
+    }
+    public Bookings(Integer id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+             Bookings b = em.find(Bookings.class, id);
+
+            this.id = b.getId();
+            this.userId = b.getUserId();
+            this.carId = b.getCarId();
+            this.pickupDate = b.getPickupDate();
+            this.returnDate = b.getReturnDate();
+            this.totalPrice = b.getTotalPrice();
+            this.fullToFulll = b.getFullToFulll();
+            this.isDeleted = b.getIsDeleted();
+            this.createdAt = b.getCreatedAt();
+
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+        }finally{
+            em.clear();
+            em.close();
+        }
     }
 
     public Integer getId() {
