@@ -11,11 +11,20 @@ html {
 
 /* Minden elem alapstilus megadása */
 body {
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url('./Photos/talán\ a\ jó\ bg.jpg') no-repeat center center / cover;
-    background-attachment: fixed;
-    color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+.container {
+    display: flex;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
 }
 
 /* NAVBAR */
@@ -213,107 +222,6 @@ body {
 }
 
 .login-btn:hover {
-    background: darkred;
-    transition: 0.3s;
-}
-
-/* HERO */
-.hero {
-    text-align: center;
-    padding: 100px 15px;
-}
-
-.hero h1 {
-    font-size: 48px;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.hero p {
-    font-size: 24px;
-    font-weight: 300;
-    margin-bottom: 40px;
-}
-
-/* SEARCH BOX */
-.search-box {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    color: #000;
-    max-width: 1000px;
-    margin: 0 auto;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-}
-
-.search-box form .form-row {
-    margin-bottom: 20px;
-}
-
-.search-box form label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.search-box form input, 
-.search-box form button {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-.vehicle-type {
-    display: flex;
-    gap: 10px;
-}
-
-.vehicle-option {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background: #f9f9f9;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.vehicle-option.active {
-    background: #007bff;
-    color: #fff;
-    border-color: #007bff;
-}
-
-.vehicle-option.active:hover {
-    background-color: blue;
-    transition: 0.3s;
-}
-
-.date-time {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.search-btn {
-    background: red;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 150px;
-    margin: 0 auto;
-    display: block;
-}
-
-.search-btn:hover {
     background: darkred;
     transition: 0.3s;
 }
@@ -591,311 +499,6 @@ body {
     opacity: 0.6; 
 }
 
-/* About szekció alapbeállítások */
-#about {
-    background-color: #fff;
-    padding: 60px 20px;
-    text-align: center;
-    color: #333;
-}
-
-.about-header h2 {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    position: relative;
-    display: inline-block;
-}
-
-.about-header h2::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 2px;
-    margin: 0.5px auto 0;
-    transition: all 0.3s ease;
-    left: 0;
-    bottom: -5px;
-    position: absolute;
-    background: red;
-}
-
-.about-header h2:hover::after {
-    width: 100%;
-}
-
-.about-header p {
-    font-size: 18px;
-    color: #555;
-    margin-bottom: 40px;
-    border-left: 2px solid red; 
-    padding-left: 10px;
-    max-width: 600px; 
-    margin: 0 auto; 
-}
-
-
-/* Features szekció */
-.about-features {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 40px;
-}
-
-.feature-item {
-    flex: 1;
-    max-width: 300px;
-    text-align: center;
-    padding: 40px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.feature-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.feature-item img {
-    width: 100%; 
-    height: 180px; 
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-
-.feature-item {
-    display: flex;
-    flex-direction: column; 
-    text-align: left;
-}
-
-.feature-item h3 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.feature-item p {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 10px; 
-}
-
-.feature-item a {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.feature-item a:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-/* Cards szekció */
-.about-cards {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 40px;
-}
-
-.about-card {
-    display: flex; 
-    flex-direction: column;
-    justify-content: space-between; 
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 600px;
-    text-align: left;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative; 
-}
-
-.about-card button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    position: absolute; 
-    bottom: 20px;
-    left: 20px; 
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 400px;
-}
-
-.about-card button:hover {
-    background-color: #0056b3;
-}
-
-.about-card button:active {
-    transform: translateY(2px); 
-    box-shadow: 0 2px #0056b3;
-}
-
-.about-card.highlighted {
-    display: flex; 
-    flex-direction: column;
-    justify-content: space-between; 
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 600px;
-    text-align: left;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative; 
-}
-
-.about-card h3 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.about-card p {
-    font-size: 16px;
-    margin-bottom: 20px;
-}
-
-.about-card ul {
-    list-style-type: none;
-    padding: 0;
-    margin-bottom: 20px;
-}
-
-.about-card ul li {
-    font-size: 16px;
-    margin-bottom: 5px;
-    position: relative;
-    padding-left: 20px;
-}
-
-.about-card ul li::before {
-    content: '✔';
-    position: absolute;
-    left: 0;
-    color: green;
-}
-
-.about-quote {
-    font-size: 18px;
-    font-style: italic;
-    color: #666;
-    border-left: 2px solid red; 
-    padding-left: 10px; 
-    margin: 0 auto; 
-    max-width: 600px; 
-    margin-top: 20px; 
-}
-
-.VW, .Volvo {
-    width: 400px; 
-    height: auto; 
-    max-height: 200px; 
-    object-fit: cover; 
-    border-radius: 10px; 
-    margin-bottom: 20px; 
-}
-
-/* Customer beállitása*/
-.customer-opinions {
-    text-align: center;
-    padding: 50px 20px;
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-.customer-opinions h2 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.customer-opinions p {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 30px;
-}
-
-.opinions-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.opinion-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.stars {
-    color: #28a745;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.opinion-card p {
-    font-size: 14px;
-    color: #333;
-    line-height: 1.5;
-}
-
-.customer-info {
-    display: flex;
-    align-items: center; 
-    gap: 10px; 
-    margin-top: 10px; /
-}
-
-.customer-info img {
-    width: 50px; 
-    height: 50px;
-    border-radius: 50%; 
-    object-fit: cover;
-}
-
-.customer-info div {
-    display: flex;
-    flex-direction: column; 
-}
-
-.customer-info strong {
-    font-size: 14px; 
-    color: #333; 
-}
-
-.customer-info p {
-    font-size: 12px; 
-    color: #666; 
-    margin: 0;
-}
-
-/* Profilpanel megnyitása animációval */
 .profile-panel {
     position: fixed; 
     top: 0; 
@@ -1001,12 +604,255 @@ body {
     cursor: pointer;
     width: 100%;
     transition: background-color 0.3s ease;
-    margin-top: 400px;
+    margin-top: 200px;
 }
 
 .logout-btn:hover {
     background-color: darkred;
 }
+
+
+
+/* Sidebar Styles */
+.sidebar {
+    width: 20%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 80px;
+}
+
+.filter-group {
+    margin-bottom: 40px;
+}
+
+.filter-group h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.filter-group h3:hover {
+    color: red;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.filter-group label:hover {
+    color: blue;
+}
+
+.filter-group input {
+    margin-right: 10px;
+}
+
+/* Main Content Styles */
+.main-content {
+    width: 80%;
+    padding: 20px;
+}
+
+.arrangement {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.arrangement label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.arrangement select {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.arrangement select:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-color: #888;
+}
+
+/* Cars Grid Styles */
+.cars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.car-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.car-card img {
+    width: 100%;
+    height: 250px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.car-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.car-card button {
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.car-card button:hover {
+    background-color: darkred;
+}
+
+/* Lenyíló panel stílusa */
+.details-panel {
+    display: none; /* Alapértelmezés szerint rejtve */
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    animation: slide-down 0.3s ease forwards;
+}
+
+/* Animáció a lenyíló panel megjelenésére */
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.details-panel.active {
+    display: block;
+}
+
+/* Autó adatok dizájnja a panelben */
+.details {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    gap: 15px;
+}
+
+.details div {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.details i {
+    margin-right: 5px;
+    color: #ff4d4d;
+}
+
+/* Ár és Reserve gomb */
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.reserve-btn {
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.reserve-btn:hover {
+    background-color: #e60000;
+}
+
+
+/* Pagination Styles */
+.pagination {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination button.active {
+    background-color: blue;
+    color: white;
+    border-color: blue;
+}
+
+.pagination button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+
+
 
 /* footer beállitása */
 .footer {
@@ -1015,6 +861,7 @@ body {
     padding: 40px 20px;
     justify-content: space-between; 
     flex-wrap: wrap;
+    margin-top: 100px;
 }
 
 .footer-container {
@@ -1078,4 +925,3 @@ body {
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-

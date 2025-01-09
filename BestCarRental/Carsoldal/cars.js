@@ -20,60 +20,6 @@ document.querySelector('a[href="#about"]').addEventListener('click', function (e
     });
 });
 
-
-// Az összes vehicle-option kiválasztása
-const vehicleOptions = document.querySelectorAll('.vehicle-option');
-
-
-// Váltás a vehicle-option gombok között
-vehicleOptions.forEach(option => {
-    option.addEventListener('click', function() {
-        vehicleOptions.forEach(opt => opt.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-
-
-// A mezők azonosítása
-const locationInput = document.getElementById('location');
-const pickupDateInput = document.getElementById('pickup-date');
-const pickupTimeInput = document.getElementById('pickup-time');
-const dropoffDateInput = document.getElementById('dropoff-date');
-const dropoffTimeInput = document.getElementById('dropoff-time');
-
-
-// Az események kezelése
-locationInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); 
-        pickupDateInput.focus(); 
-    }
-});
-
-
-// További mezők eseménykezelése az Enter billentyűre
-pickupDateInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        pickupTimeInput.focus(); 
-    }   
-});
-
-pickupTimeInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        dropoffDateInput.focus(); 
-    }
-});
-
-dropoffDateInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        dropoffTimeInput.focus(); 
-    }
-});
-
-
 // Kiválasztjuk a szükséges elemeket
 const loginBtn = document.querySelector('.login-btn'); 
 const loginPanel = document.getElementById('login-panel'); 
@@ -215,15 +161,14 @@ function updateButtonState() {
     const passwordValue = passwordInput.value;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (emailPattern.test(emailValue) && passwordValue.length >= 8 && passwordValue.length <= 20) {
-        loginSubmitButton.disabled = false;
-        loginSubmitButton.style.opacity = '1';
+    if (passwordValue.length >= 8 && passwordValue.length <= 20) {
+        loginSubmitButton.disabled = false; 
+        loginSubmitButton.style.opacity = '1'; 
     } else {
-        loginSubmitButton.disabled = true;
-        loginSubmitButton.style.opacity = '0.6';
+        loginSubmitButton.disabled = true; 
+        loginSubmitButton.style.opacity = '0.6'; 
     }
 }
-
 
 
 // Hibaüzenet eltávolítása gépelés közben az email mezőben
@@ -264,6 +209,115 @@ closeRegisterPanel.addEventListener('click', function () {
     overlay.classList.remove('show'); 
 });
 
+
+// Register panel mezők kiválasztása
+const registerEmail = document.getElementById('register-email');
+const registerPassword = document.getElementById('register-password');
+const confirmPassword = document.getElementById('confirm-password');
+const usernameInput = document.getElementById('username');
+const registerCreateAccountButton = document.querySelector('.register-create-account-btn');
+
+
+// Alapértelmezett: a Create Account gomb tiltva van
+registerCreateAccountButton.disabled = true;
+registerCreateAccountButton.style.opacity = '0.6'; 
+
+
+// Register Email Validáció
+registerEmail.addEventListener('blur', function () {
+    const emailValue = registerEmail.value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(emailValue) && emailValue.length > 0) {
+        displayError(registerEmail, 'Invalid email address'); 
+    } else if (emailValue.length === 0) {
+        displayError(registerEmail, 'Email is required'); 
+    } else {
+        removeError(registerEmail); 
+    }
+    updateRegisterButtonState(); 
+});
+
+
+// Register Password Validáció
+registerPassword.addEventListener('blur', function () {
+    const passwordValue = registerPassword.value;
+
+    if (passwordValue.length === 0) {
+        displayError(registerPassword, 'Password is required'); 
+    } else if (passwordValue.length > 20) {
+        displayError(registerPassword, 'Password cannot exceed 20 characters'); 
+    } else {
+        removeError(registerPassword); 
+    }
+    updateRegisterButtonState(); 
+});
+
+
+// Confirm Password Validáció
+confirmPassword.addEventListener('blur', function () {
+    if (confirmPassword.value !== registerPassword.value) {
+        displayError(confirmPassword, 'Passwords do not match'); 
+    } else {
+        removeError(confirmPassword); 
+    }
+    updateRegisterButtonState(); 
+});
+
+
+// Username Validáció
+usernameInput.addEventListener('blur', function () {
+    const usernameValue = usernameInput.value.trim();
+
+    if (usernameValue.length === 0) {
+        displayError(usernameInput, 'Username is required');
+    } else if (usernameValue.length > 20) {
+        displayError(usernameInput, 'Username cannot exceed 20 characters'); 
+    } else {
+        removeError(usernameInput); 
+    }
+    updateRegisterButtonState(); 
+});
+
+
+// Create Account Gomb Állapotának Frissítése
+function updateRegisterButtonState() {
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerEmail.value.trim());
+    const passwordValid = registerPassword.value.length > 0 && registerPassword.value.length <= 20;
+    const passwordsMatch = registerPassword.value === confirmPassword.value;
+    const usernameValid = usernameInput.value.trim().length > 0 && usernameInput.value.trim().length <= 20;
+
+    if (emailValid && passwordValid && passwordsMatch && usernameValid) {
+        registerCreateAccountButton.disabled = false; 
+        registerCreateAccountButton.style.opacity = '1';
+    } else {
+        registerCreateAccountButton.disabled = true; 
+        registerCreateAccountButton.style.opacity = '0.6';
+    }
+}
+
+
+// Hibaüzenet Kezelés
+function displayError(inputElement, message) {
+    let errorElement = inputElement.nextElementSibling;
+
+    if (!errorElement || !errorElement.classList.contains('error-message')) {
+        errorElement = document.createElement('div');
+        errorElement.classList.add('error-message');
+        inputElement.parentElement.appendChild(errorElement);
+    }
+
+    errorElement.textContent = message; 
+    errorElement.style.color = 'red'; 
+}
+
+function removeError(inputElement) {
+    const errorElement = inputElement.nextElementSibling;
+
+    if (errorElement && errorElement.classList.contains('error-message')) {
+        errorElement.remove();
+    }
+}
 
 
 // Register panel Login gomb eseménykezelője
@@ -383,71 +437,6 @@ loginButton.addEventListener('click', function () {
 });
 
 
-// Login panelben a bejelentkezéskor
-loginSubmitButton.addEventListener('click', function (event) {
-    event.preventDefault(); // Alapértelmezett form elküldés megakadályozása
-    console.log('Login button clicked');
-
-    const emailValue = emailInput.value.trim();
-    const passwordValue = passwordInput.value;
-
-    // Ellenőrizzük, hogy az email és a jelszó helyes formátumú-e
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let valid = true;
-
-    if (!emailPattern.test(emailValue)) {
-        displayError(emailInput, 'Invalid email address');
-        valid = false;
-    } else {
-        removeError(emailInput);
-    }
-
-    if (passwordValue.length < 8 || passwordValue.length > 20) {
-        displayError(passwordInput, 'Password must be 8-20 characters long');
-        valid = false;
-    } else {
-        removeError(passwordInput);
-    }
-
-    if (valid) {
-        // Ha az adatok validak, elküldjük a POST kérést
-        const loginData = {
-            email: emailValue,
-            password: passwordValue
-        };
-
-        fetch('http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(loginData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errData => {
-                    throw new Error(errData.message || 'Invalid login credentials');
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Login successful:', data);
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('username', data.username || 'John Doe');
-            loginPanel.classList.remove('open');
-            overlay.classList.remove('show');
-            loginButton.style.display = 'none';
-            profileIcon.style.display = 'block';
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-            displayError(emailInput, error.message);
-        });
-    }
-});
-
-
 // Profil ikonra kattintáskor a panel megnyitása
 profileIcon.addEventListener('click', function () {
     profilePanel.classList.add('open'); 
@@ -508,81 +497,20 @@ window.addEventListener('scroll', () => {
     handleScrollAnimation();
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Kiválasztjuk az összes "Check out our car" gombot
+    const detailsButtons = document.querySelectorAll('.details-btn');
 
-// Regisztrációs mezők azonosítása
-const registerEmail = document.getElementById('register-email');
-const registerPassword = document.getElementById('register-password');
-const usernameInput = document.getElementById('username');
-const personalIdInput = document.getElementById('personal-id');
-const registerCreateAccountButton = document.querySelector('.register-create-account-btn');
+    detailsButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const cardId = button.getAttribute('data-card-id'); // Lekérjük a gombhoz tartozó kártya id-jét
+            const card = document.getElementById(cardId); // Kiválasztjuk az adott kártyát az id alapján
+            const detailsPanel = card.querySelector('.details-panel'); // Kiválasztjuk az adott kártyához tartozó panelt
 
-// Alapértelmezett: a "Create Account" gomb tiltva van
-registerCreateAccountButton.disabled = true;
-registerCreateAccountButton.style.opacity = '0.6';
-
-// Függvény a gomb engedélyezésére
-function updateCreateAccountButton() {
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerEmail.value.trim());
-    const passwordValid = registerPassword.value.length >= 8 && registerPassword.value.length <= 20;
-    const usernameValid = usernameInput.value.trim().length > 0;
-    const personalIdValid = personalIdInput.value.trim().length > 0;
-
-    if (emailValid && passwordValid && usernameValid && personalIdValid) {
-        registerCreateAccountButton.disabled = false;
-        registerCreateAccountButton.style.opacity = '1';
-    } else {
-        registerCreateAccountButton.disabled = true;
-        registerCreateAccountButton.style.opacity = '0.6';
-    }
-}
-
-// Eseménykezelők a mezők változásához
-registerEmail.addEventListener('input', updateCreateAccountButton);
-registerPassword.addEventListener('input', updateCreateAccountButton);
-usernameInput.addEventListener('input', updateCreateAccountButton);
-personalIdInput.addEventListener('input', updateCreateAccountButton);
-
-// Regisztrációs gomb eseménykezelője
-registerCreateAccountButton.addEventListener('click', function (event) {
-    event.preventDefault();
-
-    // Adatok összegyűjtése a mezőkből
-    const registerData = {
-        name: usernameInput.value.trim(),
-        email: registerEmail.value.trim(),
-        password: registerPassword.value.trim(),
-        personalId: personalIdInput.value.trim()
-    };
-
-    console.log("Register data:", registerData);
-
-    // POST kérés elküldése
-    fetch('http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/registerUser', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Expect': ''
-        },
-        body: JSON.stringify(registerData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(errData => {
-                throw new Error(errData.message || 'Registration failed');
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert("Registration successful!");
-        registerPanel.classList.remove('open');
-        overlay.classList.remove('show');
-    })
-    .catch(error => {
-        console.error('Full error:', error);
-        alert('Registration failed. Check console for details.');
+            // Váltás: ha nyitva van, csukja be, ha zárva van, nyissa ki
+            detailsPanel.classList.toggle('active');
+        });
     });
-    
 });
 
 
