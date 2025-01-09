@@ -93,52 +93,52 @@ public class Users implements Serializable {
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
-    
+
     static EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.backendVizsga_InnovIT_vizsga_war_1.0-SNAPSHOTPU");
 
     public Users() {
     }
-    
-    public Users(String name,String email,String password,String personalId,boolean isAdmin){
-        this.name= name;
-        this.email=email;
-        this.password=password;
-        this.personalId=personalId;
-        this.isAdmin=isAdmin;
+
+    public Users(String name, String email, String password, String personalId, boolean isAdmin) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.personalId = personalId;
+        this.isAdmin = isAdmin;
     }
-    
-     public Users(String name,String email,String password,String personalId){
-        this.name= name;
-        this.email=email;
-        this.password=password;
-        this.personalId=personalId;
+
+    public Users(String name, String email, String password, String personalId) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.personalId = personalId;
     }
 
     public Users(Integer id) {
         EntityManager em = emf.createEntityManager();
-        
+
         try {
             Users u = em.find(Users.class, id);
-                
-                this.id = u.getId();
-                this.name = u.getName();
-                this.email = u.getEmail();
-                this.password = u.getPassword();
-                this.personalId = u.getPersonalId();
-                this.isAdmin = u.getIsAdmin();
-                this.isDeleted = u.getIsDeleted();
-                this.createdAt = u.getCreatedAt();
-                this.deletedAt = u.getDeletedAt();
-            
+
+            this.id = u.getId();
+            this.name = u.getName();
+            this.email = u.getEmail();
+            this.password = u.getPassword();
+            this.personalId = u.getPersonalId();
+            this.isAdmin = u.getIsAdmin();
+            this.isDeleted = u.getIsDeleted();
+            this.createdAt = u.getCreatedAt();
+            this.deletedAt = u.getDeletedAt();
+
         } catch (Exception ex) {
             System.err.println("Hiba: " + ex.getLocalizedMessage());
-        }finally{
+        } finally {
             em.clear();
             em.close();
         }
     }
 
-    public Users(Integer id, String name, String email, String password, String personalId, boolean isAdmin, boolean isDeleted, Date createdAt,Date deletedAt) {
+    public Users(Integer id, String name, String email, String password, String personalId, boolean isAdmin, boolean isDeleted, Date createdAt, Date deletedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -147,12 +147,8 @@ public class Users implements Serializable {
         this.isAdmin = isAdmin;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
-        this.deletedAt=deletedAt;
+        this.deletedAt = deletedAt;
     }
-
-    
-
-    
 
     public Integer getId() {
         return id;
@@ -250,40 +246,39 @@ public class Users implements Serializable {
     public String toString() {
         return "com.backendvizsga.innovit_vizsga.model.Users[ id=" + id + " ]";
     }
-    
-    public Users login(String email, String password){
+
+    public Users login(String email, String password) {
         EntityManager em = emf.createEntityManager();
         try {
-            
+
             StoredProcedureQuery spq = em.createStoredProcedureQuery("login");
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
-            
+
             spq.setParameter("emailIN", email);
             spq.setParameter("passwordIN", password);
-            
+
             spq.execute();
-            
+
             List<Object[]> resultList = spq.getResultList();
             Users toReturn = new Users();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            for(Object[] o : resultList){
+            for (Object[] o : resultList) {
                 Users u = new Users(
-                       Integer.valueOf(o[0].toString()),
-                       o[1]. toString(),
-                       o[2]. toString(),
-                       o[3]. toString(),
-                       o[4]. toString(),
-                       Boolean.valueOf(o[6].toString()),
-                      Boolean.valueOf(o[7].toString()),
-                      formatter.parse(o[8].toString()),
-                      o[9] == null ? null : formatter.parse(o[9].toString())
+                        Integer.valueOf(o[0].toString()), // id
+                        o[1].toString(), // name
+                        o[2].toString(), // email
+                        o[3].toString(), // password
+                        o[4].toString(), // personal_id
+                        Boolean.valueOf(o[6].toString()), // is_deleted
+                        Boolean.valueOf(o[5].toString()), // is_admin
+                        o[7] == null ? null : formatter.parse(o[7].toString()), // created_at
+                        o[8] == null ? null : formatter.parse(o[8].toString()) // deleted_at
                 );
                 toReturn = u;
             }
             return toReturn;
-            
-            
+
         } catch (Exception e) {
             System.err.println("Hiba: " + e.getLocalizedMessage());
             return null;
@@ -292,34 +287,33 @@ public class Users implements Serializable {
             em.close();
         }
     }
-    
-     public static ArrayList<Users> getAllUser() {
-    EntityManager em = emf.createEntityManager();
-    ArrayList<Users> userList = new ArrayList<>();
 
-    try {
-        StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllUser", Users.class);
-        spq.execute();
-        userList = new ArrayList<>(spq.getResultList());
+    public static ArrayList<Users> getAllUser() {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<Users> userList = new ArrayList<>();
 
-    } catch (Exception e) {
-        System.err.println("Error: " + e.getLocalizedMessage());
-    } finally {
-        em.clear();
-        em.close();
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllUser", Users.class);
+            spq.execute();
+            userList = new ArrayList<>(spq.getResultList());
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getLocalizedMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+
+        return userList;
     }
 
-    return userList;
-}
-     
-     public static Boolean isUserExists(String email){
+    public static Boolean isUserExists(String email) {
         EntityManager em = emf.createEntityManager();
 
         try {
             StoredProcedureQuery spq = em.createStoredProcedureQuery("isUserExists");
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("resultOUT", Boolean.class, ParameterMode.OUT);
-
 
             spq.setParameter("emailIN", email);
 
@@ -332,12 +326,12 @@ public class Users implements Serializable {
         } catch (Exception ex) {
             System.err.println("Hiba: " + ex.getLocalizedMessage());
             return null;
-        }finally{
+        } finally {
             em.clear();
             em.close();
         }
     }
-     
+
     public static ArrayList<Users> getAllAdmin() {
         EntityManager em = emf.createEntityManager();
         ArrayList<Users> userList = new ArrayList<>();
@@ -356,8 +350,8 @@ public class Users implements Serializable {
 
         return userList;
     }
-     
-      public Users getUserById(Integer id) {
+
+    public Users getUserById(Integer id) {
         try {
             return new Users(id);
         } catch (Exception e) {
@@ -365,16 +359,17 @@ public class Users implements Serializable {
             return null;
         }
     }
-     
-     public Users getUserDetailsByCarId(Integer car_id){
-         try {
-             return new Users(car_id);
-         } catch (Exception e) {
-             System.err.println("Hiba: " + e.getLocalizedMessage());
-             return  null;
-         }
-     }
-     public Boolean registerUser(Users u){
+
+    public Users getUserDetailsByCarId(Integer car_id) {
+        try {
+            return new Users(car_id);
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        }
+    }
+
+    public Boolean registerUser(Users u) {
         EntityManager em = emf.createEntityManager();
 
         try {
@@ -382,16 +377,12 @@ public class Users implements Serializable {
             spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
-             spq.registerStoredProcedureParameter("personalIdIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("personalIdIN", String.class, ParameterMode.IN);
 
             spq.setParameter("nameIN", u.getName());
-             spq.setParameter("emailIN", u.getEmail());
-              spq.setParameter("passwordIN", u.getPassword());
+            spq.setParameter("emailIN", u.getEmail());
+            spq.setParameter("passwordIN", u.getPassword());
             spq.setParameter("personalIdIN", u.getPersonalId());
-           
-           
-            
-           
 
             spq.execute();
             return true;
@@ -399,13 +390,13 @@ public class Users implements Serializable {
         } catch (Exception ex) {
             System.err.println("Hiba: " + ex.getLocalizedMessage());
             return false;
-        }finally{
+        } finally {
             em.clear();
             em.close();
-        }   
+        }
     }
-     
-     public Boolean deleteUserById(Integer id) {
+
+    public Boolean deleteUserById(Integer id) {
         EntityManager em = emf.createEntityManager();
         Boolean toReturn = false;
 
@@ -416,7 +407,7 @@ public class Users implements Serializable {
             spq.setParameter("user_idIN", id);
 
             spq.execute();
-            
+
             toReturn = true;
 
         } catch (Exception e) {
@@ -429,10 +420,5 @@ public class Users implements Serializable {
         }
 
     }
-    
-    
-     
-     
-     
-    
+
 }
