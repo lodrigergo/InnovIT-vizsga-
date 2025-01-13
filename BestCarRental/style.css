@@ -220,7 +220,7 @@ body {
 /* HERO */
 .hero {
     text-align: center;
-    padding: 100px 15px;
+    padding: 50px 15px;
 }
 
 .hero h1 {
@@ -1001,7 +1001,7 @@ body {
     cursor: pointer;
     width: 100%;
     transition: background-color 0.3s ease;
-    margin-top: 400px;
+    margin-top: 30px;
 }
 
 .logout-btn:hover {

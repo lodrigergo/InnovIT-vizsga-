@@ -353,15 +353,22 @@ const username = localStorage.getItem('username');
 // a profil panelhez való gombok és annak müködései
 document.addEventListener('DOMContentLoaded', function () {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const username = localStorage.getItem('username');
+
     if (isLoggedIn === 'true') {
-        loginButton.style.display = 'none'; 
-        profileIcon.style.display = 'block'; 
-        profileIcon.style.opacity = '1'; 
+        loginButton.style.display = 'none';
+        profileIcon.style.display = 'block';
+        profileIcon.style.opacity = '1';
+        
+        // Profil panel felhasználónév frissítése
+        document.querySelector('.profile-header h2').textContent = username;
     } else {
-        loginButton.style.display = 'block'; 
+        loginButton.style.display = 'block';
         profileIcon.style.display = 'none';
     }
 });
+
+
 
 
 // Profil ikon animáció megjelenítése login után
@@ -385,8 +392,7 @@ loginButton.addEventListener('click', function () {
 
 // Login panelben a bejelentkezéskor
 loginSubmitButton.addEventListener('click', function (event) {
-    event.preventDefault(); // Alapértelmezett form elküldés megakadályozása
-    console.log('Login button clicked');
+    event.preventDefault();
 
     const emailValue = emailInput.value.trim();
     const passwordValue = passwordInput.value;
@@ -433,13 +439,24 @@ loginSubmitButton.addEventListener('click', function (event) {
         })
         .then(data => {
             console.log('Login successful:', data);
+        
+            // Az adatbázisból visszakapott név mentése
+            const usernameFromDB = data.name;
+        
+            // Adatok mentése localStorage-ba
             localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('username', data.username || 'John Doe');
+            localStorage.setItem('username', usernameFromDB);
+        
+            // Profil panel felhasználónév frissítése
+            document.querySelector('.profile-header h2').textContent = usernameFromDB;
+        
+            // Panelek és gombok frissítése
             loginPanel.classList.remove('open');
             overlay.classList.remove('show');
             loginButton.style.display = 'none';
             profileIcon.style.display = 'block';
         })
+        
         .catch(error => {
             console.error('Error:', error.message);
             displayError(emailInput, error.message);
@@ -509,7 +526,7 @@ window.addEventListener('scroll', () => {
 });
 
 
-// Regisztrációs mezők azonosítása
+// Mezők azonosítása
 const registerEmail = document.getElementById('register-email');
 const registerPassword = document.getElementById('register-password');
 const usernameInput = document.getElementById('username');
@@ -520,12 +537,81 @@ const registerCreateAccountButton = document.querySelector('.register-create-acc
 registerCreateAccountButton.disabled = true;
 registerCreateAccountButton.style.opacity = '0.6';
 
-// Függvény a gomb engedélyezésére
+// Valós idejű hibajelzésekhez hibaüzenet megjelenítése
+function displayFieldError(inputElement, message) {
+    let errorElement = inputElement.nextElementSibling;
+
+    if (!errorElement || !errorElement.classList.contains('error-message')) {
+        errorElement = document.createElement('div');
+        errorElement.classList.add('error-message');
+        inputElement.parentElement.appendChild(errorElement);
+    }
+
+    errorElement.textContent = message;
+    errorElement.style.color = 'red';
+}
+
+// Hibaüzenet eltávolítása
+function removeFieldError(inputElement) {
+    const errorElement = inputElement.nextElementSibling;
+
+    if (errorElement && errorElement.classList.contains('error-message')) {
+        errorElement.remove();
+    }
+}
+
+// Email valós idejű ellenőrzése
+registerEmail.addEventListener('input', function () {
+    const emailValue = registerEmail.value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(emailValue)) {
+        displayFieldError(registerEmail, 'Invalid email format. Must contain "@" and "."');
+    } else {
+        removeFieldError(registerEmail);
+    }
+
+    updateCreateAccountButton();
+});
+
+// Jelszó valós idejű ellenőrzése
+registerPassword.addEventListener('input', function () {
+    const passwordValue = registerPassword.value.trim();
+    const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,20}$/;
+
+    if (passwordValue.length < 8 || passwordValue.length > 20) {
+        displayFieldError(registerPassword, 'Password must be 8-20 characters long');
+    } else if (!passwordPattern.test(passwordValue)) {
+        displayFieldError(registerPassword, 'Password must contain at least one uppercase letter and one number');
+    } else {
+        removeFieldError(registerPassword);
+    }
+
+    updateCreateAccountButton();
+});
+
+// Personal-ID valós idejű ellenőrzése
+personalIdInput.addEventListener('input', function () {
+    const personalIdValue = personalIdInput.value.trim();
+    const personalIdPattern = /^[A-Z]{5}[0-9]{2}$/;
+
+    if (personalIdValue.length > 7) {
+        displayFieldError(personalIdInput, 'Personal-ID must be exactly 7 characters');
+    } else if (!personalIdPattern.test(personalIdValue) && personalIdValue.length === 7) {
+        displayFieldError(personalIdInput, 'Personal-ID must be 5 uppercase letters followed by 2 numbers');
+    } else {
+        removeFieldError(personalIdInput);
+    }
+
+    updateCreateAccountButton();
+});
+
+// Gomb engedélyezése csak akkor, ha minden mező megfelelő
 function updateCreateAccountButton() {
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerEmail.value.trim());
-    const passwordValid = registerPassword.value.length >= 8 && registerPassword.value.length <= 20;
+    const passwordValid = /^(?=.*[A-Z])(?=.*\d).{8,20}$/.test(registerPassword.value.trim());
     const usernameValid = usernameInput.value.trim().length > 0;
-    const personalIdValid = personalIdInput.value.trim().length > 0;
+    const personalIdValid = /^[A-Z]{5}[0-9]{2}$/.test(personalIdInput.value.trim());
 
     if (emailValid && passwordValid && usernameValid && personalIdValid) {
         registerCreateAccountButton.disabled = false;
@@ -540,7 +626,6 @@ function updateCreateAccountButton() {
 registerEmail.addEventListener('input', updateCreateAccountButton);
 registerPassword.addEventListener('input', updateCreateAccountButton);
 usernameInput.addEventListener('input', updateCreateAccountButton);
-personalIdInput.addEventListener('input', updateCreateAccountButton);
 
 // Regisztrációs gomb eseménykezelője
 registerCreateAccountButton.addEventListener('click', function (event) {
@@ -575,6 +660,25 @@ registerCreateAccountButton.addEventListener('click', function (event) {
     })
     .then(data => {
         alert("Registration successful!");
+        
+        // Adatok mentése localStorage-ba
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', registerData.name);
+
+        // Profil ikon megjelenítése, login gomb elrejtése
+        loginButton.style.display = 'none';
+        profileIcon.style.display = 'block';
+
+        // Profil panel felhasználónév frissítése
+        document.querySelector('.profile-header h2').textContent = registerData.name;
+
+        // Mezők törlése
+        registerEmail.value = '';
+        registerPassword.value = '';
+        usernameInput.value = '';
+        personalIdInput.value = '';
+
+        // Regisztrációs panel bezárása
         registerPanel.classList.remove('open');
         overlay.classList.remove('show');
     })
@@ -582,7 +686,4 @@ registerCreateAccountButton.addEventListener('click', function (event) {
         console.error('Full error:', error);
         alert('Registration failed. Check console for details.');
     });
-    
 });
-
-
