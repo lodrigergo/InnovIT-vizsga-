@@ -64,7 +64,11 @@
 
     <div id="profile-panel" class="profile-panel">
         <div class="profile-header">
-            <img src="./Photos/avatar.jpg" alt="Profile Icon" class="profile-image">
+            <img src="./Photos/avatar.jpg" alt="Profile Icon" class="profile-image" id="profile-image">
+            <input type="file" id="profile-image-input" accept="image/*" style="display: none;">
+            <button id="upload-image-btn">
+                <i class="fa fa-upload"></i> Change Profile Picture
+            </button>
             <h2>USERNAME</h2>
             <span id="close-profile-panel" class="close-btn">&times;</span>
         </div>

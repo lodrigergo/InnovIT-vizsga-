@@ -1008,6 +1008,41 @@ body {
     background-color: darkred;
 }
 
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+#upload-image-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#upload-image-btn:hover {
+    background-color: #e0e0e0;
+    border-color: #999;
+}
+
+#upload-image-btn i {
+    font-size: 16px;
+    color: #555;
+}
+
+
 /* footer beállitása */
 .footer {
     background-color: #000; 

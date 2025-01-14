@@ -368,6 +368,47 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Kiválasztjuk az elemeket
+const profileImage = document.getElementById('profile-image');
+const profileImageInput = document.getElementById('profile-image-input');
+const uploadImageBtn = document.getElementById('upload-image-btn');
+
+// Aktuális felhasználónév lekérése (a login vagy regisztráció során kell menteni a username-t)
+const currentUsername = localStorage.getItem('username');
+
+// Betöltéskor ellenőrizzük, van-e elmentett profilkép az aktuális felhasználóhoz
+document.addEventListener('DOMContentLoaded', function () {
+    if (currentUsername) {
+        const savedProfileImage = localStorage.getItem(`profileImage_${currentUsername}`);
+        
+        if (savedProfileImage) {
+            profileImage.src = savedProfileImage; 
+        }
+    }
+});
+
+// Gombra kattintáskor megnyitjuk a fájlválasztó ablakot
+uploadImageBtn.addEventListener('click', function () {
+    profileImageInput.click();
+});
+
+// Fájlválasztás után frissítjük a profilképet és elmentjük a localStorage-ba felhasználónként
+profileImageInput.addEventListener('change', function (event) {
+    const file = event.target.files[0]; 
+
+    if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function (e) {
+            profileImage.src = e.target.result;
+            if (currentUsername) {
+                localStorage.setItem(`profileImage_${currentUsername}`, e.target.result); 
+            }
+        };
+        
+        reader.readAsDataURL(file); 
+    }
+});
 
 
 
