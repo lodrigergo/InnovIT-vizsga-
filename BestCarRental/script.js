@@ -1,16 +1,14 @@
-// A logóra kattintva az oldal tetejére ugrik és újratölti az oldalt
-document.getElementById('logo').addEventListener('click', function() {
-    window.scrollTo(0, 0); 
-    location.reload(); 
+document.getElementById('logo').addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 
-// Az oldal tetejére és újratöltésre a Home linkre kattintáskor
-document.getElementById('home-link').addEventListener('click', function(event) {
-    event.preventDefault(); 
-    window.scrollTo(0, 0); 
-    location.reload(); 
+// Az oldal tetejére ugrás a Home linkre kattintva
+document.getElementById('home-link').addEventListener('click', function (event) {
+    event.preventDefault();
+    document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
 });
+
 
 // Az "About" link kezelése
 document.querySelector('a[href="#about"]').addEventListener('click', function (event) {
@@ -411,99 +409,55 @@ profileImageInput.addEventListener('change', function (event) {
 });
 
 
+if (loginSubmitButton && emailInput && passwordInput) {
+    loginSubmitButton.addEventListener('click', function (event) {
+        event.preventDefault();
 
-// Profil ikon animáció megjelenítése login után
-loginSubmitButton.addEventListener('click', function (event) {
-    event.preventDefault();
-    localStorage.setItem('isLoggedIn', 'true'); 
-    loginPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-    loginButton.style.display = 'none'; 
-    profileIcon.style.display = 'block'; 
-    profileIcon.style.animation = 'profileIconFloatIn 1.5s ease-out'; 
-});
+        const emailValue = emailInput.value.trim();
+        const passwordValue = passwordInput.value.trim();
 
+        const loginData = { email: emailValue, password: passwordValue };
 
-// Login gomb eseménykezelő
-loginButton.addEventListener('click', function () {
-    loginPanel.classList.add('open'); 
-    overlay.classList.add('show'); 
-});
-
-
-// Login panelben a bejelentkezéskor
-loginSubmitButton.addEventListener('click', function (event) {
-    event.preventDefault();
-
-    const emailValue = emailInput.value.trim();
-    const passwordValue = passwordInput.value;
-
-    // Ellenőrizzük, hogy az email és a jelszó helyes formátumú-e
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let valid = true;
-
-    if (!emailPattern.test(emailValue)) {
-        displayError(emailInput, 'Invalid email address');
-        valid = false;
-    } else {
-        removeError(emailInput);
-    }
-
-    if (passwordValue.length < 8 || passwordValue.length > 20) {
-        displayError(passwordInput, 'Password must be 8-20 characters long');
-        valid = false;
-    } else {
-        removeError(passwordInput);
-    }
-
-    if (valid) {
-        // Ha az adatok validak, elküldjük a POST kérést
-        const loginData = {
-            email: emailValue,
-            password: passwordValue
-        };
-
+        // API hívás a bejelentkezés ellenőrzésére
         fetch('http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
         })
         .then(response => {
             if (!response.ok) {
+                // Ha a válasz nem OK, feldolgozzuk a hibát
                 return response.json().then(errData => {
-                    throw new Error(errData.message || 'Invalid login credentials');
+                    if (errData.message === 'Email not found') {
+                        throw new Error('This email is not registered. Please check and try again.');
+                    } else if (errData.message === 'Incorrect password') {
+                        throw new Error('Incorrect password. Please try again.');
+                    } else {
+                        throw new Error('Login failed. Please try again later.');
+                    }
                 });
             }
             return response.json();
         })
         .then(data => {
             console.log('Login successful:', data);
-        
-            // Az adatbázisból visszakapott név mentése
             const usernameFromDB = data.name;
-        
-            // Adatok mentése localStorage-ba
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('username', usernameFromDB);
-        
-            // Profil panel felhasználónév frissítése
             document.querySelector('.profile-header h2').textContent = usernameFromDB;
-        
-            // Panelek és gombok frissítése
             loginPanel.classList.remove('open');
             overlay.classList.remove('show');
-            loginButton.style.display = 'none';
+            loginBtn.style.display = 'none';
             profileIcon.style.display = 'block';
+            alert('Successfully logged in!');
         })
-        
         .catch(error => {
             console.error('Error:', error.message);
             displayError(emailInput, error.message);
         });
-    }
-});
+    });
+}
+
 
 
 // Profil ikonra kattintáskor a panel megnyitása
@@ -728,3 +682,4 @@ registerCreateAccountButton.addEventListener('click', function (event) {
         alert('Registration failed. Check console for details.');
     });
 });
+
