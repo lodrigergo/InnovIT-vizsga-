@@ -98,6 +98,11 @@ public class Users implements Serializable {
 
     public Users() {
     }
+    
+    public Users(String name) {
+    this.name = name;
+}
+
 
     public Users(String name, String email, String password, String personalId, boolean isAdmin) {
         this.name = name;
@@ -247,46 +252,45 @@ public class Users implements Serializable {
         return "com.backendvizsga.innovit_vizsga.model.Users[ id=" + id + " ]";
     }
 
-    public Users login(String email, String password) {
-        EntityManager em = emf.createEntityManager();
-        try {
+   public Users login(String email, String password) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        StoredProcedureQuery spq = em.createStoredProcedureQuery("login");
+        spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("resultOUT", Boolean.class, ParameterMode.OUT);
+        spq.registerStoredProcedureParameter("nameOUT", String.class, ParameterMode.OUT);  // A név paraméter
 
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("login");
-            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
+        spq.setParameter("emailIN", email);
+        spq.setParameter("passwordIN", password);
 
-            spq.setParameter("emailIN", email);
-            spq.setParameter("passwordIN", password);
+        // Eljárás futtatása
+        spq.execute();
 
-            spq.execute();
+        // Kimeneti paraméterek lekérése
+        Boolean resultOUT = (Boolean) spq.getOutputParameterValue("resultOUT");
+        String nameOUT = (String) spq.getOutputParameterValue("nameOUT");  // A név lekérése
 
-            List<Object[]> resultList = spq.getResultList();
-            Users toReturn = new Users();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            for (Object[] o : resultList) {
-                Users u = new Users(
-                        Integer.valueOf(o[0].toString()), // id
-                        o[1].toString(), // name
-                        o[2].toString(), // email
-                        o[3].toString(), // password
-                        o[4].toString(), // personal_id
-                        Boolean.valueOf(o[6].toString()), // is_deleted
-                        Boolean.valueOf(o[5].toString()), // is_admin
-                        o[7] == null ? null : formatter.parse(o[7].toString()), // created_at
-                        o[8] == null ? null : formatter.parse(o[8].toString()) // deleted_at
-                );
-                toReturn = u;
-            }
-            return toReturn;
-
-        } catch (Exception e) {
-            System.err.println("Hiba: " + e.getLocalizedMessage());
-            return null;
-        } finally {
-            em.clear();
-            em.close();
+        if (resultOUT) {
+            // Ha a resultOUT true, akkor sikeres bejelentkezés
+            return new Users(nameOUT);  // Felhasználó neve a nameOUT változóban
         }
+
+        // Ha resultOUT false, akkor nincs megfelelő felhasználó
+        return null;
+
+    } catch (Exception e) {
+        System.err.println("Hiba: " + e.getLocalizedMessage());
+        return null;
+    } finally {
+        em.clear();
+        em.close();
     }
+}
+
+
+
+
 
     public static ArrayList<Users> getAllUser() {
         EntityManager em = emf.createEntityManager();

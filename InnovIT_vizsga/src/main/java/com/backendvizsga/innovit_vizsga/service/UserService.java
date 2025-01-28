@@ -6,6 +6,8 @@ package com.backendvizsga.innovit_vizsga.service;
 
 import com.backendvizsga.innovit_vizsga.config.JWT;
 import com.backendvizsga.innovit_vizsga.model.Users;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
@@ -58,29 +60,28 @@ public class UserService {
     int statusCode = 200;
 
     if (isValidEmail(email)) {
-        Users modelResult = layer.login(email, password);
+        Users modelResult = layer.login(email, password); // Küldjük simán, hash nélkül
 
-        if (modelResult == null) {
-            status = "modelException";
-            statusCode = 417;
-        } else {
+        if (modelResult == null) { 
+            status = "Email and password is not matching";
+            statusCode = 401;
+        } else { 
+            System.out.println("Login success: " + modelResult.getName());
+            status = "success";
+            statusCode = 200;
+
+            // Válasz felépítése
             JSONObject result = new JSONObject();
             result.put("id", modelResult.getId());
             result.put("name", modelResult.getName());
             result.put("email", modelResult.getEmail());
-            result.put("password", modelResult.getPassword());
-            result.put("personalId", modelResult.getPersonalId());
-            result.put("isAdmin", modelResult.getIsAdmin());
-            result.put("isDeleted", modelResult.getIsDeleted());
-            result.put("createdAt", modelResult.getCreatedAt());
-            result.put("deletedAt", modelResult.getDeletedAt());
-            result.put("jwt", JWT.createJWT(modelResult));
+            result.put("jwt", JWT.createJWT(modelResult)); // JWT generálása
 
             toReturn.put("result", result);
         }
     } else {
-        status = "invalidEmail";
-        statusCode = 417;
+        status = "Invalid email format";
+        statusCode = 400;
     }
 
     toReturn.put("status", status);
@@ -88,6 +89,12 @@ public class UserService {
 
     return toReturn;
 }
+
+
+
+
+
+
     
     public ArrayList<Users> getAllUser() {
         ArrayList<Users> userList = new ArrayList<>();

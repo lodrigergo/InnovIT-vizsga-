@@ -74,7 +74,7 @@ public class UserControllerResource {
         
         JSONObject obj = layer.login(body.getString("email"), body.getString("password"));
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
-    }
+    }   
     
     @GET
     @Path("getAllUser")
