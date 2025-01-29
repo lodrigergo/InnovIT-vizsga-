@@ -3,7 +3,7 @@
     <img src="logo for the website.webp" alt="Best Car Rental Logo" class="logo" id="logo">
     
     <!-- Navigációs Menü -->
-    <nav [class.active]="isNavbarOpen">
+    <nav>
       <ul class="nav-links">
         <li><a href="#home" class="home-link" id="home-link">Home</a></li>
         <li><a href="#about">About</a></li>
@@ -13,9 +13,9 @@
     </nav>
     
     <!-- Login Gomb -->
-    <button class="login-btn" (click)="onLoginClick()">Login</button>
+    <button class="login-btn">Login</button>
     <img src="profile icon.webp" alt="Profile Icon" id="profile-icon" style="display: none; width: 40px; height: 40px; border-radius: 30%; margin-right: 20px;">
   </div>
-  <app-login (createAccountClick)="onCreateAccountClick()" [isVisible]="false"></app-login>
-  <app-register [isVisible]="false"></app-register>
+  <app-login></app-login>
+  <app-register></app-register>
 </header>

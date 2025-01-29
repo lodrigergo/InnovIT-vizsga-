@@ -1,11 +1,11 @@
-<div *ngIf="isVisible">
-  <div id="overlay" class="overlay" (click)="closePanel()"></div>
-  <div id="login-panel" class="login-panel" [class.active]="isVisible" (click)="$event.stopPropagation()">
+<div>
+  <div id="overlay" class="overlay"></div>
+  <div id="login-panel" class="login-panel">
     <div class="login-header">
       <h2>LOGIN</h2>
-      <span id="close-login-panel" class="close-btn" (click)="closePanel()">&times;</span>
+      <span id="close-login-panel" class="close-btn">&times;</span>
     </div>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form>
       
       <!-- Email mező -->
       <div class="form-group">
@@ -15,11 +15,10 @@
           id="email"
           formControlName="email"
           placeholder="Email"
-          [class.error]="email?.invalid && (email?.touched || email?.dirty)"
         />
-        <div class="error-message" *ngIf="email?.invalid && (email?.touched || email?.dirty)">
-          <p *ngIf="email?.errors?.['required']">Email is required</p>
-          <p *ngIf="email?.errors?.['email']">Invalid email format</p>
+        <div class="error-message">
+          <p>Email is required</p>
+          <p>Invalid email format</p>
         </div>
       </div>
 
@@ -31,18 +30,17 @@
           id="password"
           formControlName="password"
           placeholder="Password"
-          [class.error]="password?.invalid && (password?.touched || password?.dirty)"
         />
-        <div class="error-message" *ngIf="password?.invalid && (password?.touched || password?.dirty)">
-          <p *ngIf="password?.errors?.['required']">Password is required</p>
-          <p *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters long</p>
-          <p *ngIf="password?.errors?.['maxlength']">Password cannot exceed 20 characters</p>
+        <div class="error-message">
+          <p>Password is required</p>
+          <p>Password must be at least 8 characters long</p>
+          <p>Password cannot exceed 20 characters</p>
         </div>
       </div>
       <a href="#" class="forgot-password">Forgot Password?</a>
       <!-- Log In gomb -->
-      <button type="submit" class="btn login-btn" [disabled]="loginForm.invalid">Log In</button>
-      <button type="button" class="btn create-account-btn" (click)="onCreateAccountClick()">Create Account</button>
+      <button type="submit" class="btn login-btn">Log In</button>
+      <button type="button" class="btn create-account-btn">Create Account</button>
     </form>
   </div>
 </div>
