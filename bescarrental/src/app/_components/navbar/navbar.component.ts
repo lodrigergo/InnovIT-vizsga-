@@ -14,5 +14,18 @@ import { RegisterComponent } from '../register/register.component';
 })
 export class NavbarComponent {
 
+  showLoginPanel = false; 
+
+  // Login panel megnyitása
+  openLoginPanel(): void {
+    console.log('Login panel megnyitása...');
+    this.showLoginPanel = true;
+  }
+
+  // Login panel bezárása (opcionális, ha kellene)
+  closeLoginPanel(): void {
+    console.log('Login panel bezárása...');
+    this.showLoginPanel = false;
+  }
 }
 

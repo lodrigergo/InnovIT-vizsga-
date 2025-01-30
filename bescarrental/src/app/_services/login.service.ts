@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
-
-  constructor(private http: HttpClient,) { }
+  constructor(private http: HttpClient) { }
 
   corsHeader: any = new HttpHeaders({
     'Content-Type': 'application/json',

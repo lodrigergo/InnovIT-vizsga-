@@ -1,11 +1,11 @@
-<div>
-  <div id="overlay" class="overlay"></div>
+<div *ngIf="showLoginPanel">
+  <div id="overlay" class="overlay" (click)="closeLoginPanel()"></div>
   <div id="login-panel" class="login-panel">
     <div class="login-header">
       <h2>LOGIN</h2>
-      <span id="close-login-panel" class="close-btn">&times;</span>
+      <span id="close-login-panel" class="close-btn" (click)="closeLoginPanel()">&times;</span>
     </div>
-    <form>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       
       <!-- Email mező -->
       <div class="form-group">
@@ -16,9 +16,9 @@
           formControlName="email"
           placeholder="Email"
         />
-        <div class="error-message">
-          <p>Email is required</p>
-          <p>Invalid email format</p>
+        <div *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched" class="error-message">
+          <p *ngIf="loginForm.controls['email'].errors?.['required']">Email is required</p>
+          <p *ngIf="loginForm.controls['email'].errors?.['email']">Invalid email format</p>
         </div>
       </div>
 
@@ -31,16 +31,21 @@
           formControlName="password"
           placeholder="Password"
         />
-        <div class="error-message">
-          <p>Password is required</p>
-          <p>Password must be at least 8 characters long</p>
-          <p>Password cannot exceed 20 characters</p>
+        <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="error-message">
+          <p *ngIf="loginForm.controls['password'].errors?.['required']">Password is required</p>
+          <p *ngIf="loginForm.controls['password'].errors?.['minlength']">Password must be at least 8 characters long</p>
+          <p *ngIf="loginForm.controls['password'].errors?.['maxlength']">Password cannot exceed 20 characters</p>
         </div>
       </div>
+
       <a href="#" class="forgot-password">Forgot Password?</a>
+
       <!-- Log In gomb -->
-      <button type="submit" class="btn login-btn">Log In</button>
+      <button type="submit" class="btn login-btn" [disabled]="loginForm.invalid">Log In</button>
       <button type="button" class="btn create-account-btn">Create Account</button>
+
+      <!-- Hibaüzenet -->
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
     </form>
   </div>
 </div>

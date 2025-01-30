@@ -13,9 +13,11 @@
     </nav>
     
     <!-- Login Gomb -->
-    <button class="login-btn">Login</button>
+    <button class="login-btn" (click)="openLoginPanel()">Login</button>
     <img src="profile icon.webp" alt="Profile Icon" id="profile-icon" style="display: none; width: 40px; height: 40px; border-radius: 30%; margin-right: 20px;">
   </div>
-  <app-login></app-login>
+
+  <!-- Login és Register komponensek -->
+  <app-login [showLoginPanel]="showLoginPanel"></app-login>
   <app-register></app-register>
 </header>
