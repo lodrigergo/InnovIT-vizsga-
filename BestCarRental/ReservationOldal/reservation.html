@@ -1,157 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="./reservation.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts (Roboto) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Saját stíluslap -->
+  <link rel="stylesheet" href="./reservation.css">
+  <title>Reservation - Best Car Rental</title>
 </head>
 <body>
-    <!-- Az oldal navbárja és menüje -->
-    <div id="home"></div>
-    <header class="navbar">
-        <div class="container">
-            <img src="../Photos/logo for the website.webp" alt="Best Car Rental Logo" class="logo" id="logo">
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="../index.html#home" class="home-link" id="home-link">Home</a></li>
-                    <li><a href="../index.html#about">About</a></li>
-                    <li><a href="../Carsoldal/cars.html">Cars</a></li>
-                    <li><a href="./ReservationOldal/reservation.html">Reservations</a></li>
-                </ul>
-            </nav>
-            <button class="login-btn">Login</button>
-            <img src="./Photos/profile icon.webp" alt="Profile Icon" id="profile-icon" style="display: none; width: 40px; height: 40px; border-radius: 30%; margin-right: 20px;">
-        </div>
-    </header>
-
-    <!-- Bejelentkezés utáni profil  -->
-    <div id="profile-panel" class="profile-panel">
-        <div class="profile-header">
-            <img src="./Photos/avatar.jpg" alt="Profile Icon" class="profile-image" id="profile-image">
-            <input type="file" id="profile-image-input" accept="image/*" style="display: none;">
-            <button id="upload-image-btn">
-                <i class="fa fa-upload"></i> Change Profile Picture
-            </button>
-            <h2>USERNAME</h2>
-            <span id="close-profile-panel" class="close-btn">&times;</span>
-        </div>
-        <div class="profile-content">
-            <h3>WELCOME</h3>
-            <ul>
-                <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#about"><i class="fa fa-user"></i> About</a></li>
-                <li><a href="./Carsoldal/cars.html"><i class="fa fa-car"></i> Cars</a></li>
-                <li><a href="./ReservationOldal/reservation.html"><i class="fa fa-calendar"></i> Reservation</a></li>
-                <li><a href="#"><i class="fa fa-adjust"></i> Light / Dark</a></li>
-            </ul>
-            <hr>
-            <button class="logout-btn">Log Out</button>
-        </div>
-    </div>
-
-
-<!-- Bejelentkezési panel rész -->
-    <div id="overlay" class="overlay"></div>
-    <div id="login-panel" class="login-panel">
-        <div class="login-header">
-            <h2>LOGIN</h2>
-            <span id="close-login-panel" class="close-btn">&times;</span>
-        </div>
-        <form>
-            <div class="form-group">
-                <label for="email">
-                    <i class="fa fa-envelope"></i> Email:
-                </label>
-                <input type="email" id="email" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="password">
-                    <i class="fa fa-key"></i> Password:
-                </label>
-                <input type="password" id="password" placeholder="Password">
-            </div>
-            <a href="#" class="forgot-password">Forgot Password?</a>
-            <button type="submit" class="btn login-btn">Log In</button>
-            <button type="button" class="btn create-account-btn">Create Account</button>
-        </form>
-    </div>
-
-
-<!-- Regisztrációs panel rész -->
-    <div id="register-panel" class="register-panel">
-        <div class="register-header">
-            <h2>Register</h2>
-            <span id="close-register-panel" class="close-btn">&times;</span>
-        </div>
-        <form>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="register-email" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="register-password" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <label for="personal-id">Personal-ID:</label>
-                <input type="personal-id" id="personal-id" placeholder="personal-id">
-            </div>
-            <a href="#" class="forgot-password">Forgot Password?</a>
-            <button type="submit" class="btn register-create-account-btn" disabled>Create Account</button>
-            <button type="button" class="btn login-btn">Back To Login</button>
-        </form>
-    </div>
-
+  <!-- NAVBÁR (változatlan) -->
+  <div id="home"></div>
+  <header class="navbar">
     <div class="container">
-        <div class="step">
-            <div class="active">1 BÉRLÉS HELYSZÍNE</div>
-            <div>2 Jármű</div>
-            <div>3 ÁTTEKINTÉS</div>
-        </div>
+      <img src="../Photos/logo for the website.webp" alt="Best Car Rental Logo" class="logo" id="logo">
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html#home" class="home-link" id="home-link">Home</a></li>
+          <li><a href="../index.html#about">About</a></li>
+          <li><a href="../Carsoldal/cars.html">Cars</a></li>
+          <li><a href="./ReservationOldal/reservation.html">Reservations</a></li>
+        </ul>
+      </nav>
+      <button class="login-btn">Login</button>
+      <img src="./Photos/profile icon.webp" alt="Profile Icon" id="profile-icon">
+    </div>
+  </header>
 
-        <h2>A Foglalás megerősítése</h2>
+  <!-- Profil Panel (bejelentkezés után) -->
+  <div id="profile-panel" class="profile-panel">
+    <div class="profile-header">
+      <img src="./Photos/avatar.jpg" alt="Profile Icon" class="profile-image" id="profile-image">
+      <input type="file" id="profile-image-input" accept="image/*" style="display: none;">
+      <button id="upload-image-btn">
+        <i class="fa fa-upload"></i> Change Profile Picture
+      </button>
+      <h2>USERNAME</h2>
+      <span id="close-profile-panel" class="close-btn">&times;</span>
+    </div>
+    <div class="profile-content">
+      <h3>WELCOME</h3>
+      <ul>
+        <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#about"><i class="fa fa-user"></i> About</a></li>
+        <li><a href="./Carsoldal/cars.html"><i class="fa fa-car"></i> Cars</a></li>
+        <li><a href="./ReservationOldal/reservation.html"><i class="fa fa-calendar"></i> Reservation</a></li>
+        <li><a href="#"><i class="fa fa-adjust"></i> Light / Dark</a></li>
+      </ul>
+      <hr>
+      <button class="logout-btn">Log Out</button>
+    </div>
+  </div>
 
-        <div class="main">
-            <div class="login-section">
-                <h3>Jelentkezz be vagy regisztrálj a foglalásért!</h3>
-                <button>Create Account</button>
-                <button>Login</button>
-            </div>
+  <!-- Bejelentkezési Panel -->
+  <div id="overlay" class="overlay"></div>
+  <div id="login-panel" class="login-panel">
+    <div class="login-header">
+      <h2>LOGIN</h2>
+      <span id="close-login-panel" class="close-btn">&times;</span>
+    </div>
+    <form>
+      <div class="form-group">
+        <label for="email"><i class="fa fa-envelope"></i> Email:</label>
+        <input type="email" id="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="password"><i class="fa fa-key"></i> Password:</label>
+        <input type="password" id="password" placeholder="Password">
+      </div>
+      <a href="#" class="forgot-password">Forgot Password?</a>
+      <button type="submit" class="btn login-btn">Log In</button>
+      <button type="button" class="btn create-account-btn">Create Account</button>
+    </form>
+  </div>
 
-            <div class="car-info">
-                <h3>Jármű</h3>
-                <img src="https://via.placeholder.com/400" alt="Car Image">
-                <div class="details">
-                    <p>Aktuális jármű neve</p>
-                    <p><strong>Ár:</strong></p>
-                    <ul>
-                        <li>4 ülés</li>
-                        <li>Petrol</li>
-                        <li>AC</li>
-                        <li>5 ajtó</li>
-                    </ul>
-                    <p>Alapdíj (napra):</p>
-                    <p>Tartalmazza: Ár</p>
-                </div>
-                <div class="details">
-                    <p>Felvétel: Aktuális helyszín</p>
-                    <p>Leadás: Aktuális helyszín</p>
-                    <p>Ettől / Eddig:</p>
-                </div>
-                <h3>Összesen:</h3>
-                <p>Ügyfélszolgálati pultnál fizetendő</p>
-                <button class="reservation-button">Reservation</button>
-            </div>
-        </div>
+  <!-- Regisztrációs Panel -->
+  <div id="register-panel" class="register-panel">
+    <div class="register-header">
+      <h2>Register</h2>
+      <span id="close-register-panel" class="close-btn">&times;</span>
+    </div>
+    <form>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label for="register-email">Email:</label>
+        <input type="email" id="register-email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="register-password">Password:</label>
+        <input type="password" id="register-password" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="personal-id">Personal-ID:</label>
+        <input type="text" id="personal-id" placeholder="Personal-ID">
+      </div>
+      <a href="#" class="forgot-password">Forgot Password?</a>
+      <button type="submit" class="btn register-create-account-btn" disabled>Create Account</button>
+      <button type="button" class="btn login-btn">Back To Login</button>
+    </form>
+  </div>
+
+  <!-- Reservation Tartalom -->
+  <div class="container reservation-container">
+    <!-- Lépéssor -->
+    <div class="step">
+      <div class="active">1 BÉRLÉS HELYSZÍNE</div>
+      <div>2 Jármű</div>
+      <div>3 ÁTTEKINTÉS</div>
     </div>
 
+    <h2 class="reservation-title">A Foglalás megerősítése</h2>
 
-    <script src="./reservation.js"></script>
+    <!-- Fő tartalom: két oszlopos elrendezés -->
+    <div class="main">
+      <!-- Bejelentkezési/Regisztrációs felhívás -->
+      <div class="login-section">
+        <h3>Jelentkezz be vagy regisztrálj a foglalásért!</h3>
+        <div class="btn-group">
+          <button class="btn">Create Account</button>
+          <button class="btn">Login</button>
+        </div>
+      </div>
+
+      <!-- Jármű információk -->
+      <div class="car-info">
+        <h3>Jármű</h3>
+        <img src="https://via.placeholder.com/400" alt="Car Image">
+        <div class="details">
+          <p>Aktuális jármű neve</p>
+          <p><strong>Ár:</strong></p>
+          <ul>
+            <li>4 ülés</li>
+            <li>Petrol</li>
+            <li>AC</li>
+            <li>5 ajtó</li>
+          </ul>
+          <p>Alapdíj (napra):</p>
+          <p>Tartalmazza: Ár</p>
+        </div>
+        <div class="details">
+          <p>Felvétel: Aktuális helyszín</p>
+          <p>Leadás: Aktuális helyszín</p>
+          <p>Ettől / Eddig:</p>
+        </div>
+        <h3>Összesen:</h3>
+        <p>Ügyfélszolgálati pultnál fizetendő</p>
+        <button class="reservation-button">Reservation</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./reservation.js"></script>
 </body>
 </html>
