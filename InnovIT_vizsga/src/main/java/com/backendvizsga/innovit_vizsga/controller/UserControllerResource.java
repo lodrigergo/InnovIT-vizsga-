@@ -235,7 +235,7 @@ public class UserControllerResource {
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
-    @POST
+    @DELETE
     @Path("deleteUserById")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteUserById(@QueryParam("id") Integer id){
