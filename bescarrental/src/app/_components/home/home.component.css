@@ -1,19 +1,4 @@
-html {
-    scroll-behavior: smooth;
-}
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Minden elem alapstilus megadása */
-body {
-    line-height: 1.6;
-    color: #fff;
-}
 .background-container{
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("/talán_a_jó_bg.jpg");
     background-attachment: fixed;
@@ -21,11 +6,13 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
+/* HERO */
 .hero {
     text-align: center;
-    padding: 100px 15px;
+    padding: 50px 15px;
 }
 
 .hero h1 {
@@ -95,7 +82,7 @@ body {
 }
 
 .vehicle-option.active:hover {
-    background-color: rgb(18, 83, 223);
+    background-color: blue;
     transition: 0.3s;
 }
 

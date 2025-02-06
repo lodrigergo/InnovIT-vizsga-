@@ -1,48 +1,104 @@
-import { Component, } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../_services/login.service';
-import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  // Az Input property, mely alapján a panel megjelenése vezérelhető
+  @Input() isOpen: boolean = false;
+  // Output, amellyel jelezzük a szülőnek, ha a panel bezáródik
+  @Output() closePanel = new EventEmitter<void>();
 
-  @Input() showLoginPanel: boolean = false;
+  // Űrlapadatok
+  email: string = '';
+  password: string = '';
 
-  errorMessage: string = '';
+  // Validációs hibák
+  emailError: string = '';
+  passwordError: string = '';
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]]
-    });
+  // Fontos: a router most public, vagy használjunk publikus metódust a navigációhoz
+  constructor(
+    private loginService: LoginService,
+    public router: Router  // Így a template-ben is elérhető lesz
+  ) {}
+
+  // Bezárja a panelt
+  closePanelHandler(): void {
+    this.closePanel.emit();
   }
 
-  closeLoginPanel(): void {
-    this.showLoginPanel = false;
+  // Navigálás regisztrációs oldalra (az X gombnál vagy a "Create Account" gombnál)
+  goToRegister(): void {
+    this.closePanelHandler();
+    this.router.navigate(['/register']);
   }
 
+  // Bejelentkezés gomb kezelése
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.loginService.sendLogin(this.loginForm.value).subscribe({
-        next: (response) => {
-          console.log('Sikeres bejelentkezés:', response);
-          this.closeLoginPanel();
+    // Töröljük az előző hibákat
+    this.emailError = '';
+    this.passwordError = '';
+
+    const email = this.email.trim();
+    const password = this.password.trim();
+    let valid = true;
+
+    // Egyszerű validáció
+    if (!email) {
+      this.emailError = "Kérlek add meg az email címed!";
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.emailError = "Érvénytelen email!";
+      valid = false;
+    }
+
+    if (!password) {
+      this.passwordError = "Kérlek add meg a jelszavad!";
+      valid = false;
+    } else if (password.length < 8 || password.length > 20) {
+      this.passwordError = "A jelszónak 8-20 karakter hosszúnak kell lennie!";
+      valid = false;
+    } else if (!/^[A-Z]/.test(password)) {
+      this.passwordError = "A jelszónak nagybetűvel kell kezdődnie!";
+      valid = false;
+    }
+
+    if (!valid) {
+      return;
+    }
+
+    // API hívás a LoginService segítségével
+    this.loginService.sendLogin({ email, password })
+      .subscribe({
+        next: (data) => {
+          if (data.status === "success") {
+            localStorage.setItem("jwt", data.result.jwt);
+            localStorage.setItem("username", data.result.name);
+            alert("Üdvözöllek, " + data.result.name + "!");
+            this.closePanelHandler();
+            this.router.navigate(['/profile']);
+          } else {
+            this.passwordError = "Hibás email vagy jelszó!";
+          }
         },
-        error: (error) => {
-          console.error('Bejelentkezési hiba:', error);
-          this.errorMessage = 'Hibás e-mail vagy jelszó!';
+        error: (err) => {
+          console.error("Hiba a bejelentkezés során:", err);
+          this.passwordError = "Hálózati hiba történt!";
         }
       });
-    } else {
-      this.errorMessage = 'Kérlek töltsd ki az összes mezőt helyesen!';
-    }
+  }
+
+  // Az overlay-re kattintva is bezárjuk a panelt
+  onOverlayClick(): void {
+    this.closePanelHandler();
   }
 }

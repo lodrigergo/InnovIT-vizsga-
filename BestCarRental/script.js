@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ========================================
-    // 🔹 LOGIN PANEL és kapcsolódó változók
-    // ========================================
+    // LOGIN PANEL és kapcsolódó változók
     const loginBtn = document.querySelector(".login-btn");
     const loginPanel = document.getElementById("login-panel");
     const overlay = document.getElementById("overlay");
@@ -15,17 +13,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameDisplay = profilePanel.querySelector("h2");
     const logoutBtn = document.querySelector(".logout-btn");
 
-    // ========================================
-    // 🔹 REGISZTRÁCIÓ PANEL és kapcsolódó változók
-    // ========================================
+    // REGISZTRÁCIÓ PANEL és kapcsolódó változók
     const registerPanel = document.getElementById("register-panel");
     const closeRegisterPanel = document.getElementById("close-register-panel");
     const createAccountBtn = document.querySelector(".create-account-btn");
     const backToLoginBtn = document.querySelector(".register-panel .login-btn");
 
-    // ========================================
-    // 🔹 HIBAÜZENET ELEMEK LÉTREHOZÁSA
-    // ========================================
+    // HIBAÜZENET ELEMEK LÉTREHOZÁSA
     function createErrorElement(input) {
         const error = document.createElement("p");
         error.style.color = "red";
@@ -49,9 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const registerPasswordError = createErrorElement(registerPasswordInput);
     const personalIdError = createErrorElement(personalIdInput);
 
-    // ========================================
-    // 🔹 PANEL KEZELÉS (megnyitás, bezárás)
-    // ========================================
+    // PANEL KEZELÉS (megnyitás, bezárás)
     loginBtn.addEventListener("click", function () {
         loginPanel.classList.add("open");
         overlay.classList.add("show");
@@ -90,9 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         loginPanel.classList.add("open");
     });
 
-    // ========================================
-    // 🔹 LOGIN VALIDÁCIÓ ÉS API HÍVÁS
-    // ========================================
+    // LOGIN VALIDÁCIÓ ÉS API HÍVÁS
     loginSubmitBtn.addEventListener("click", async function (event) {
         event.preventDefault();
 
@@ -177,9 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
         profileIcon.style.display = "block";
     }
 
-    // ========================================
-    // 🔹 REGISZTRÁCIÓ VALIDÁCIÓ ÉS API HÍVÁS
-    // ========================================
+    // REGISZTRÁCIÓ VALIDÁCIÓ ÉS API HÍVÁS
     const registerSubmitBtn = document.querySelector(".register-create-account-btn");
 
     // "Touched" objektum: megjelöli, mely mezőket érintette már a felhasználó

@@ -1,31 +1,20 @@
-import { Component} from '@angular/core';
-import { LoginComponent } from '../login/login.component';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { RegisterComponent } from '../register/register.component';
-
-
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [LoginComponent, CommonModule, RegisterComponent],
+  imports: [CommonModule, RouterModule, RegisterComponent, LoginComponent],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  @Output() openLogin = new EventEmitter<void>();
 
-  showLoginPanel = false; 
-
-  // Login panel megnyitása
-  openLoginPanel(): void {
-    console.log('Login panel megnyitása...');
-    this.showLoginPanel = true;
-  }
-
-  // Login panel bezárása (opcionális, ha kellene)
-  closeLoginPanel(): void {
-    console.log('Login panel bezárása...');
-    this.showLoginPanel = false;
+  onLoginClick(): void {
+    this.openLogin.emit();
   }
 }
-
