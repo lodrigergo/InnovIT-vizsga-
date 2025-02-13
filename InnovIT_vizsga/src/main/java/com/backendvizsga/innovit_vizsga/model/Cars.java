@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -494,6 +497,58 @@ public class Cars implements Serializable {
             return toReturn;
         }
 
+    }
+    
+    public JSONObject getAllCarsPage(int page, int amount) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("getAllCarsPage");
+
+            spq.registerStoredProcedureParameter("amountIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("pageIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("rowCountOUT", Integer.class, ParameterMode.OUT);
+
+            spq.setParameter("amountIN", amount);
+            spq.setParameter("pageIN", page);
+
+            spq.execute();
+
+            List<Object[]> resultList = spq.getResultList();
+            int rowCount = Integer.parseInt(spq.getOutputParameterValue("rowCountOUT").toString());
+
+            JSONObject toReturn = new JSONObject();
+            toReturn.put("rowCount", rowCount);
+
+            JSONArray data = new JSONArray();
+            for (Object[] record : resultList) {
+                JSONObject toAdd = new JSONObject();
+
+                toAdd.put("id", Integer.valueOf(record[0].toString()));
+                toAdd.put("brand", record[1].toString());
+                toAdd.put("model", record[2].toString());
+                toAdd.put("year", Integer.valueOf(record[3].toString()));
+                toAdd.put("doors", Integer.valueOf(record[4].toString()));
+                toAdd.put("FuelType", record[5].toString());
+                toAdd.put("transmission", record[6].toString());
+                toAdd.put("AC", Boolean.parseBoolean(record[6].toString()));
+                toAdd.put("seats", Integer.valueOf(record[8].toString()));
+                toAdd.put("pricePerDay", Integer.valueOf(record[9].toString()));
+                toAdd.put("image", record[10].toString());
+
+                data.put(toAdd);
+            }
+            
+            toReturn.put("result", data);
+            
+            return toReturn;
+        } catch (Exception ex) {
+            System.err.println("Hiba: " + ex.getMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
     }
 
 
