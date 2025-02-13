@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const createAccountBtn = document.querySelector(".create-account-btn");
     const backToLoginBtn = document.querySelector(".register-panel .login-btn");
 
-    // HIBAÜZENET ELEMEK LÉTREHOZÁSA
+    // Hibauzenetek létrehozása
     function createErrorElement(input) {
         const error = document.createElement("p");
         error.style.color = "red";
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailError = createErrorElement(emailInput);
     const passwordError = createErrorElement(passwordInput);
 
-    // Regisztrációs panel hibaelemei
+    // Regisztrációs panel elemei és hibaelemei
     const usernameInput = document.getElementById("username");
     const registerEmailInput = document.getElementById("register-email");
     const registerPasswordInput = document.getElementById("register-password");
@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
         overlay.classList.add("show");
     });
 
-    // A globális panelbezáró függvény, mely bezárja a login, regisztrációs és profil paneleket, illetve eltávolítja az overlay-t
     function closeAllPanels() {
         loginPanel.classList.remove("open");
         registerPanel.classList.remove("open");
@@ -127,14 +126,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage.setItem("jwt", data.result.jwt);
                 localStorage.setItem("username", data.result.name);
 
-                // Frissítjük a profil panel felhasználó nevét azonnal
+                // Frissítjük a profil panel felhasználó nevét
                 usernameDisplay.textContent = data.result.name;
 
                 closeAllPanels();
                 loginBtn.style.display = "none";
                 profileIcon.style.display = "block";
 
-                console.log("Sikeres bejelentkezés");
+                // Elmentett profilkép betöltése, ha létezik
+                const profileImageKey = "profileImage_" + data.result.name;
+                const savedImage = localStorage.getItem(profileImageKey);
+                if (savedImage) {
+                    document.getElementById("profile-image").src = savedImage;
+                    document.getElementById("profile-icon").src = savedImage;
+                }
+
                 alert("Üdvözöllek, " + data.result.name + "!");
             } else {
                 passwordError.textContent = "Hibás email vagy jelszó!";
@@ -145,32 +151,40 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Logout: töröljük a token és felhasználónév adatait, de megőrizzük a profilkép beállítást
     logoutBtn.addEventListener("click", function () {
         localStorage.removeItem("jwt");
         localStorage.removeItem("username");
+        // A profilkép kulcsát nem töröljük, így új bejelentkezéskor megmarad a választott kép.
 
-        // Bezárjuk az esetleges nyitott paneleket és eltávolítjuk az overlay-t
         closeAllPanels();
 
         loginBtn.style.display = "block";
         profileIcon.style.display = "none";
 
-        console.log("Sikeres kijelentkezés!");
         alert("Sikeresen kijelentkeztél.");
     });
 
-    // Ha már van elmentett felhasználónév, akkor azonnal beállítjuk a profil panelben
+    // Ha a felhasználó már be van jelentkezve, betöltjük a mentett adatokat
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
         usernameDisplay.textContent = storedUsername;
         loginBtn.style.display = "none";
         profileIcon.style.display = "block";
+
+        // Mentett profilkép betöltése
+        const profileImageKey = "profileImage_" + storedUsername;
+        const savedImage = localStorage.getItem(profileImageKey);
+        if (savedImage) {
+            document.getElementById("profile-image").src = savedImage;
+            document.getElementById("profile-icon").src = savedImage;
+        }
     }
 
     // REGISZTRÁCIÓ VALIDÁCIÓ ÉS API HÍVÁS
     const registerSubmitBtn = document.querySelector(".register-create-account-btn");
 
-    // "Touched" objektum: megjelöli, mely mezőket érintette már a felhasználó
+    // "Touched" objektum a mezők validálásához
     const touched = {
         username: false,
         registerEmail: false,
@@ -178,7 +192,6 @@ document.addEventListener("DOMContentLoaded", function () {
         personalId: false
     };
 
-    // Blur események: amikor a felhasználó elhagyja a mezőt, beállítjuk, hogy azt már "érintette"
     usernameInput.addEventListener("blur", () => {
         touched.username = true;
         validateRegistration();
@@ -199,7 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
         validateRegistration();
     });
 
-    // Validációs függvény: csak az adott (már "touched") mező alatt írja ki a hibaüzenetet
     function validateRegistration() {
         let valid = true;
 
@@ -236,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Jelszó validáció (csak kötelező mező ellenőrzése itt)
+        // Jelszó validáció
         if (touched.registerPassword) {
             if (!registerPasswordInput.value.trim()) {
                 registerPasswordError.textContent = "Jelszó megadása kötelező!";
@@ -251,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Personal-ID validáció: számokból álljon, az utolsó karakter betű legyen
+        // Personal-ID validáció
         if (touched.personalId) {
             if (!/^\d+[a-zA-Z]$/.test(personalIdInput.value.trim())) {
                 personalIdError.textContent = "Personal-ID számokból álljon, az utolsó karakter betű legyen!";
@@ -266,12 +278,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // A regisztrációs gomb engedélyezése
         registerSubmitBtn.disabled = !valid;
         return valid;
     }
 
-    // Input esemény: folyamatos validálás, de a hibaüzenetek csak akkor látszanak, ha a mező már érintett
     document.querySelectorAll("#register-panel input").forEach(input => {
         input.addEventListener("input", validateRegistration);
     });
@@ -306,5 +316,20 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Hiba a regisztráció során:", error);
         }
+    });
+
+    // Profilkép kiválasztás: előre definiált képek eseménykezelője
+    document.querySelectorAll('.profile-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const selectedImage = this.getAttribute('data-image');
+            // Frissítjük a profil panel és a navbar képeit
+            document.getElementById('profile-image').src = selectedImage;
+            document.getElementById('profile-icon').src = selectedImage;
+            // Elmentjük a választást, ha be van jelentkezve a felhasználó
+            const currentUser = localStorage.getItem("username");
+            if (currentUser) {
+                localStorage.setItem("profileImage_" + currentUser, selectedImage);
+            }
+        });
     });
 });

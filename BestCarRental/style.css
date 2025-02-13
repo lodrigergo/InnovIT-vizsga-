@@ -1122,3 +1122,27 @@ body {
     transition: transform 0.3s ease;
 }
 
+.profile-image-selection {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.profile-image-selection h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.profile-image-selection .profile-option {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0 5px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.profile-image-selection .profile-option:hover {
+    border-color: #007bff;
+}
