@@ -256,6 +256,43 @@ public class UserControllerResource {
                 
     }
    
+    @PUT
+    @Path("changePassword")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response changePassword(@HeaderParam("token") String jwt, @QueryParam("userId") Integer userId, String bodyString) {
+        int isValid = JWT.validateJWT(jwt);
+
+        if (isValid == 1) {
+            Users user = layer.getUserById(JWT.getUserIdByToken(jwt));
+            JSONObject obj = new JSONObject();
+        obj.put("userId", user.getUserById(userId));
+        obj.put("name", user.getName());
+            return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+        } else if (isValid == 2) {
+            return Response.status(498).entity("InvalidToken").type(MediaType.APPLICATION_JSON).build();
+        } else {
+            return Response.status(401).entity("TokenExpired").type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @POST
+    @Path("sendEmail")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response sendEmail(@HeaderParam("token") String jwt, String bodyString) {
+        int isValid = JWT.validateJWT(jwt);
+
+        if (isValid == 1) {
+            JSONObject body = new JSONObject(bodyString);
+            
+            Boolean obj = Users.sendEmail(body.getString("to"), body.getBoolean("ccMe"));
+            return Response.status(200).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+        } else if (isValid == 2) {
+            return Response.status(498).entity("InvalidToken").type(MediaType.APPLICATION_JSON).build();
+        } else {
+            return Response.status(401).entity("TokenExpired").type(MediaType.APPLICATION_JSON).build();
+        }
+
+    }
     
     
     

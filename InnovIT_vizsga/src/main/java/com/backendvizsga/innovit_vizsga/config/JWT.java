@@ -77,6 +77,24 @@ public class JWT {
         return 3; // Ha lejárt a token
     }
 }
+    
+    public static Boolean isAdmin(String jwt){
+        Jws<Claims> result;
+        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret)).parseClaimsJws(jwt);
+        
+        Boolean isAdmin = result.getBody().get("isAdmin", Boolean.class);
+        
+        return isAdmin;
+    }
+    
+    public static Integer getUserIdByToken(String jwt){
+        Jws<Claims> result;
+        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret)).parseClaimsJws(jwt);
+        
+        int userId = result.getBody().get("id", Integer.class);
+        
+        return userId;
+    }
 
     
 //    public static int validateJWT(String jwt) {

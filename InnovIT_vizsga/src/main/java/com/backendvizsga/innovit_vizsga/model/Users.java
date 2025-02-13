@@ -9,6 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -425,6 +432,71 @@ public class Users implements Serializable {
 
     }
     
+    public Boolean changePassword(Integer userId, String newPassword, Integer creator) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("changePassword");
+
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("newPasswordIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("creatorIN", Integer.class, ParameterMode.IN);
+
+            spq.setParameter("idIN", userId);
+            spq.setParameter("newPasswordIN", newPassword);
+            spq.setParameter("creatorIN", creator);
+
+            spq.execute();
+
+            return true;
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return false;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
     
+    public static Boolean sendEmail(String to, boolean ccMe){
+        try{
+            //Email küldő email címe és alkalmazás jelszava
+            final String from = "gergolodri6@gmail.com";
+            final String password = "yixw mqqq jvht corn";
+            
+            //Tulajdonságok beállítása
+            String host = "smtp.gmail.com";
+
+            Properties properties = System.getProperties();
+
+            properties.put("mail.smtp.host", host);
+            properties.put("mail.smtp.port", "465");
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+            
+            //Application password beállítása az email címhez és session config
+            Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(from, password);
+                }
+            });
+            session.setDebug(true);
+            
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject("Teszt email");
+            
+            String msg = "Az lesz az a szöveg ami az emailbe kerül. Ez lehet nagyon hosszú is akár meg lehet html meg lehet bármi más is :)";
+            message.setContent(msg, "text/html;charset=utf-8");
+            
+            Transport.send(message);
+            
+            return true;
+        } catch(Exception ex){
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            return false;
+        }
+    }
 
 }
