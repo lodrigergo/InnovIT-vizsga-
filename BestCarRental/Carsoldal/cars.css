@@ -45,6 +45,12 @@ h1 {
   border-radius: 15px;
   animation: logoFloatIn 1.5s ease-out 0.5s forwards;
 }
+
+.logo:hover {
+  -webkit-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+}
 @keyframes logoFloatIn {
   0% {
     transform: translateX(-100px);
@@ -145,7 +151,7 @@ h1 {
   top: 0;
   right: -450px;
   width: 450px;
-  height: 100%;
+  height: 100vh;
   background-color: #fff;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
   z-index: 2000;
@@ -155,6 +161,7 @@ h1 {
   flex-direction: column;
   padding: 20px;
 }
+
 .login-panel.open,
 .register-panel.open,
 .profile-panel.open {
@@ -589,6 +596,13 @@ h1 {
 #profile-icon {
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+
+#profile-icon:hover {
+  transform: scale(1.1);
+  -webkit-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
 }
 .reset-filters-btn {
   display: block;

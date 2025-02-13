@@ -1,18 +1,16 @@
-/* Alapbeállítások */
-html {
-  scroll-behavior: smooth;
-}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+/* Minden elem alapstilus megadása */
 body {
-  font-family: "Roboto", Arial, sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
+  background-color: #ffffff;
+  background-attachment: fixed;
+  color: #333;
 }
 
 /* NAVBAR */
@@ -40,6 +38,12 @@ body {
   z-index: 100;
   position: relative;
   border-radius: 15px;
+}
+
+.logo:hover {
+  -webkit-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
 }
 
 /* Logo animáció */
@@ -188,10 +192,8 @@ body {
   transition: 0.3s;
 }
 
-/* Panelok (Login, Register, Profile) */
-.login-panel,
-.register-panel,
-.profile-panel {
+/* Login Panel alapstílusok */
+.login-panel {
   position: fixed;
   top: 0;
   right: -450px;
@@ -206,28 +208,27 @@ body {
   flex-direction: column;
   padding: 20px;
 }
-.login-panel.open,
-.register-panel.open,
-.profile-panel.open {
+
+.login-panel.open {
   right: 0;
 }
-.login-header,
-.register-header,
-.profile-header {
+
+.login-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
   margin-bottom: 20px;
 }
-.login-header h2,
-.register-header h2,
-.profile-header h2 {
+
+.login-header h2 {
   font-size: 24px;
   font-weight: bold;
+  margin: 0 auto;
   text-align: center;
+  margin-bottom: 15px;
   color: black;
 }
+
 .close-btn {
   position: absolute;
   top: 10px;
@@ -238,13 +239,16 @@ body {
   color: black;
   transition: transform 0.3s ease, color 0.3s ease;
 }
+
 .close-btn:hover {
   transform: scale(1.4);
   color: red;
 }
+
 .form-group {
   margin-bottom: 10px;
 }
+
 .form-group label {
   display: flex;
   align-items: center;
@@ -253,10 +257,12 @@ body {
   font-weight: bold;
   color: black;
 }
+
 .form-group i {
   margin-right: 10px;
   font-size: 18px;
 }
+
 .form-group input {
   width: 100%;
   padding: 10px;
@@ -266,6 +272,7 @@ body {
   background-color: #f9f9f9;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .forgot-password {
   display: block;
   margin-bottom: 20px;
@@ -274,24 +281,122 @@ body {
   text-decoration: none;
   font-weight: bold;
 }
+
 .forgot-password:hover {
   text-decoration: underline;
 }
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+
+.login-btn:hover {
+  background-color: darkred;
+}
+
+.create-account-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid red;
+}
+
+.create-account-btn:hover {
+  background-color: #f9f9f9;
+  color: black;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1999;
+  display: none;
+}
+
+.overlay.show {
+  display: block;
+}
+
+.error-message {
+  margin-top: 5px;
+  font-size: 14px;
+  color: red;
+}
+
 .btn:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-/* Register Panel (egyszerűsített) */
-.register-panel .form-group {
+/* Register Panel alapstílusok */
+.register-panel {
+  position: fixed;
+  top: 0;
+  right: -450px;
+  width: 450px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.register-panel.open {
+  right: 0;
+}
+
+.register-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
-.register-panel .form-group label {
+
+.register-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.close-btn {
+  font-size: 24px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
   font-size: 18px;
   margin-bottom: 5px;
   display: block;
 }
-.register-panel .form-group input {
+
+.form-group input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -301,7 +406,81 @@ body {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Profile Panel */
+.forgot-password {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.create-account-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid red;
+}
+
+.create-account-btn:hover {
+  background-color: #f9f9f9;
+  color: black;
+}
+
+.login-btn {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+
+.login-btn:hover {
+  background-color: darkred;
+}
+
+.register-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 15px;
+  color: black;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Profilpanel megnyitása animációval */
+.profile-panel {
+  position: fixed;
+  top: 0;
+  right: -450px;
+  width: 450px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+}
+
+.profile-panel.open {
+  right: 0;
+}
+
 .profile-header {
   display: flex;
   flex-direction: column;
@@ -311,6 +490,7 @@ body {
   border-bottom: 1px solid #ddd;
   position: relative;
 }
+
 .profile-header .profile-image {
   width: 100px;
   height: 100px;
@@ -318,10 +498,29 @@ body {
   margin-bottom: 10px;
   background-color: black;
 }
+
+.profile-header h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+  color: black;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
 .profile-content {
   padding: 30px;
   flex: 1;
 }
+
 .profile-content h3 {
   font-size: 18px;
   font-weight: bold;
@@ -329,15 +528,18 @@ body {
   text-align: center;
   color: black;
 }
+
 .profile-content ul {
   list-style: none;
   padding: 0;
   margin-bottom: 20px;
 }
+
 .profile-content ul li {
   margin-bottom: 10px;
   padding: 5px;
 }
+
 .profile-content ul li a {
   display: flex;
   align-items: center;
@@ -345,14 +547,17 @@ body {
   text-decoration: none;
   font-size: 16px;
 }
+
 .profile-content ul li a:hover {
   color: rgb(40, 148, 236);
   transition: 0.3s;
   font-size: 17px;
 }
+
 .profile-content ul li a i {
   margin-right: 10px;
 }
+
 .logout-btn {
   background-color: red;
   color: #fff;
@@ -366,8 +571,43 @@ body {
   transition: background-color 0.3s ease;
   margin-top: 30px;
 }
+
 .logout-btn:hover {
   background-color: darkred;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+#upload-image-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f1f1f1;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#upload-image-btn:hover {
+  background-color: #e0e0e0;
+  border-color: #999;
+}
+
+#upload-image-btn i {
+  font-size: 16px;
+  color: #555;
 }
 
 /* Sidebar (Filter) */
@@ -434,7 +674,6 @@ body {
   background: linear-gradient(135deg, #e60000, #cc0000);
   transform: scale(1.02);
 }
-
 /* Main Content */
 .main-content {
   width: 80%;
@@ -464,14 +703,12 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-color: #888;
 }
-
 /* Reservation Container */
 .reservation-container {
   flex-direction: column;
   padding: 40px 20px;
 }
-
-/* Lépéssor */
+/* Step Indicator */
 .step {
   display: flex;
   justify-content: space-between;
@@ -491,8 +728,7 @@ body {
   background-color: #007bff;
   color: #fff;
 }
-
-/* Reservation fő rész (.main) */
+/* Reservation Main Section */
 .main {
   display: flex;
   gap: 40px;
@@ -536,9 +772,11 @@ body {
 }
 .car-info img {
   width: 100%;
-  height: 20%;
+  height: auto;
+  max-height: 300px;
   border-radius: 10px;
   margin-bottom: 15px;
+  object-fit: contain;
 }
 .car-info .details {
   margin: 15px 0;
@@ -565,14 +803,12 @@ body {
 .reservation-button:hover {
   background-color: #8c0000;
 }
-
-/* Cars Grid – ha szükséges későbbiekben */
+/* Cars Grid */
 .cars-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
-
 /* Pagination */
 .pagination {
   margin-top: 50px;
@@ -599,7 +835,6 @@ body {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
-
 /* Footer */
 .footer {
   background-color: #000;
@@ -656,7 +891,6 @@ body {
   color: #007bff;
   transition: 0.5s;
 }
-
 #profile-icon {
   width: 40px;
   height: 40px;
@@ -664,4 +898,11 @@ body {
   margin-right: 20px;
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+
+#profile-icon:hover {
+  transform: scale(1.1);
+  -webkit-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
 }

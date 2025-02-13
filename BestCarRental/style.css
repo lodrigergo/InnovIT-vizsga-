@@ -41,6 +41,12 @@ body {
   border-radius: 15px;
 }
 
+.logo:hover {
+  -webkit-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+}
+
 /* Logo animáció */
 @keyframes logoFloatIn {
   0% {
@@ -1106,6 +1112,13 @@ body {
 #profile-icon {
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+
+#profile-icon:hover {
+  transform: scale(1.1);
+  -webkit-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 19px -3px rgba(255, 255, 255, 1);
 }
 
 .profile-image-selection {
