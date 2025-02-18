@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Segédfüggvény: Hozzunk létre hibaüzenetet megjelenítő elemet
   function createErrorElement(input) {
     const error = document.createElement("p");
     error.style.color = "red";
@@ -8,13 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
     return error;
   }
 
-  // Közös elemek, amelyekre több funkció is szüksége van
   const overlay = document.getElementById("overlay");
   const loginPanel = document.getElementById("login-panel");
   const registerPanel = document.getElementById("register-panel");
   const profilePanel = document.getElementById("profile-panel");
 
-  // Panelok bezárása
   function closeAllPanels() {
     loginPanel.classList.remove("open");
     registerPanel.classList.remove("open");
@@ -23,9 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   overlay.addEventListener("click", closeAllPanels);
 
-  /* =============================
-       BEJELENTKEZÉS SZEKCIÓ
-     ============================= */
   function setupLogin() {
     const loginBtn = document.querySelector(".login-btn");
     const closeLoginPanel = document.getElementById("close-login-panel");
@@ -33,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
 
-    // Hibakezelő elemek létrehozása a beviteli mezőkhöz
     const emailError = createErrorElement(emailInput);
     const passwordError = createErrorElement(passwordInput);
 
@@ -49,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
 
-      // Email validáció
       if (!email) {
         emailError.textContent = "Kérlek add meg az email címed!";
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -58,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
         emailError.textContent = "";
       }
 
-      // Jelszó validáció
       if (!password) {
         passwordError.textContent = "Kérlek add meg a jelszavad!";
       } else if (password.length < 8 || password.length > 20) {
@@ -70,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
         passwordError.textContent = "";
       }
 
-      // Ha van hiba, nem megyünk tovább
       if (emailError.textContent || passwordError.textContent) {
         return;
       }
@@ -90,17 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
           localStorage.setItem("jwt", data.result.jwt);
           localStorage.setItem("username", data.result.name);
 
-          // Frissítjük a profilpanel felhasználónév megjelenítését
           const usernameDisplay = profilePanel.querySelector("h2");
           usernameDisplay.textContent = data.result.name;
           closeAllPanels();
 
-          // Frissítjük a gombok láthatóságát
           loginBtn.style.display = "none";
           const profileIcon = document.getElementById("profile-icon");
           profileIcon.style.display = "block";
 
-          // Betöltjük az esetleg korábban elmentett profilképet
           const profileImageKey = "profileImage_" + data.result.name;
           const savedImage = localStorage.getItem(profileImageKey);
           if (savedImage) {
@@ -112,6 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
             profileIcon.src = savedImage;
           }
           alert("Üdvözöllek, " + data.result.name + "!");
+
+          showLoader();
         } else {
           passwordError.textContent = "Hibás email vagy jelszó!";
         }
@@ -123,9 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   setupLogin();
 
-  /* =============================
-       PROFIL PANEL SZEKCIÓ
-     ============================= */
   function setupProfile() {
     const profileIcon = document.getElementById("profile-icon");
     const closeProfilePanel = document.getElementById("close-profile-panel");
@@ -151,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Sikeresen kijelentkeztél.");
     });
 
-    // Ha már be van jelentkezve a felhasználó, az UI frissítése
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       const usernameDisplay = profilePanel.querySelector("h2");
@@ -173,9 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   setupProfile();
 
-  /* =============================
-       REGISZTRÁCIÓ SZEKCIÓ
-     ============================= */
   function setupRegistration() {
     const createAccountBtn = document.querySelector(".create-account-btn");
     const backToLoginBtn = document.querySelector(".register-panel .login-btn");
@@ -211,7 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
       personalId: false,
     };
 
-    // Bluresemények: jelezzük, ha a mezőt érintették
     usernameInput.addEventListener("blur", () => {
       touched.username = true;
       validateRegistration();
@@ -331,9 +312,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   setupRegistration();
 
-  /* =============================
-       PROFILKÉP VÁLASZTÁS
-     ============================= */
   function setupProfileImageSelection() {
     document.querySelectorAll(".profile-option").forEach((option) => {
       option.addEventListener("click", function () {
@@ -355,4 +333,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
   setupProfileImageSelection();
+
+  function showLoader() {
+    const loaderOverlay = document.getElementById("loader-overlay");
+    loaderOverlay.style.display = "flex";
+    setTimeout(() => {
+      loaderOverlay.style.display = "none";
+    }, 1500);
+  }
 });

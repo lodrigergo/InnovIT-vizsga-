@@ -32,11 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
     return error;
   }
 
-  // Error elements for login
   const emailError = createErrorElement(emailInput);
   const passwordError = createErrorElement(passwordInput);
 
-  // Elements and error elements for registration
   const usernameInput = document.getElementById("username");
   const registerEmailInput = document.getElementById("register-email");
   const registerPasswordInput = document.getElementById("register-password");
@@ -47,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const registerPasswordError = createErrorElement(registerPasswordInput);
   const personalIdError = createErrorElement(personalIdInput);
 
-  // Open login panel on login button click (from navbar)
   loginBtn.addEventListener("click", function () {
     loginPanel.classList.add("open");
     overlay.classList.add("show");
@@ -74,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
     overlay.classList.remove("show");
   });
 
-  // Navigation between login and register panels (from navbar modals)
   createAccountBtn.addEventListener("click", function () {
     loginPanel.classList.remove("open");
     registerPanel.classList.add("open");
@@ -85,17 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
     loginPanel.classList.add("open");
   });
 
-  // Additional event listeners for the reservation page login-section buttons.
-  // This assumes that within the reservation page, the login-section has two buttons:
-  // the first for "Create Account" and the second for "Login".
   const reservationButtons = document.querySelectorAll(".login-section .btn");
   if (reservationButtons.length >= 2) {
-    // When "Create Account" is clicked in the reservation section, open the register-panel.
     reservationButtons[0].addEventListener("click", function () {
       registerPanel.classList.add("open");
       overlay.classList.add("show");
     });
-    // When "Login" is clicked in the reservation section, open the login-panel.
     reservationButtons[1].addEventListener("click", function () {
       loginPanel.classList.add("open");
       overlay.classList.add("show");
@@ -158,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
           loginSection.innerHTML = "<h3>No vehicle reserved yet.</h3>";
         }
         alert("Üdvözöllek, " + data.result.name + "!");
+        showLoader();
       } else {
         passwordError.textContent = "Hibás email vagy jelszó!";
       }
@@ -167,7 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // LOGOUT: Remove token and username, restore login-section content without a page refresh.
   logoutBtn.addEventListener("click", function () {
     localStorage.removeItem("jwt");
     localStorage.removeItem("username");
@@ -328,7 +319,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Profile image selection
   document.querySelectorAll(".profile-option").forEach((option) => {
     option.addEventListener("click", function () {
       const selectedImage = this.getAttribute("data-image");
@@ -340,4 +330,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  function showLoader() {
+    const loaderOverlay = document.getElementById("loader-overlay");
+    loaderOverlay.style.display = "flex";
+    setTimeout(() => {
+      loaderOverlay.style.display = "none";
+    }, 1500);
+  }
 });
