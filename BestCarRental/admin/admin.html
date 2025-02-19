@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Best Car Rental</title>
+    <link rel="stylesheet" href="admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Oldal fejléc -->
+    <header class="admin-header">
+      <div class="container">
+        <h1>Admin Dashboard</h1>
+        <nav>
+          <ul class="nav-links">
+            <li>
+              <a href="#users"><i class="fas fa-users"></i> Felhasználók</a>
+            </li>
+            <li>
+              <a href="#cars"><i class="fas fa-car"></i> Autók</a>
+            </li>
+            <li>
+              <a href="#bookings"
+                ><i class="fas fa-calendar-alt"></i> Foglalások</a
+              >
+            </li>
+            <li>
+              <a href="#payments"
+                ><i class="fas fa-credit-card"></i> Fizetések</a
+              >
+            </li>
+            <li>
+              <a href="#" id="logout-btn"
+                ><i class="fas fa-sign-out-alt"></i> Kilépés</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Fő tartalom -->
+    <main class="admin-content">
+      <!-- Felhasználók kezelése -->
+      <section id="users" class="admin-section">
+        <h2>Felhasználók kezelése</h2>
+        <button id="load-users-btn" class="action-btn">
+          Felhasználók betöltése
+        </button>
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Szerep</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dinamikus tartalom ide -->
+            <tr>
+              <td>1</td>
+              <td>admin</td>
+              <td>admin@carrental.hu</td>
+              <td>Admin</td>
+              <td>
+                <button class="edit-btn">Szerkesztés</button>
+                <button class="delete-btn">Törlés</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Autók kezelése -->
+      <section id="cars" class="admin-section">
+        <h2>Autók kezelése</h2>
+        <button id="load-cars-btn" class="action-btn">Autók betöltése</button>
+        <table id="cars-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Márka</th>
+              <th>Típus</th>
+              <th>Évjárat</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dinamikus tartalom ide -->
+            <tr>
+              <td>101</td>
+              <td>Toyota</td>
+              <td>Corolla</td>
+              <td>2021</td>
+              <td>
+                <button class="edit-btn">Szerkesztés</button>
+                <button class="delete-btn">Törlés</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Foglalások kezelése -->
+      <section id="bookings" class="admin-section">
+        <h2>Foglalások kezelése</h2>
+        <button id="load-bookings-btn" class="action-btn">
+          Foglalások betöltése
+        </button>
+        <table id="bookings-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User ID</th>
+              <th>Autó ID</th>
+              <th>Kezdés</th>
+              <th>Befejezés</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dinamikus tartalom ide -->
+            <tr>
+              <td>501</td>
+              <td>2</td>
+              <td>101</td>
+              <td>2025-03-01</td>
+              <td>2025-03-05</td>
+              <td>
+                <button class="view-btn">Megtekintés</button>
+                <button class="delete-btn">Törlés</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Fizetések kezelése -->
+      <section id="payments" class="admin-section">
+        <h2>Fizetések kezelése</h2>
+        <button id="load-payments-btn" class="action-btn">
+          Fizetések betöltése
+        </button>
+        <table id="payments-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Foglalás ID</th>
+              <th>Összeg</th>
+              <th>Státusz</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dinamikus tartalom ide -->
+            <tr>
+              <td>801</td>
+              <td>501</td>
+              <td>25000 Ft</td>
+              <td>Paiad</td>
+              <td>
+                <button class="edit-btn">Szerkesztés</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer class="admin-footer">
+      <div class="container">
+        <p>&copy; 2025 Best Car Rental - Admin Dashboard</p>
+      </div>
+    </footer>
+    <script></script>
+  </body>
+</html>
