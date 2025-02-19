@@ -11,7 +11,7 @@
     />
   </head>
   <body>
-    <!-- Oldal fejléc -->
+    <!-- Fejléc -->
     <header class="admin-header">
       <div class="container">
         <h1>Admin Dashboard</h1>
@@ -29,12 +29,7 @@
               >
             </li>
             <li>
-              <a href="#payments"
-                ><i class="fas fa-credit-card"></i> Fizetések</a
-              >
-            </li>
-            <li>
-              <a href="#" id="logout-btn"
+              <a href="../index.html" id="logout-btn"
                 ><i class="fas fa-sign-out-alt"></i> Kilépés</a
               >
             </li>
@@ -77,7 +72,6 @@
         </table>
       </section>
 
-      <!-- Autók kezelése -->
       <section id="cars" class="admin-section">
         <h2>Autók kezelése</h2>
         <button id="load-cars-btn" class="action-btn">Autók betöltése</button>
@@ -87,22 +81,20 @@
               <th>ID</th>
               <th>Márka</th>
               <th>Típus</th>
-              <th>Évjárat</th>
+              <th>Rendszám</th>
+              <th>Év</th>
+              <th>Üzemanyag</th>
+              <th>Napidíj</th>
+              <th>Váltó</th>
+              <th>Ajtók</th>
+              <th>AC</th>
+              <th>Ülések</th>
+              <th>Kép</th>
               <th>Műveletek</th>
             </tr>
           </thead>
           <tbody>
-            <!-- Dinamikus tartalom ide -->
-            <tr>
-              <td>101</td>
-              <td>Toyota</td>
-              <td>Corolla</td>
-              <td>2021</td>
-              <td>
-                <button class="edit-btn">Szerkesztés</button>
-                <button class="delete-btn">Törlés</button>
-              </td>
-            </tr>
+            <!-- Dinamikusan töltődik be -->
           </tbody>
         </table>
       </section>
@@ -141,43 +133,92 @@
         </table>
       </section>
 
-      <!-- Fizetések kezelése -->
-      <section id="payments" class="admin-section">
-        <h2>Fizetések kezelése</h2>
-        <button id="load-payments-btn" class="action-btn">
-          Fizetések betöltése
-        </button>
-        <table id="payments-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Foglalás ID</th>
-              <th>Összeg</th>
-              <th>Státusz</th>
-              <th>Műveletek</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dinamikus tartalom ide -->
-            <tr>
-              <td>801</td>
-              <td>501</td>
-              <td>25000 Ft</td>
-              <td>Paiad</td>
-              <td>
-                <button class="edit-btn">Szerkesztés</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <section id="add-car" class="admin-section">
+        <h2>Autó hozzáadása</h2>
+        <form id="add-car-form">
+          <div class="form-group">
+            <label for="car-brand">Márka:</label>
+            <input type="text" id="car-brand" name="brand" required />
+          </div>
+          <div class="form-group">
+            <label for="car-model">Típus:</label>
+            <input type="text" id="car-model" name="model" required />
+          </div>
+          <div class="form-group">
+            <label for="car-licensePlate">Rendszám:</label>
+            <input
+              type="text"
+              id="car-licensePlate"
+              name="licensePlate"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-year">Év:</label>
+            <input
+              type="text"
+              id="car-year"
+              name="year"
+              placeholder="YYYY-MM-DD"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-fuelType">Üzemanyag:</label>
+            <input type="text" id="car-fuelType" name="fuelType" required />
+          </div>
+          <div class="form-group">
+            <label for="car-price">Napidíj:</label>
+            <input
+              type="number"
+              step="0.01"
+              id="car-price"
+              name="price"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-transmission">Váltó:</label>
+            <input
+              type="text"
+              id="car-transmission"
+              name="transmission"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-doors">Ajtók száma:</label>
+            <input type="number" id="car-doors" name="doors" required />
+          </div>
+          <div class="form-group">
+            <label for="car-ac">AC:</label>
+            <input type="checkbox" id="car-ac" name="AC" />
+          </div>
+          <div class="form-group">
+            <label for="car-seat">Ülések száma:</label>
+            <input type="number" id="car-seat" name="seat" required />
+          </div>
+          <div class="form-group">
+            <label for="car-image">Kép URL:</label>
+            <input type="text" id="car-image" name="image" required />
+          </div>
+          <div class="form-group full-width">
+            <button type="button" id="add-car-btn" class="action-btn">
+              Autó hozzáadása
+            </button>
+          </div>
+        </form>
       </section>
     </main>
 
+    <!-- Lábléc -->
     <footer class="admin-footer">
       <div class="container">
         <p>&copy; 2025 Best Car Rental - Admin Dashboard</p>
       </div>
     </footer>
-    <script></script>
+
+    <!-- JavaScript példa: Eseménykezelők -->
+    <script src="admin.js"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-/* Alapbeállítások */
+/* Alap beállítások */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -159,4 +159,71 @@ table tbody tr:nth-child(even) {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* Autó hozzáadás űrlap stílusa */
+#add-car {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#add-car h2 {
+  margin-bottom: 15px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 5px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#add-car-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+#add-car-form .form-group {
+  flex: 1 0 calc(50% - 15px);
+  display: flex;
+  flex-direction: column;
+}
+
+#add-car-form .form-group.full-width {
+  flex: 1 0 100%;
+}
+
+#add-car-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#add-car-form input[type="text"],
+#add-car-form input[type="number"],
+#add-car-form input[type="date"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#add-car-form input[type="checkbox"] {
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+#add-car-form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#add-car-form button:hover {
+  background-color: #0056b3;
 }
