@@ -5,6 +5,7 @@
 package com.backendvizsga.innovit_vizsga.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,6 +125,16 @@ public class Users implements Serializable {
         this.email = email;
         this.password = password;
         this.personalId = personalId;
+    }
+     public Users( int id,String name, String email, String password, String personalId, boolean isAdmin,boolean isDeleted ,Date deletedAt) {
+        this.id=id;
+         this.name = name;
+        this.email = email;
+        this.password = password;
+        this.personalId = personalId;
+        this.isAdmin=isAdmin;
+        this.isDeleted=isDeleted;
+        this.deletedAt=deletedAt;
     }
 
     public Users(Integer id) {
@@ -259,41 +270,93 @@ public class Users implements Serializable {
         return "com.backendvizsga.innovit_vizsga.model.Users[ id=" + id + " ]";
     }
 
-   public Users login(String email, String password) {
-    EntityManager em = emf.createEntityManager();
-    try {
-        StoredProcedureQuery spq = em.createStoredProcedureQuery("login");
-        spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-        spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
-        spq.registerStoredProcedureParameter("resultOUT", Boolean.class, ParameterMode.OUT);
-        spq.registerStoredProcedureParameter("nameOUT", String.class, ParameterMode.OUT);  // A név paraméter
+  public Users login_old(String email, String password) {
+        EntityManager em = emf.createEntityManager();
 
-        spq.setParameter("emailIN", email);
-        spq.setParameter("passwordIN", password);
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("login");
 
-        // Eljárás futtatása
-        spq.execute();
+            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
 
-        // Kimeneti paraméterek lekérése
-        Boolean resultOUT = (Boolean) spq.getOutputParameterValue("resultOUT");
-        String nameOUT = (String) spq.getOutputParameterValue("nameOUT");  // A név lekérése
+            spq.setParameter("emailIN", email);
+            spq.setParameter("passwordIN", password);
 
-        if (resultOUT) {
-            // Ha a resultOUT true, akkor sikeres bejelentkezés
-            return new Users(nameOUT);  // Felhasználó neve a nameOUT változóban
+            spq.execute();
+
+            List<Object[]> resultList = spq.getResultList();
+            Users toReturn = new Users();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for (Object[] o : resultList) {
+                Users u = new Users(
+                        Integer.valueOf(o[0].toString()),
+                        o[1].toString(),
+                        o[2].toString(),
+                        o[3].toString(),
+                        o[4].toString(),
+                        
+                        Boolean.parseBoolean(o[6].toString()),
+                        Boolean.parseBoolean(o[7].toString()),
+                     
+                        o[8] == null ? null : formatter.parse(o[8].toString())
+                );
+                toReturn = u;
+            }
+
+            return toReturn;
+        } catch (Exception ex) {
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
         }
-
-        // Ha resultOUT false, akkor nincs megfelelő felhasználó
-        return null;
-
-    } catch (Exception e) {
-        System.err.println("Hiba: " + e.getLocalizedMessage());
-        return null;
-    } finally {
-        em.clear();
-        em.close();
     }
-}
+
+    public Users login(String email, String password) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("login");
+
+            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
+
+            spq.setParameter("emailIN", email);
+            spq.setParameter("passwordIN", password);
+
+            spq.execute();
+
+            List<Object[]> resultList = spq.getResultList();
+            Users toReturn = new Users();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for (Object[] o : resultList) {
+                Users u = new Users(
+                        Integer.valueOf(o[0].toString()),
+                        o[1].toString(),
+                        o[2].toString(),
+                        o[3].toString(),
+                        o[4].toString(),
+                        
+                        Boolean.parseBoolean(o[6].toString()),
+                        Boolean.parseBoolean(o[7].toString()),
+                     
+                        o[8] == null ? null : formatter.parse(o[8].toString())
+                );
+                toReturn = u;
+            }
+
+            return toReturn;
+
+        } catch (NumberFormatException | ParseException e) {
+            System.err.println("Hiba: " + e.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
+
 
 
 

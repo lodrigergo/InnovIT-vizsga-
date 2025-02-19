@@ -68,13 +68,16 @@ public class UserControllerResource {
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.APPLICATION_JSON)
     public Response login(String bodyString) {
         JSONObject body = new JSONObject(bodyString);
-        
+        Users u = new Users(
+                body.getString("name")
+             
+        );
+
         JSONObject obj = layer.login(body.getString("email"), body.getString("password"));
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
-    }   
+    }
     
     @GET
     @Path("getAllUser")

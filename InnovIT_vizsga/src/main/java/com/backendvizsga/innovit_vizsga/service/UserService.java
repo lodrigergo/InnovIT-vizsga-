@@ -50,46 +50,50 @@ public class UserService {
         return hasLowercase && hasUppercase && hasDigit && hasSpecialChar;
     }
     
-    public Users login_old(String email, String password){
+  
+    public Users login_old(String email, String password) {
         return layer.login(email, password);
     }
-    
+
     public JSONObject login(String email, String password) {
-    JSONObject toReturn = new JSONObject();
-    String status = "success";
-    int statusCode = 200;
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
 
-    if (isValidEmail(email)) {
-        Users modelResult = layer.login(email, password); // Küldjük simán, hash nélkül
+        if (isValidEmail(email)) {
+            Users modelResult = layer.login(email, password);
 
-        if (modelResult == null) { 
-            status = "Email and password is not matching";
-            statusCode = 401;
-        } else { 
-            System.out.println("Login success: " + modelResult.getName());
-            status = "success";
-            statusCode = 200;
+            if (modelResult == null) {
+                status = "modelException";
+                statusCode = 500;
+            } else {
+                if (modelResult.getId() == null) {
+                    status = "userNotFound";
+                    statusCode = 417;
+                } else {
+                    JSONObject result = new JSONObject();
+                    result.put("id", modelResult.getId());
+                    result.put("name", modelResult.getName());
+                    result.put("email", modelResult.getEmail());
+                    result.put("password", modelResult.getPassword());
+                    result.put("personalId", modelResult.getPersonalId());
+                    result.put("isAdmin", modelResult.getIsAdmin());
+                    result.put("isDeleted", modelResult.getIsDeleted());
+                    result.put("jwt", JWT.createJWT(modelResult));
 
-            // Válasz felépítése
-            JSONObject result = new JSONObject();
-            result.put("id", modelResult.getId());
-            result.put("name", modelResult.getName());
-            result.put("email", modelResult.getEmail());
-            result.put("jwt", JWT.createJWT(modelResult)); // JWT generálása
+                    toReturn.put("result", result);
+                }
+            }
 
-            toReturn.put("result", result);
+        } else {
+            status = "invalidEmail";
+            statusCode = 417;
         }
-    } else {
-        status = "Invalid email format";
-        statusCode = 400;
+
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
     }
-
-    toReturn.put("status", status);
-    toReturn.put("statusCode", statusCode); 
-
-    return toReturn;
-}
-
 
 
 
