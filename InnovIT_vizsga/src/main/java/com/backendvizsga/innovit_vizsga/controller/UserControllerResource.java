@@ -70,12 +70,13 @@ public class UserControllerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(String bodyString) {
         JSONObject body = new JSONObject(bodyString);
+
         Users u = new Users(
                 body.getString("name")
-             
+               
         );
 
-        JSONObject obj = layer.login(body.getString("email"), body.getString("password"));
+        JSONObject obj = layer.registerUser(u);
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
