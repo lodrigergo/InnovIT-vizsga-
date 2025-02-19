@@ -54,22 +54,72 @@ public class JWT {
     }
 
     public static int validateJWT(String jwt) {
-        try {
-            Jws<Claims> result;
-            result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret)).parseClaimsJws(jwt);
-            int id = result.getBody().get("id", Integer.class);
-            Users u = new Users(id);
+    try {
+        Jws<Claims> result;
+        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret)).parseClaimsJws(jwt);
 
-            if (u.getId() == id) {
-                return 1;
-            } else {
-                return 2; //Ez akkor történik amikor egy érvénytelen tokent akarunk validáltatni
-            }
-        } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | WeakKeyException | IllegalArgumentException e) {
-            System.err.println("JWT validation error: " + e.getLocalizedMessage());
-            return 3; //Akkor történik ha lejárt a JWT-k
+        // Ellenőrizzük, hogy van-e id a tokenben
+        Integer id = result.getBody().get("id", Integer.class);
+        if (id == null) {
+            System.err.println("JWT validation error: 'id' is missing in the token.");
+            return 4; // 'id' hiányzik
         }
 
+        Users u = new Users(id);
+
+        if (u.getId() == id) {
+            return 1;
+        } else {
+            return 2; // Érvénytelen token
+        }
+    } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | WeakKeyException | IllegalArgumentException e) {
+        System.err.println("JWT validation error: " + e.getLocalizedMessage());
+        return 3; // Ha lejárt a token
     }
+}
+    
+    public static Boolean isAdmin(String jwt){
+        Jws<Claims> result;
+        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret)).parseClaimsJws(jwt);
+        
+        Boolean isAdmin = result.getBody().get("isAdmin", Boolean.class);
+        
+        return isAdmin;
+    }
+    
+    public static Integer getUserIdByToken(String jwt){
+        Jws<Claims> result;
+        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret)).parseClaimsJws(jwt);
+        
+        int userId = result.getBody().get("id", Integer.class);
+        
+        return userId;
+    }
+
+    
+//    public static int validateJWT(String jwt) {
+//    try {
+//        Jws<Claims> result;
+//        result = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret)).parseClaimsJws(jwt);
+//
+//        // Ellenőrizzük, hogy van-e id a tokenben
+//        Integer id = result.getBody().get("id", Integer.class);
+//        if (id == null) {
+//            System.err.println("JWT validation error: 'id' is missing in the token.");
+//            return 4; // 'id' hiányzik
+//        }
+//
+//        Users u = new Users(id);
+//
+//        if (u.getId() == id) {
+//            return 1;
+//        } else {
+//            return 2; // Érvénytelen token
+//        }
+//    } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | WeakKeyException | IllegalArgumentException e) {
+//        System.err.println("JWT validation error: " + e.getLocalizedMessage());
+//        return 3; // Ha lejárt a token
+//    }
+//}
 
 }

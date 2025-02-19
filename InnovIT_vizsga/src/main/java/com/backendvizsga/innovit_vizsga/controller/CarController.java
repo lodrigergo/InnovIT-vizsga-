@@ -4,6 +4,7 @@
  */
 package com.backendvizsga.innovit_vizsga.controller;
 
+import com.backendvizsga.innovit_vizsga.config.JWT;
 import com.backendvizsga.innovit_vizsga.model.Cars;
 import com.backendvizsga.innovit_vizsga.model.Users;
 import com.backendvizsga.innovit_vizsga.service.CarService;
@@ -18,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -359,5 +361,24 @@ public class CarController {
         
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
                 
+    }
+    
+    @GET
+    @Path("getAllCarsPage")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getAllCarsPage(@HeaderParam("token") String jwt, @QueryParam("page") int page, @QueryParam("amount") int amount) {
+        int isValid = JWT.validateJWT(jwt);
+
+        if (isValid == 1) {
+            
+            JSONObject obj = layer.getAllCarsPage(page, amount);
+            
+            return Response.status(200).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+        } else if (isValid == 2) {
+            return Response.status(498).entity("InvalidToken").type(MediaType.APPLICATION_JSON).build();
+        } else {
+            return Response.status(401).entity("TokenExpired").type(MediaType.APPLICATION_JSON).build();
+        }
+
     }
 }

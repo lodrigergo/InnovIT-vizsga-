@@ -170,6 +170,10 @@ public class CarService {
             return false;
         }
     }
+    
+     public JSONObject getAllCarsPage(int page, int amount){
+        return layer.getAllCarsPage(page, amount);
+    }
      
      
     
