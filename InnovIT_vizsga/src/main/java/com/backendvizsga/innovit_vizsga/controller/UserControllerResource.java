@@ -125,7 +125,7 @@ public class UserControllerResource {
     }
 
     
-     @GET
+    @GET
     @Path("getAllAdmin")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllAdmin() {

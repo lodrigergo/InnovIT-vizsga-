@@ -55,56 +55,39 @@ public class UserService {
     }
     
     public JSONObject login(String email, String password) {
-        JSONObject toReturn = new JSONObject();
-        String status = "error";
-        int statusCode = 401;
+    JSONObject toReturn = new JSONObject();
+    String status = "success";
+    int statusCode = 200;
 
-        if (isValidEmail(email)) {
-            Users modelResult = layer.login(email, hashPassword(password));
+    if (isValidEmail(email)) {
+        Users modelResult = layer.login(email, password); // Küldjük simán, hash nélkül
 
-            if (modelResult == null) {
-                status = "Invalid email or password";
-                statusCode = 401;
-            } else {
-                System.out.println("Login success: " + modelResult.getName());
-                status = "success";
-                statusCode = 200;
+        if (modelResult == null) { 
+            status = "Email and password is not matching";
+            statusCode = 401;
+        } else { 
+            System.out.println("Login success: " + modelResult.getName());
+            status = "success";
+            statusCode = 200;
 
-                JSONObject result = new JSONObject();
-                result.put("id", modelResult.getId());
-                result.put("name", modelResult.getName());
-                result.put("email", modelResult.getEmail());        
-                result.put("jwt", JWT.createJWT(modelResult));
+            // Válasz felépítése
+            JSONObject result = new JSONObject();
+            result.put("id", modelResult.getId());
+            result.put("name", modelResult.getName());
+            result.put("email", modelResult.getEmail());
+            result.put("jwt", JWT.createJWT(modelResult)); // JWT generálása
 
-                toReturn.put("result", result);
-}
-        } else {
-            status = "Invalid email format";
-            statusCode = 400;
+            toReturn.put("result", result);
         }
-
-        toReturn.put("status", status);
-        toReturn.put("statusCode", statusCode);
-
-        return toReturn;
+    } else {
+        status = "Invalid email format";
+        statusCode = 400;
     }
 
-    private String hashPassword(String password) {
-    try {
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
-        byte[] hash = md.digest(password.getBytes());
-        StringBuilder hexString = new StringBuilder();
+    toReturn.put("status", status);
+    toReturn.put("statusCode", statusCode); 
 
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-
-        return hexString.toString();
-    } catch (NoSuchAlgorithmException e) {
-        throw new RuntimeException("Error hashing password", e);
-    }
+    return toReturn;
 }
 
 
