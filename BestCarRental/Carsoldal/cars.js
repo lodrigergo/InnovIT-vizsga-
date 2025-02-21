@@ -342,3 +342,197 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1500);
   }
 });
+
+// Filter szűrési logika
+function filterCars() {
+  // Összegyűjtjük a kiválasztott filtereket csoportonként
+  const filterGroups = document.querySelectorAll(".sidebar .filter-group");
+  let selectedFilters = {
+    brand: [],
+    persons: [],
+    price: [],
+    year: [],
+    fuel: [],
+  };
+
+  filterGroups.forEach((group) => {
+    const groupName = group.querySelector("h3").textContent.toLowerCase();
+    const checkedValues = Array.from(
+      group.querySelectorAll('input[type="checkbox"]:checked')
+    ).map((cb) => cb.id);
+
+    if (groupName.includes("brand")) {
+      selectedFilters.brand = checkedValues;
+    } else if (groupName.includes("persons")) {
+      selectedFilters.persons = checkedValues;
+    } else if (groupName.includes("price")) {
+      selectedFilters.price = checkedValues;
+    } else if (groupName.includes("year")) {
+      selectedFilters.year = checkedValues;
+    } else if (groupName.includes("fuel")) {
+      selectedFilters.fuel = checkedValues;
+    }
+  });
+
+  // Minden autó kártya végigellenőrzése
+  const carCards = document.querySelectorAll(".car-card");
+  carCards.forEach((card) => {
+    const titleText = card.querySelector("h3").textContent.trim();
+    // Brand: feltételezzük, hogy a cím első szava a márka
+    const brand = titleText.split(" ")[0];
+    // Year: keresünk egy 4 számjegyű számot
+    const yearMatch = titleText.match(/\b(20\d{2})\b/);
+    const year = yearMatch ? yearMatch[0] : "";
+    // Fuel: feltételezzük, hogy a cím utolsó szava a fuel típus
+    const fuel = titleText.split(" ").pop();
+
+    // Persons: keresünk olyan elemet, amely tartalmazza a "fa-user" ikont
+    let persons = "";
+    const detailsDivs = card.querySelectorAll(".details div");
+    detailsDivs.forEach((div) => {
+      if (div.innerHTML.includes("fa-user")) {
+        persons = div.textContent.trim();
+      }
+    });
+
+    // Price: a .price elem szövegéből vesszük az ár számot
+    const priceText = card.querySelector(".price").textContent;
+    const priceMatch = priceText.match(/\d+/);
+    const price = priceMatch ? parseInt(priceMatch[0]) : 0;
+
+    // Alapfeltétel: az autó látszani fog, ha minden filternek megfelel
+    let visible = true;
+
+    // Brand szűrés: ha van bejelölt márka, akkor a kártya márkája benne kell legyen
+    if (
+      selectedFilters.brand.length > 0 &&
+      !selectedFilters.brand.includes(brand)
+    ) {
+      visible = false;
+    }
+
+    // Persons szűrés
+    if (
+      selectedFilters.persons.length > 0 &&
+      !selectedFilters.persons.includes(persons)
+    ) {
+      visible = false;
+    }
+
+    // Year szűrés
+    if (
+      selectedFilters.year.length > 0 &&
+      !selectedFilters.year.includes(year)
+    ) {
+      visible = false;
+    }
+
+    // Fuel szűrés
+    if (
+      selectedFilters.fuel.length > 0 &&
+      !selectedFilters.fuel.includes(fuel)
+    ) {
+      visible = false;
+    }
+
+    // Price szűrés: itt minden bejelölt ár tartomány közül legalább egynek meg kell felelnie
+    if (selectedFilters.price.length > 0) {
+      let matchPrice = false;
+      selectedFilters.price.forEach((range) => {
+        // Az id például: "10€-30€" – ebből a minimumot és maximumot vesszük ki
+        const numbers = range.split("€-");
+        if (numbers.length === 2) {
+          const min = parseInt(numbers[0]);
+          const max = parseInt(numbers[1].replace("€", ""));
+          if (price >= min && price <= max) {
+            matchPrice = true;
+          }
+        }
+      });
+      if (!matchPrice) {
+        visible = false;
+      }
+    }
+
+    // Végül a kártya láthatóságát beállítjuk
+    card.style.display = visible ? "block" : "none";
+  });
+}
+
+// Loader effekt a filterek alkalmazása előtt
+function applyFiltersWithLoader() {
+  const loaderOverlay = document.getElementById("loader-overlay");
+  loaderOverlay.style.display = "flex";
+
+  setTimeout(() => {
+    filterCars();
+    loaderOverlay.style.display = "none";
+  }, 300);
+}
+
+// Eseményfigyelők minden filter checkbox-hoz
+const filterCheckboxes = document.querySelectorAll(
+  '.sidebar input[type="checkbox"]'
+);
+filterCheckboxes.forEach((checkbox) => {
+  // Eredeti filterCars() helyett az új applyFiltersWithLoader()-t hívjuk
+  checkbox.addEventListener("change", applyFiltersWithLoader);
+});
+
+// Reset gomb kezelése: törli a bejelöléseket, majd újraszűri a kártyákat a loader effekt segítségével
+document.querySelector(".reset-filters-btn").addEventListener("click", () => {
+  filterCheckboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+  applyFiltersWithLoader();
+});
+
+// Globális változó, ami tárolja a jelenleg kinyitott kártyát (ha van)
+let currentlyExpandedCard = null;
+
+// Segédfüggvény a kártya bezárásához
+function collapseCard(card) {
+  if (!card) return;
+  const detailsPanel = card.querySelector(".details-panel");
+  detailsPanel.classList.remove("active");
+  card.classList.remove("expanded");
+  // A "Check out our car" gomb újra láthatóvá tétele
+  const detailsBtn = card.querySelector(".details-btn");
+  if (detailsBtn) {
+    detailsBtn.style.display = "block";
+  }
+}
+
+// Eseményfigyelő a "Check out our car" gombokhoz
+document.querySelectorAll(".details-btn").forEach((button) => {
+  button.addEventListener("click", function (e) {
+    e.stopPropagation(); // Megakadályozza, hogy a globális click esemény azonnal bezárja a kártyát
+
+    const card = this.closest(".car-card");
+
+    // Ha már van kinyitott kártya, és az nem ez, bezárjuk az előzőt
+    if (currentlyExpandedCard && currentlyExpandedCard !== card) {
+      collapseCard(currentlyExpandedCard);
+    }
+
+    // Toggle: ha már kinyitva van, akkor bezárjuk, ellenkező esetben kinyitjuk
+    if (card.classList.contains("expanded")) {
+      collapseCard(card);
+      currentlyExpandedCard = null;
+    } else {
+      const detailsPanel = card.querySelector(".details-panel");
+      detailsPanel.classList.add("active");
+      card.classList.add("expanded");
+      this.style.display = "none";
+      currentlyExpandedCard = card;
+    }
+  });
+});
+
+// Globális eseményfigyelő: ha bárhová kattintanak az oldalon, ami nem az aktuális kinyitott kártyán belül van, akkor bezárjuk azt
+document.addEventListener("click", function (e) {
+  if (currentlyExpandedCard && !currentlyExpandedCard.contains(e.target)) {
+    collapseCard(currentlyExpandedCard);
+    currentlyExpandedCard = null;
+  }
+});

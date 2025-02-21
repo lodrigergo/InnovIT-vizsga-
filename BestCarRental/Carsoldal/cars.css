@@ -427,6 +427,13 @@ h1 {
   transform: translateY(-10px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
+
+.car-card.expanded {
+  transform: scale(1.1);
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
 .car-card img {
   width: 100%;
   height: 250px;
