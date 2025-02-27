@@ -77,8 +77,7 @@ public class Cars implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "year")
-    @Temporal(TemporalType.DATE)
-    private Date year;
+    private Integer year;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -161,7 +160,7 @@ public class Cars implements Serializable {
         }
     }
 
-    public Cars(Integer id, String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image, boolean isDeleted, Date createdAt) {
+    public Cars(Integer id, String brand, String model, String licensePlate, Integer year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image, boolean isDeleted, Date createdAt) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -178,7 +177,7 @@ public class Cars implements Serializable {
         this.createdAt = createdAt;
     }
     
-     public Cars(String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image) {
+     public Cars(String brand, String model, String licensePlate, Integer year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image) {
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
@@ -224,11 +223,11 @@ public class Cars implements Serializable {
         this.licensePlate = licensePlate;
     }
 
-    public Date getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -426,17 +425,19 @@ public class Cars implements Serializable {
     return carList;
 }
     
-    public Boolean addCar(Integer id, String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image){
+    public Boolean addCar(String brand, String model, String licensePlate, Integer year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image) {
         EntityManager em = emf.createEntityManager();
         Boolean toReturn = false;
-        
-        try{
+
+        try {
+            em.getTransaction().begin();
+
             StoredProcedureQuery spq = em.createStoredProcedureQuery("addCar");
-            
+
             spq.registerStoredProcedureParameter("brandIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("modelIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("licensePlateIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("yearIN", Date.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("yearIN", Integer.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("fuelTypeIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("priceIN", BigDecimal.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("transmissionIN", String.class, ParameterMode.IN);
@@ -444,7 +445,7 @@ public class Cars implements Serializable {
             spq.registerStoredProcedureParameter("ACIN", Boolean.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("seatIN", Integer.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
-            
+
             spq.setParameter("brandIN", brand);
             spq.setParameter("modelIN", model);
             spq.setParameter("licensePlateIN", licensePlate);
@@ -456,20 +457,24 @@ public class Cars implements Serializable {
             spq.setParameter("ACIN", ac);
             spq.setParameter("seatIN", seats);
             spq.setParameter("imageIN", image);
-            
+
             spq.execute();
-            
+            em.getTransaction().commit();
+
             toReturn = true;
-            
-        } catch(Exception ex){
+
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             System.err.println("Hiba: " + ex.getLocalizedMessage());
             toReturn = false;
-        } finally{
-            em.clear();
+        } finally {
             em.close();
             return toReturn;
         }
     }
+    
     
     public Boolean deleteCarById(Integer id) {
         EntityManager em = emf.createEntityManager();

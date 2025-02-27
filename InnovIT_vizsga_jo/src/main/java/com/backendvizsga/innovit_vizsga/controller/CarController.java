@@ -8,6 +8,7 @@ import com.backendvizsga.innovit_vizsga.model.Cars;
 import com.backendvizsga.innovit_vizsga.model.Users;
 import com.backendvizsga.innovit_vizsga.service.CarService;
 import com.backendvizsga.innovit_vizsga.service.UserService;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -313,32 +315,53 @@ public class CarController {
         }
     }
     
-    @POST
+     @POST
     @Path("addCar")
     @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.APPLICATION_JSON)
-    public Response addCar(String bodyString) throws ParseException {
-        JSONObject body = new JSONObject(bodyString);
-        
-        String yearString = body.getString("year");
-        Date year = parseYearString(yearString); // String -> Date átalakítás
-        Cars c = new Cars(
-                body.getString("brand"),
-                body.getString("model"),
-                body.getString("licensePlate"),
-                year,
-                body.getString("fuelType"),    
-                body.getBigDecimal("price"),   
-                body.getString("transmission"),    
-                body.getInt("doors"),    
-                body.getBoolean("AC"), 
-                body.getInt("seat"),     
-                body.getString("image")     
-        );
-        
-        JSONObject obj = layer.addCar(c);
-        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addCar(String json) {
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject response = new JSONObject();
+
+        try {
+            Integer year = jsonObject.getInt("year");
+
+            Cars car = new Cars(
+                    jsonObject.getString("brand"),
+                    jsonObject.getString("model"),
+                    jsonObject.getString("licensePlate"),
+                    year,
+                    jsonObject.getString("fuelType"),
+                    new BigDecimal(jsonObject.getDouble("pricePerDay")),
+                    jsonObject.getString("transmission"),
+                    jsonObject.getInt("doors"),
+                    jsonObject.getBoolean("ac"),
+                    jsonObject.getInt("seats"),
+                    jsonObject.getString("image")
+            );
+
+            response = layer.addCar(car);
+
+            if (response.getString("status").equals("success")) {
+                return Response.status(Response.Status.CREATED).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } catch (JSONException e) {
+            response.put("status", "error");
+            response.put("statusCode", 400);
+            response.put("errorMessage", "Invalid JSON format: " + e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("statusCode", 500);
+            response.put("errorMessage", "Internal Server Error: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        }
     }
+    
+    
     
     @DELETE
     @Path("deleteCarById")

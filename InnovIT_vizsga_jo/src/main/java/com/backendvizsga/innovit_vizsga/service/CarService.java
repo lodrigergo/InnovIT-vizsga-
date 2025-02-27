@@ -52,7 +52,7 @@ public class CarService {
     return true;
 }
      
-     private void validateCarInputs(String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, int seats, String image) {
+     private void validateCarInputs(String brand, String model, String licensePlate, Integer year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, int seats, String image) {
     if (brand == null || brand.trim().isEmpty()) {
         throw new IllegalArgumentException("Brand cannot be null or empty.");
     }
@@ -63,8 +63,8 @@ public class CarService {
     if (licensePlate == null || !isValidLicensePlate(licensePlate)) {
         throw new IllegalArgumentException("License plate must match the format ABC-123.");
     }
-    if (year == null || year.after(new Date())) {
-        throw new IllegalArgumentException("Year cannot be null or in the future.");
+    if (year == null || year > java.time.Year.now().getValue()) {
+            throw new IllegalArgumentException("Year cannot be null or in the future.");
     }
     if (fuelType == null || (!fuelType.equalsIgnoreCase("PETROL") &&
                              !fuelType.equalsIgnoreCase("DIESEL") &&
@@ -131,34 +131,38 @@ public class CarService {
         return layer.getPageInput(pageIN);
     }
      
-    public JSONObject addCar(Cars c) {
-    JSONObject toReturn = new JSONObject();
-    String status = "success";
-    int statusCode = 200;
-    
-    try {
-            // 1. Validáció meghívása
+     public JSONObject addCar(Cars c) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+
+        try {
             validateCarInputs(c.getBrand(), c.getModel(), c.getLicensePlate(), c.getYear(), c.getFuelType(), c.getPricePerDay(), c.getTransmission(), c.getDoors(), c.getSeats(), c.getImage());
 
-            // Itt jönne az adatbázis művelet, ha szükséges
-            System.out.println("Car added successfully.");
+            boolean result = layer.addCar(c.getBrand(), c.getModel(), c.getLicensePlate(), c.getYear(), c.getFuelType(), c.getPricePerDay(), c.getTransmission(), c.getDoors(), c.getAc(), c.getSeats(), c.getImage());
+
+            if (!result) {
+                status = "error";
+                statusCode = 500;
+                toReturn.put("errorMessage", "Failed to add car to database.");
+            }
 
         } catch (IllegalArgumentException e) {
-            // Validációs hiba esetén visszatérés hibával
             status = "error";
             statusCode = 400;
             toReturn.put("errorMessage", e.getMessage());
         } catch (Exception e) {
-            // Egyéb hibakezelés
             status = "error";
             statusCode = 500;
             toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
         }
 
-    toReturn.put("status", status);
-    toReturn.put("statusCode", statusCode);
-    return toReturn;
-}
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+     
+    
     
     public Boolean deleteCarById(Integer id){
         Cars c = getCarById(id);
