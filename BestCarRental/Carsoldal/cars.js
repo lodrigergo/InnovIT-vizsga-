@@ -487,8 +487,186 @@ document.querySelector(".reset-filters-btn").addEventListener("click", () => {
   applyFiltersWithLoader();
 });
 
-// Globális változó, ami tárolja a jelenleg kinyitott kártyát (ha van)
+// Statikus adatok autókról (bővíthető további autókkal)
+const carsData = {
+  1: {
+    id: 1,
+    brand: "Toyota",
+    model: "Corolla",
+    year: "2021",
+    fuelType: "Petrol",
+    pricePerDay: 61,
+    transmission: "Automatic",
+    doors: 4,
+    AC: true,
+    seats: 5,
+    image: "../Photos/Toyota Corolla 1.8 sedan. hybridjpg.png",
+  },
+  2: {
+    id: 2,
+    brand: "Toyota",
+    model: "Rav4",
+    year: "2021",
+    fuelType: "Hybrid",
+    pricePerDay: 70,
+    transmission: "Automatic",
+    doors: 4,
+    AC: true,
+    seats: 5,
+    image: "../Photos/toyota rav4 ujabb.jpeg",
+  },
+  3: {
+    id: 3,
+    brand: "Fiat",
+    model: "500",
+    year: "2022",
+    fuelType: "Benzin",
+    pricePerDay: 40,
+    transmission: "Manual",
+    doors: 3,
+    AC: true,
+    seats: 5,
+    image: "fiat_500_2022.jpg",
+  },
+  4: {
+    id: 4,
+    brand: "Volkswagen",
+    model: "Golf",
+    year: "2018",
+    fuelType: "Diesel",
+    pricePerDay: 55,
+    transmission: "Manual",
+    doors: 4,
+    AC: true,
+    seats: 5,
+    image: "../Photos/Volkswagen golf 2018.jpg",
+  },
+  5: {
+    id: 5,
+    brand: "Volkswagen",
+    model: "Passat",
+    year: "2018",
+    fuelType: "Diesel",
+    pricePerDay: 60,
+    transmission: "Automatic",
+    doors: 4,
+    AC: true,
+    seats: 5,
+    image: "../Photos/Volkswagen-passat-2018.webp",
+  },
+  6: {
+    id: 6,
+    brand: "Volvo",
+    model: "V60",
+    year: "2019",
+    fuelType: "Diesel",
+    pricePerDay: 65,
+    transmission: "Manual",
+    doors: 4,
+    AC: true,
+    seats: 5,
+    image: "../Photos/Volvo V60 2019.jpeg",
+  },
+  7: {
+    id: 7,
+    brand: "Volvo",
+    model: "XC90",
+    year: "2020",
+    fuelType: "Hybrid",
+    pricePerDay: 85,
+    transmission: "Automatic",
+    doors: 4,
+    AC: true,
+    seats: 7,
+    image: "../Photos/Volvo XC90 2019.jpeg",
+  },
+  8: {
+    id: 8,
+    brand: "Honda",
+    model: "Civic",
+    year: "2020",
+    fuelType: "Petrol",
+    pricePerDay: 50,
+    transmission: "Manual",
+    doors: 4,
+    AC: true,
+    seats: 5,
+    image: "../Photos/Honda Civic 2020.jpeg",
+  },
+  9: {
+    id: 9,
+    brand: "Honda",
+    model: "Accord",
+    year: "2020",
+    fuelType: "Petrol",
+    pricePerDay: 70,
+    transmission: "Automatic",
+    doors: 4,
+    AC: true,
+    seats: 5,
+    image: "../Photos/honda_accord_2020_uj.jpg",
+  },
+};
+
+// Globális változó a jelenleg nyitott kártya tárolásához
 let currentlyExpandedCard = null;
+
+// "Check out our car" gomb eseménykezelője minden autó kártyán
+document.querySelectorAll(".details-btn").forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const card = this.closest(".car-card");
+    const carId = card.dataset.id; // A HTML-ben beállított data-id attribútum tartalmazza az autó azonosítóját
+
+    // Ha már van egy nyitott kártya, azt bezárjuk
+    if (currentlyExpandedCard && currentlyExpandedCard !== card) {
+      collapseCard(currentlyExpandedCard);
+    }
+
+    const detailsPanel = card.querySelector(".details-panel");
+
+    // Ha a panel már aktív, akkor bezárjuk
+    if (detailsPanel.classList.contains("active")) {
+      detailsPanel.classList.remove("active");
+      currentlyExpandedCard = null;
+      return;
+    }
+
+    // Statikus adatok lekérése a carsData objektumból
+    const carData = carsData[carId];
+
+    if (carData) {
+      detailsPanel.innerHTML = `
+        <div class="details">
+          <div><i class="fas fa-car"></i> ${carData.doors} doors</div>
+          <div><i class="fas fa-gas-pump"></i> ${carData.fuelType}</div>
+          <div><i class="fas fa-cogs"></i> ${carData.transmission}</div>
+          <div><i class="fas fa-snowflake"></i> ${
+            carData.AC ? "AC" : "No AC"
+          }</div>
+          <div><i class="fas fa-user"></i> ${carData.seats} seats</div>
+        </div>
+        <div class="price">${carData.pricePerDay}€ / Day</div>
+        <button class="reserve-btn">Reserve</button>
+      `;
+      detailsPanel.classList.add("active");
+      currentlyExpandedCard = card;
+
+      // Eseménykezelő a "Reserve" gombra
+      detailsPanel
+        .querySelector(".reserve-btn")
+        .addEventListener("click", function () {
+          // Az autó adatait elmentjük a localStorage-ba
+          localStorage.setItem("selectedCar", JSON.stringify(carData));
+          // Átirányítás a reservation.html oldalra
+          window.location.href = "../ReservationOldal/reservation.html";
+        });
+    } else {
+      detailsPanel.innerHTML = `<p>No data available</p>`;
+      detailsPanel.classList.add("active");
+      currentlyExpandedCard = card;
+    }
+  });
+});
 
 // Segédfüggvény a kártya bezárásához
 function collapseCard(card) {
@@ -496,43 +674,67 @@ function collapseCard(card) {
   const detailsPanel = card.querySelector(".details-panel");
   detailsPanel.classList.remove("active");
   card.classList.remove("expanded");
-  // A "Check out our car" gomb újra láthatóvá tétele
-  const detailsBtn = card.querySelector(".details-btn");
-  if (detailsBtn) {
-    detailsBtn.style.display = "block";
-  }
 }
 
-// Eseményfigyelő a "Check out our car" gombokhoz
-document.querySelectorAll(".details-btn").forEach((button) => {
-  button.addEventListener("click", function (e) {
-    e.stopPropagation(); // Megakadályozza, hogy a globális click esemény azonnal bezárja a kártyát
-
-    const card = this.closest(".car-card");
-
-    // Ha már van kinyitott kártya, és az nem ez, bezárjuk az előzőt
-    if (currentlyExpandedCard && currentlyExpandedCard !== card) {
-      collapseCard(currentlyExpandedCard);
+document.addEventListener("DOMContentLoaded", function () {
+  // Ha a URL-ben van hash (pl. #card-toyota-corolla-2021)
+  if (window.location.hash) {
+    const targetElement = document.querySelector(window.location.hash);
+    if (targetElement) {
+      // Az alábbi metódus sima görgetéssel ugrik az elemhez
+      targetElement.scrollIntoView({ behavior: "smooth" });
     }
-
-    // Toggle: ha már kinyitva van, akkor bezárjuk, ellenkező esetben kinyitjuk
-    if (card.classList.contains("expanded")) {
-      collapseCard(card);
-      currentlyExpandedCard = null;
-    } else {
-      const detailsPanel = card.querySelector(".details-panel");
-      detailsPanel.classList.add("active");
-      card.classList.add("expanded");
-      this.style.display = "none";
-      currentlyExpandedCard = card;
-    }
-  });
+  }
 });
 
-// Globális eseményfigyelő: ha bárhová kattintanak az oldalon, ami nem az aktuális kinyitott kártyán belül van, akkor bezárjuk azt
-document.addEventListener("click", function (e) {
-  if (currentlyExpandedCard && !currentlyExpandedCard.contains(e.target)) {
-    collapseCard(currentlyExpandedCard);
-    currentlyExpandedCard = null;
-  }
+document.addEventListener("DOMContentLoaded", function () {
+  // Autó kártyák tárolása és az eredeti sorrend megőrzése
+  const carsGrid = document.querySelector(".cars-grid");
+  const carCards = Array.from(carsGrid.querySelectorAll(".car-card"));
+
+  carCards.forEach((card, index) => {
+    card.dataset.originalIndex = index;
+  });
+
+  const arrangeSelect = document.getElementById("arrange");
+
+  arrangeSelect.addEventListener("change", function () {
+    const value = arrangeSelect.value;
+    let sortedCards = [];
+
+    if (value === "price") {
+      // Increases by price: alacsonyabb ártól a magasabb felé
+      sortedCards = carCards.slice().sort((a, b) => {
+        const priceA = parseInt(
+          a.querySelector(".price").textContent.match(/\d+/)[0]
+        );
+        const priceB = parseInt(
+          b.querySelector(".price").textContent.match(/\d+/)[0]
+        );
+        return priceA - priceB;
+      });
+    } else if (value === "price-desc") {
+      // Descending by price: drágábbtól az olcsóbb felé
+      sortedCards = carCards.slice().sort((a, b) => {
+        const priceA = parseInt(
+          a.querySelector(".price").textContent.match(/\d+/)[0]
+        );
+        const priceB = parseInt(
+          b.querySelector(".price").textContent.match(/\d+/)[0]
+        );
+        return priceB - priceA;
+      });
+    } else if (value === "none") {
+      // Eredeti sorrend visszaállítása
+      sortedCards = carCards.slice().sort((a, b) => {
+        return a.dataset.originalIndex - b.dataset.originalIndex;
+      });
+    }
+
+    // Töröljük a cars-grid tartalmát, majd a rendezett kártyákat újra hozzáadjuk
+    carsGrid.innerHTML = "";
+    sortedCards.forEach((card) => {
+      carsGrid.appendChild(card);
+    });
+  });
 });

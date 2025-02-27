@@ -360,3 +360,66 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+const checkoutButtons = document.querySelectorAll(".flip-card-back button");
+checkoutButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    const targetId = this.getAttribute("data-target");
+    // Átirányítunk a cars.html oldalra a hash hozzáfűzésével
+    window.location.href = "./Carsoldal/cars.html#" + targetId;
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Végigmegyünk minden feature item-en
+  const featureItems = document.querySelectorAll(".feature-item");
+
+  featureItems.forEach(function (item) {
+    const moreInfoButton = item.querySelector(".more-info");
+    const infoBox = item.querySelector(".info-box");
+
+    if (moreInfoButton && infoBox) {
+      // "More Info" gomb kattintására
+      moreInfoButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        // Megakadályozzuk, hogy az esemény továbbterjedjen a dokumentum click eseményéhez
+        e.stopPropagation();
+
+        // Bezárjuk az összes aktív infó dobozt (csak egy lehet egyszerre)
+        document
+          .querySelectorAll(".info-box.active")
+          .forEach(function (openBox) {
+            if (openBox !== infoBox) {
+              openBox.classList.remove("active");
+              const siblingButton =
+                openBox.parentElement.querySelector(".more-info");
+              if (siblingButton) {
+                siblingButton.style.display = "inline-block";
+              }
+            }
+          });
+
+        // Megnyitjuk a kiválasztott infó dobozt és elrejtjük a gombot
+        infoBox.classList.add("active");
+        moreInfoButton.style.display = "none";
+      });
+    }
+  });
+
+  // Globális kattintás: ha a felhasználó bárhová kattint az oldalon (nem az infó dobozra vagy a "More Info" gombra),
+  // akkor az aktív panel bezárul
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".info-box") && !e.target.closest(".more-info")) {
+      document
+        .querySelectorAll(".info-box.active")
+        .forEach(function (activeBox) {
+          activeBox.classList.remove("active");
+          const siblingButton =
+            activeBox.parentElement.querySelector(".more-info");
+          if (siblingButton) {
+            siblingButton.style.display = "inline-block";
+          }
+        });
+    }
+  });
+});

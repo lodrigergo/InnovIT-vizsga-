@@ -673,6 +673,52 @@ body {
   transform: scale(1.05);
 }
 
+/* Infó doboz alapstílusai */
+.info-box {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background-color: #fff;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.info-box.active {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Close gomb stílusa */
+.close-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Infó doboz tartalma */
+.info-box h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+}
+
+.info-box p {
+  line-height: 1.6;
+  color: #555;
+  font-size: 16px;
+}
+
 /* Carousel konténer */
 .carousel-container {
   overflow: hidden;
@@ -702,6 +748,7 @@ body {
   animation-delay: 5s;
   max-width: 80%;
   justify-content: center;
+  flex-wrap: nowrap;
 }
 
 /* Kártyák alapstílusa */
