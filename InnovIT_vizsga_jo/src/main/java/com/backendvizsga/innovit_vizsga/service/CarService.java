@@ -7,6 +7,7 @@ package com.backendvizsga.innovit_vizsga.service;
 import com.backendvizsga.innovit_vizsga.model.Cars;
 import com.backendvizsga.innovit_vizsga.model.Users;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import org.json.JSONObject;
@@ -131,29 +132,37 @@ public class CarService {
         return layer.getPageInput(pageIN);
     }
      
-    public JSONObject addCar(Cars c) {
+public JSONObject addCar(Cars c) {
     JSONObject toReturn = new JSONObject();
     String status = "success";
     int statusCode = 200;
-    
+
     try {
-            // 1. Validáció meghívása
-            validateCarInputs(c.getBrand(), c.getModel(), c.getLicensePlate(), c.getYear(), c.getFuelType(), c.getPricePerDay(), c.getTransmission(), c.getDoors(), c.getSeats(), c.getImage());
+        // Validáció meghívása
+        validateCarInputs(c.getBrand(), c.getModel(), c.getLicensePlate(), c.getYear(), c.getFuelType(), 
+                          c.getPricePerDay(), c.getTransmission(), c.getDoors(), c.getSeats(), c.getImage());
 
-            // Itt jönne az adatbázis művelet, ha szükséges
-            System.out.println("Car added successfully.");
+        // Adatbázis művelet meghívása (year most Integer)
+        Boolean result = layer.addCar(c.getBrand(), c.getModel(), c.getLicensePlate(), 
+                                     Integer.parseInt(new SimpleDateFormat("yyyy").format(c.getYear())), 
+                                     c.getFuelType(), c.getPricePerDay(), c.getTransmission(), c.getDoors(), 
+                                     c.getAc(), c.getSeats(), c.getImage());
 
-        } catch (IllegalArgumentException e) {
-            // Validációs hiba esetén visszatérés hibával
-            status = "error";
-            statusCode = 400;
-            toReturn.put("errorMessage", e.getMessage());
-        } catch (Exception e) {
-            // Egyéb hibakezelés
-            status = "error";
-            statusCode = 500;
-            toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
+        if (!result) {
+            throw new Exception("Failed to add car to the database.");
         }
+
+        toReturn.put("message", "Car added successfully");
+
+    } catch (IllegalArgumentException e) {
+        status = "error";
+        statusCode = 400;
+        toReturn.put("errorMessage", e.getMessage());
+    } catch (Exception e) {
+        status = "error";
+        statusCode = 500;
+        toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
+    }
 
     toReturn.put("status", status);
     toReturn.put("statusCode", statusCode);

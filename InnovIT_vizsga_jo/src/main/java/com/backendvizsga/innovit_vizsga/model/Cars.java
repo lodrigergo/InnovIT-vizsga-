@@ -178,19 +178,19 @@ public class Cars implements Serializable {
         this.createdAt = createdAt;
     }
     
-     public Cars(String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image) {
-        this.brand = brand;
-        this.model = model;
-        this.licensePlate = licensePlate;
-        this.year = year;
-        this.fuelType = fuelType;
-        this.pricePerDay = pricePerDay;
-        this.transmission = transmission;
-        this.doors = doors;
-        this.ac = ac;
-        this.seats = seats;
-        this.image = image;
-    }
+   public Cars(String brand, String model, String licensePlate, Integer year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image) {
+    this.brand = brand;
+    this.model = model;
+    this.licensePlate = licensePlate;
+    this.year = new Date(year - 1900, 0, 1); // Integer-ből Date objektum készítése
+    this.fuelType = fuelType;
+    this.pricePerDay = pricePerDay;
+    this.transmission = transmission;
+    this.doors = doors;
+    this.ac = ac;
+    this.seats = seats;
+    this.image = image;
+}
 
     public Integer getId() {
         return id;
@@ -426,50 +426,54 @@ public class Cars implements Serializable {
     return carList;
 }
     
-    public Boolean addCar(Integer id, String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image){
-        EntityManager em = emf.createEntityManager();
-        Boolean toReturn = false;
-        
-        try{
-            StoredProcedureQuery spq = em.createStoredProcedureQuery("addCar");
-            
-            spq.registerStoredProcedureParameter("brandIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("modelIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("licensePlateIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("yearIN", Date.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("fuelTypeIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("priceIN", BigDecimal.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("transmissionIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("doorsIN", Integer.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("ACIN", Boolean.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("seatIN", Integer.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
-            
-            spq.setParameter("brandIN", brand);
-            spq.setParameter("modelIN", model);
-            spq.setParameter("licensePlateIN", licensePlate);
-            spq.setParameter("yearIN", year);
-            spq.setParameter("fuelTypeIN", fuelType);
-            spq.setParameter("priceIN", pricePerDay);
-            spq.setParameter("transmissionIN", transmission);
-            spq.setParameter("doorsIN", doors);
-            spq.setParameter("ACIN", ac);
-            spq.setParameter("seatIN", seats);
-            spq.setParameter("imageIN", image);
-            
-            spq.execute();
-            
-            toReturn = true;
-            
-        } catch(Exception ex){
-            System.err.println("Hiba: " + ex.getLocalizedMessage());
-            toReturn = false;
-        } finally{
-            em.clear();
-            em.close();
-            return toReturn;
-        }
+  public Boolean addCar(String brand, String model, String licensePlate, Integer year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, boolean ac, int seats, String image) {
+    EntityManager em = emf.createEntityManager();
+    Boolean toReturn = false;
+
+    try {
+        StoredProcedureQuery spq = em.createStoredProcedureQuery("addCar");
+
+        // Paraméterek regisztrálása a tárolt eljáráshoz
+        spq.registerStoredProcedureParameter("brandIN", String.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("modelIN", String.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("license_plateIN", String.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("yearIN", Integer.class, ParameterMode.IN); // Integer-re váltás
+        spq.registerStoredProcedureParameter("fuel_typeIN", String.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("priceIN", BigDecimal.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("transmissionIN", String.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("doorsIN", Integer.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("ACIN", Boolean.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("seatIN", Integer.class, ParameterMode.IN);
+        spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
+
+        // Paraméterek beállítása
+        spq.setParameter("brandIN", brand);
+        spq.setParameter("modelIN", model);
+        spq.setParameter("license_plateIN", licensePlate);
+        spq.setParameter("yearIN", year); // Integer átadása
+        spq.setParameter("fuel_typeIN", fuelType);
+        spq.setParameter("priceIN", pricePerDay);
+        spq.setParameter("transmissionIN", transmission);
+        spq.setParameter("doorsIN", doors);
+        spq.setParameter("ACIN", ac);
+        spq.setParameter("seatIN", seats);
+        spq.setParameter("imageIN", image);
+
+        // Tárolt eljárás végrehajtása
+        spq.execute();
+
+        toReturn = true;
+
+    } catch (Exception ex) {
+        System.err.println("Hiba az autó hozzáadása közben: " + ex.getLocalizedMessage());
+        toReturn = false;
+    } finally {
+        em.clear();
+        em.close();
     }
+
+    return toReturn;
+}
     
     public Boolean deleteCarById(Integer id) {
         EntityManager em = emf.createEntityManager();

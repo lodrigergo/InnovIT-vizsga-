@@ -8,6 +8,7 @@ import com.backendvizsga.innovit_vizsga.model.Cars;
 import com.backendvizsga.innovit_vizsga.model.Users;
 import com.backendvizsga.innovit_vizsga.service.CarService;
 import com.backendvizsga.innovit_vizsga.service.UserService;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -313,33 +315,77 @@ public class CarController {
         }
     }
     
-    @POST
-    @Path("addCar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.APPLICATION_JSON)
-    public Response addCar(String bodyString) throws ParseException {
-        JSONObject body = new JSONObject(bodyString);
-        
-        String yearString = body.getString("year");
-        Date year = parseYearString(yearString); // String -> Date átalakítás
+@POST
+@Path("addCar")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public Response addCar(String bodyString) {
+    JSONObject body = new JSONObject(bodyString);
+    JSONObject responseObj = new JSONObject();
+
+    try {
+        // Kötelező mezők ellenőrzése
+        if (!body.has("brand") || body.getString("brand").trim().isEmpty()) {
+            throw new IllegalArgumentException("Brand is required.");
+        }
+        if (!body.has("model") || body.getString("model").trim().isEmpty()) {
+            throw new IllegalArgumentException("Model is required.");
+        }
+        if (!body.has("licensePlate") || body.getString("licensePlate").trim().isEmpty()) {
+            throw new IllegalArgumentException("License plate is required.");
+        }
+        if (!body.has("year")) {
+            throw new IllegalArgumentException("Year is required.");
+        }
+
+        // Évszám lekérése Integer-ként
+        Integer year = body.getInt("year");
+
+        // Ár lekérése
+        BigDecimal pricePerDay;
+        if (body.has("pricePerDay")) {
+            pricePerDay = body.getBigDecimal("pricePerDay");
+        } else if (body.has("price")) {
+            pricePerDay = body.getBigDecimal("price");
+        } else {
+            throw new IllegalArgumentException("Price per day is required.");
+        }
+
+        // Cars objektum létrehozása
         Cars c = new Cars(
-                body.getString("brand"),
-                body.getString("model"),
-                body.getString("licensePlate"),
-                year,
-                body.getString("fuelType"),    
-                body.getBigDecimal("price"),   
-                body.getString("transmission"),    
-                body.getInt("doors"),    
-                body.getBoolean("AC"), 
-                body.getInt("seat"),     
-                body.getString("image")     
+            body.getString("brand"),
+            body.getString("model"),
+            body.getString("licensePlate"),
+            year, // Integer átadása
+            body.optString("fuelType", "PETROL"),
+            pricePerDay,
+            body.optString("transmission", "MANUAL"),
+            body.optInt("doors", 4),
+            body.optBoolean("AC", false),
+            body.optInt("seats", 5),
+            body.optString("image", "")
         );
-        
+
+        // Service réteg meghívása
         JSONObject obj = layer.addCar(c);
+
+        // Válasz visszaadása
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+
+    } catch (IllegalArgumentException e) {
+        responseObj.put("statusCode", 400);
+        responseObj.put("errorMessage", e.getMessage());
+        return Response.status(Response.Status.BAD_REQUEST).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
+    } catch (JSONException e) {
+        responseObj.put("statusCode", 400);
+        responseObj.put("errorMessage", "Invalid JSON format: " + e.getMessage());
+        return Response.status(Response.Status.BAD_REQUEST).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
+    } catch (Exception e) {
+        responseObj.put("statusCode", 500);
+        responseObj.put("errorMessage", "Internal Server Error: " + e.getMessage());
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
-    
+}
     @DELETE
     @Path("deleteCarById")
     @Consumes(MediaType.APPLICATION_JSON)
