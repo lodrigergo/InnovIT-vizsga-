@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -338,5 +339,26 @@ public class Bookings implements Serializable {
             return toReturn;
         }
     }
-    
+    public List<Object[]> searchCarsBetweenDates(String pickupDate, String returnDate) {
+        EntityManager em = emf.createEntityManager();
+        List<Object[]> results = null;
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("searchCarsBetweenDates");
+
+            spq.registerStoredProcedureParameter("pickup_DateIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("return_DateIN", String.class, ParameterMode.IN);
+
+            spq.setParameter("pickup_DateIN", pickupDate);
+            spq.setParameter("return_DateIN", returnDate);
+
+            results = spq.getResultList();
+
+        } catch (Exception ex) {
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+        } finally {
+            em.close();
+            return results;
+        }
+    }
 }
