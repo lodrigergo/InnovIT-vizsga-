@@ -24,6 +24,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import static sun.security.krb5.internal.crypto.KeyUsage.isValid;
 
@@ -253,6 +254,44 @@ public class UserControllerResource {
         
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
                 
+    }
+    
+    @PUT
+    @Path("updateUserById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUserById(@QueryParam("id") Integer id, String json) {
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject response = new JSONObject();
+
+        try {
+            Users user = new Users(
+                    id,
+                    jsonObject.getString("name"),
+                    jsonObject.getString("email"),
+                    jsonObject.getString("password"),
+                    jsonObject.getString("personalId")
+            );
+
+            response = layer.updateUserById(user);
+
+            if (response.getString("status").equals("success")) {
+                return Response.status(Response.Status.OK).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } catch (JSONException e) {
+            response.put("status", "error");
+            response.put("statusCode", 400);
+            response.put("errorMessage", "Invalid JSON format: " + e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("statusCode", 500);
+            response.put("errorMessage", "Internal Server Error: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        }
     }
    
     

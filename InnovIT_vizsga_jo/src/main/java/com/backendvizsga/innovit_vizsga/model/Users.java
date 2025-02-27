@@ -131,6 +131,14 @@ public class Users implements Serializable {
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
     }
+     
+     public Users(Integer id, String name, String email, String password, String personalId) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.personalId = personalId;
+    }
 
     public Users(Integer id) {
         EntityManager em = emf.createEntityManager();
@@ -484,6 +492,44 @@ public class Users implements Serializable {
             return toReturn;
         }
 
+    }
+    
+    public Boolean updateUserById(Integer userId, String name, String email, String password, String personalId) {
+        EntityManager em = emf.createEntityManager();
+        Boolean toReturn = false;
+
+        try {
+            em.getTransaction().begin();
+
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("updateUserById");
+
+            spq.registerStoredProcedureParameter("user_idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("personal_idIN", String.class, ParameterMode.IN);
+
+            spq.setParameter("user_idIN", userId);
+            spq.setParameter("nameIN", name);
+            spq.setParameter("emailIN", email);
+            spq.setParameter("passwordIN", password);
+            spq.setParameter("personal_idIN", personalId);
+
+            spq.execute();
+            em.getTransaction().commit();
+
+            toReturn = true;
+
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            toReturn = false;
+        } finally {
+            em.close();
+            return toReturn;
+        }
     }
 
 }

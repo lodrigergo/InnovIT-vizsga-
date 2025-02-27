@@ -189,5 +189,47 @@ public class UserService {
         }
     }
    
+   public JSONObject updateUserById(Users u) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+
+        try {
+            if (u.getName() == null || u.getName().trim().isEmpty()) {
+                throw new IllegalArgumentException("Name cannot be null or empty.");
+            }
+            if (!isValidEmail(u.getEmail())) {
+                throw new IllegalArgumentException("Invalid email format.");
+            }
+            if (!isValidPassword(u.getPassword())) {
+                throw new IllegalArgumentException("Invalid password format.");
+            }
+            if (u.getPersonalId() == null || u.getPersonalId().trim().isEmpty()) {
+                throw new IllegalArgumentException("Personal ID cannot be null or empty.");
+            }
+
+            boolean result = layer.updateUserById(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getPersonalId());
+
+            if (!result) {
+                status = "error";
+                statusCode = 500;
+                toReturn.put("errorMessage", "Failed to update user.");
+            }
+
+        } catch (IllegalArgumentException e) {
+            status = "error";
+            statusCode = 400;
+            toReturn.put("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            status = "error";
+            statusCode = 500;
+            toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
+        }
+
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
+    }
+   
     
 }
