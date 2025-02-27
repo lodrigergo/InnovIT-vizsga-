@@ -4,17 +4,21 @@
  */
 package com.backendvizsga.innovit_vizsga.model;
 
+import static com.backendvizsga.innovit_vizsga.model.Users.emf;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -157,6 +161,70 @@ public class Payment implements Serializable {
     @Override
     public String toString() {
         return "com.backendvizsga.innovit_vizsga.model.Payment[ id=" + id + " ]";
+    }
+    
+    public Boolean updatePaymentStatus(Integer id, String paymentStatus) {
+        EntityManager em = emf.createEntityManager();
+        Boolean toReturn = false;
+
+        try {
+            em.getTransaction().begin();
+
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("updatePaymentStatus");
+
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("payment_statusID", String.class, ParameterMode.IN);
+
+            spq.setParameter("idIN", id);
+            spq.setParameter("payment_statusID", paymentStatus);
+
+            spq.execute();
+            em.getTransaction().commit();
+
+            toReturn = true;
+
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            toReturn = false;
+        } finally {
+            em.close();
+            return toReturn;
+        }
+    }
+    
+    public Boolean updatePaymentCost(Integer id, BigDecimal amount) {
+        EntityManager em = emf.createEntityManager();
+        Boolean toReturn = false;
+
+        try {
+            em.getTransaction().begin();
+
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("updatePaymentCost");
+
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("amountIN", BigDecimal.class, ParameterMode.IN);
+
+            spq.setParameter("idIN", id);
+            spq.setParameter("amountIN", amount);
+
+            spq.execute();
+            em.getTransaction().commit();
+
+            toReturn = true;
+
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            toReturn = false;
+        } finally {
+            em.close();
+            return toReturn;
+        }
     }
     
 }
