@@ -212,5 +212,18 @@ public class BookingsController {
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
                 
     }
+    
+    @GET
+    @Path("searchCarsBetweenDates")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchCarsBetweenDates(@QueryParam("pickupDate") String pickupDate, @QueryParam("returnDate") String returnDate) {
+        JSONArray response = layer.searchCarsBetweenDates(pickupDate, returnDate);
+
+        if (response != null) {
+            return Response.status(Response.Status.OK).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("No cars found for the given date range.").type(MediaType.APPLICATION_JSON).build();
+        }
+    }
 }
 

@@ -8,7 +8,9 @@ import com.backendvizsga.innovit_vizsga.model.Bookings;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -109,6 +111,33 @@ public class BookingsService {
         return false;
     }
 }
+  
+  public JSONArray searchCarsBetweenDates(String pickupDate, String returnDate) {
+        JSONArray toReturn = new JSONArray();
+
+        try {
+            // ... (validációk)
+
+            List<Object[]> results = layer.searchCarsBetweenDates(pickupDate, returnDate);
+
+            if (results != null) {
+                for (Object[] row : results) {
+                    JSONObject car = new JSONObject();
+                    car.put("car_id", row[0]);
+                    car.put("brand", row[1]);
+                    car.put("model", row[2]);
+                    car.put("pickup_date", row[3].toString());
+                    car.put("return_date", row[4].toString());
+                    toReturn.put(car);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Hiba: " + e.getMessage());
+        }
+
+        return toReturn;
+    }
 
 
 
