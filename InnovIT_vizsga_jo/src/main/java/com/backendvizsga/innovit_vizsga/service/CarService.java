@@ -7,7 +7,6 @@ package com.backendvizsga.innovit_vizsga.service;
 import com.backendvizsga.innovit_vizsga.model.Cars;
 import com.backendvizsga.innovit_vizsga.model.Users;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import org.json.JSONObject;
@@ -53,7 +52,7 @@ public class CarService {
     return true;
 }
      
-     private void validateCarInputs(String brand, String model, String licensePlate, Date year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, int seats, String image) {
+     private void validateCarInputs(String brand, String model, String licensePlate, Integer year, String fuelType, BigDecimal pricePerDay, String transmission, int doors, int seats, String image) {
     if (brand == null || brand.trim().isEmpty()) {
         throw new IllegalArgumentException("Brand cannot be null or empty.");
     }
@@ -64,8 +63,8 @@ public class CarService {
     if (licensePlate == null || !isValidLicensePlate(licensePlate)) {
         throw new IllegalArgumentException("License plate must match the format ABC-123.");
     }
-    if (year == null || year.after(new Date())) {
-        throw new IllegalArgumentException("Year cannot be null or in the future.");
+    if (year == null || year > java.time.Year.now().getValue()) {
+            throw new IllegalArgumentException("Year cannot be null or in the future.");
     }
     if (fuelType == null || (!fuelType.equalsIgnoreCase("PETROL") &&
                              !fuelType.equalsIgnoreCase("DIESEL") &&
@@ -132,42 +131,38 @@ public class CarService {
         return layer.getPageInput(pageIN);
     }
      
-public JSONObject addCar(Cars c) {
-    JSONObject toReturn = new JSONObject();
-    String status = "success";
-    int statusCode = 200;
+     public JSONObject addCar(Cars c) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
 
-    try {
-        // Validáció meghívása
-        validateCarInputs(c.getBrand(), c.getModel(), c.getLicensePlate(), c.getYear(), c.getFuelType(), 
-                          c.getPricePerDay(), c.getTransmission(), c.getDoors(), c.getSeats(), c.getImage());
+        try {
+            validateCarInputs(c.getBrand(), c.getModel(), c.getLicensePlate(), c.getYear(), c.getFuelType(), c.getPricePerDay(), c.getTransmission(), c.getDoors(), c.getSeats(), c.getImage());
 
-        // Adatbázis művelet meghívása (year most Integer)
-        Boolean result = layer.addCar(c.getBrand(), c.getModel(), c.getLicensePlate(), 
-                                     Integer.parseInt(new SimpleDateFormat("yyyy").format(c.getYear())), 
-                                     c.getFuelType(), c.getPricePerDay(), c.getTransmission(), c.getDoors(), 
-                                     c.getAc(), c.getSeats(), c.getImage());
+            boolean result = layer.addCar(c.getBrand(), c.getModel(), c.getLicensePlate(), c.getYear(), c.getFuelType(), c.getPricePerDay(), c.getTransmission(), c.getDoors(), c.getAc(), c.getSeats(), c.getImage());
 
-        if (!result) {
-            throw new Exception("Failed to add car to the database.");
+            if (!result) {
+                status = "error";
+                statusCode = 500;
+                toReturn.put("errorMessage", "Failed to add car to database.");
+            }
+
+        } catch (IllegalArgumentException e) {
+            status = "error";
+            statusCode = 400;
+            toReturn.put("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            status = "error";
+            statusCode = 500;
+            toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
         }
 
-        toReturn.put("message", "Car added successfully");
-
-    } catch (IllegalArgumentException e) {
-        status = "error";
-        statusCode = 400;
-        toReturn.put("errorMessage", e.getMessage());
-    } catch (Exception e) {
-        status = "error";
-        statusCode = 500;
-        toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
     }
-
-    toReturn.put("status", status);
-    toReturn.put("statusCode", statusCode);
-    return toReturn;
-}
+     
+    
     
     public Boolean deleteCarById(Integer id){
         Cars c = getCarById(id);

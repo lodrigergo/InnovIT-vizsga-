@@ -315,77 +315,54 @@ public class CarController {
         }
     }
     
-@POST
-@Path("addCar")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public Response addCar(String bodyString) {
-    JSONObject body = new JSONObject(bodyString);
-    JSONObject responseObj = new JSONObject();
+     @POST
+    @Path("addCar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addCar(String json) {
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject response = new JSONObject();
 
-    try {
-        // Kötelező mezők ellenőrzése
-        if (!body.has("brand") || body.getString("brand").trim().isEmpty()) {
-            throw new IllegalArgumentException("Brand is required.");
+        try {
+            Integer year = jsonObject.getInt("year");
+
+            Cars car = new Cars(
+                    jsonObject.getString("brand"),
+                    jsonObject.getString("model"),
+                    jsonObject.getString("licensePlate"),
+                    year,
+                    jsonObject.getString("fuelType"),
+                    new BigDecimal(jsonObject.getDouble("pricePerDay")),
+                    jsonObject.getString("transmission"),
+                    jsonObject.getInt("doors"),
+                    jsonObject.getBoolean("ac"),
+                    jsonObject.getInt("seats"),
+                    jsonObject.getString("image")
+            );
+
+            response = layer.addCar(car);
+
+            if (response.getString("status").equals("success")) {
+                return Response.status(Response.Status.CREATED).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } catch (JSONException e) {
+            response.put("status", "error");
+            response.put("statusCode", 400);
+            response.put("errorMessage", "Invalid JSON format: " + e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("statusCode", 500);
+            response.put("errorMessage", "Internal Server Error: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
         }
-        if (!body.has("model") || body.getString("model").trim().isEmpty()) {
-            throw new IllegalArgumentException("Model is required.");
-        }
-        if (!body.has("licensePlate") || body.getString("licensePlate").trim().isEmpty()) {
-            throw new IllegalArgumentException("License plate is required.");
-        }
-        if (!body.has("year")) {
-            throw new IllegalArgumentException("Year is required.");
-        }
-
-        // Évszám lekérése Integer-ként
-        Integer year = body.getInt("year");
-
-        // Ár lekérése
-        BigDecimal pricePerDay;
-        if (body.has("pricePerDay")) {
-            pricePerDay = body.getBigDecimal("pricePerDay");
-        } else if (body.has("price")) {
-            pricePerDay = body.getBigDecimal("price");
-        } else {
-            throw new IllegalArgumentException("Price per day is required.");
-        }
-
-        // Cars objektum létrehozása
-        Cars c = new Cars(
-            body.getString("brand"),
-            body.getString("model"),
-            body.getString("licensePlate"),
-            year, // Integer átadása
-            body.optString("fuelType", "PETROL"),
-            pricePerDay,
-            body.optString("transmission", "MANUAL"),
-            body.optInt("doors", 4),
-            body.optBoolean("AC", false),
-            body.optInt("seats", 5),
-            body.optString("image", "")
-        );
-
-        // Service réteg meghívása
-        JSONObject obj = layer.addCar(c);
-
-        // Válasz visszaadása
-        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
-
-    } catch (IllegalArgumentException e) {
-        responseObj.put("statusCode", 400);
-        responseObj.put("errorMessage", e.getMessage());
-        return Response.status(Response.Status.BAD_REQUEST).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
-    } catch (JSONException e) {
-        responseObj.put("statusCode", 400);
-        responseObj.put("errorMessage", "Invalid JSON format: " + e.getMessage());
-        return Response.status(Response.Status.BAD_REQUEST).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
-    } catch (Exception e) {
-        responseObj.put("statusCode", 500);
-        responseObj.put("errorMessage", "Internal Server Error: " + e.getMessage());
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
-}
+    
+    
+    
     @DELETE
     @Path("deleteCarById")
     @Consumes(MediaType.APPLICATION_JSON)
