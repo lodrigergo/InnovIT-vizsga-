@@ -345,7 +345,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Filter szűrési logika
 function filterCars() {
-  // Összegyűjtjük a kiválasztott filtereket csoportonként
   const filterGroups = document.querySelectorAll(".sidebar .filter-group");
   let selectedFilters = {
     brand: [],
@@ -374,19 +373,18 @@ function filterCars() {
     }
   });
 
-  // Minden autó kártya végigellenőrzése
   const carCards = document.querySelectorAll(".car-card");
   carCards.forEach((card) => {
     const titleText = card.querySelector("h3").textContent.trim();
-    // Brand: feltételezzük, hogy a cím első szava a márka
+    // Brand (a cím első szava)
     const brand = titleText.split(" ")[0];
-    // Year: keresünk egy 4 számjegyű számot
+    // Year (4 számjegyű pattern)
     const yearMatch = titleText.match(/\b(20\d{2})\b/);
     const year = yearMatch ? yearMatch[0] : "";
-    // Fuel: feltételezzük, hogy a cím utolsó szava a fuel típus
+    // Fuel (a cím utolsó szava)
     const fuel = titleText.split(" ").pop();
 
-    // Persons: keresünk olyan elemet, amely tartalmazza a "fa-user" ikont
+    // Persons
     let persons = "";
     const detailsDivs = card.querySelectorAll(".details div");
     detailsDivs.forEach((div) => {
@@ -395,51 +393,45 @@ function filterCars() {
       }
     });
 
-    // Price: a .price elem szövegéből vesszük az ár számot
+    // Price
     const priceText = card.querySelector(".price").textContent;
     const priceMatch = priceText.match(/\d+/);
     const price = priceMatch ? parseInt(priceMatch[0]) : 0;
 
-    // Alapfeltétel: az autó látszani fog, ha minden filternek megfelel
     let visible = true;
 
-    // Brand szűrés: ha van bejelölt márka, akkor a kártya márkája benne kell legyen
+    // brand
     if (
       selectedFilters.brand.length > 0 &&
       !selectedFilters.brand.includes(brand)
     ) {
       visible = false;
     }
-
-    // Persons szűrés
+    // persons
     if (
       selectedFilters.persons.length > 0 &&
       !selectedFilters.persons.includes(persons)
     ) {
       visible = false;
     }
-
-    // Year szűrés
+    // year
     if (
       selectedFilters.year.length > 0 &&
       !selectedFilters.year.includes(year)
     ) {
       visible = false;
     }
-
-    // Fuel szűrés
+    // fuel
     if (
       selectedFilters.fuel.length > 0 &&
       !selectedFilters.fuel.includes(fuel)
     ) {
       visible = false;
     }
-
-    // Price szűrés: itt minden bejelölt ár tartomány közül legalább egynek meg kell felelnie
+    // price
     if (selectedFilters.price.length > 0) {
       let matchPrice = false;
       selectedFilters.price.forEach((range) => {
-        // Az id például: "10€-30€" – ebből a minimumot és maximumot vesszük ki
         const numbers = range.split("€-");
         if (numbers.length === 2) {
           const min = parseInt(numbers[0]);
@@ -454,12 +446,10 @@ function filterCars() {
       }
     }
 
-    // Végül a kártya láthatóságát beállítjuk
     card.style.display = visible ? "block" : "none";
   });
 }
 
-// Loader effekt a filterek alkalmazása előtt
 function applyFiltersWithLoader() {
   const loaderOverlay = document.getElementById("loader-overlay");
   loaderOverlay.style.display = "flex";
@@ -470,16 +460,13 @@ function applyFiltersWithLoader() {
   }, 300);
 }
 
-// Eseményfigyelők minden filter checkbox-hoz
 const filterCheckboxes = document.querySelectorAll(
   '.sidebar input[type="checkbox"]'
 );
 filterCheckboxes.forEach((checkbox) => {
-  // Eredeti filterCars() helyett az új applyFiltersWithLoader()-t hívjuk
   checkbox.addEventListener("change", applyFiltersWithLoader);
 });
 
-// Reset gomb kezelése: törli a bejelöléseket, majd újraszűri a kártyákat a loader effekt segítségével
 document.querySelector(".reset-filters-btn").addEventListener("click", () => {
   filterCheckboxes.forEach((checkbox) => {
     checkbox.checked = false;
@@ -487,7 +474,7 @@ document.querySelector(".reset-filters-btn").addEventListener("click", () => {
   applyFiltersWithLoader();
 });
 
-// Statikus adatok autókról (bővíthető további autókkal)
+// Statikus adatok autókról
 const carsData = {
   1: {
     id: 1,
@@ -608,14 +595,13 @@ const carsData = {
   },
 };
 
-// Globális változó a jelenleg nyitott kártya tárolásához
 let currentlyExpandedCard = null;
 
 // "Check out our car" gomb eseménykezelője minden autó kártyán
 document.querySelectorAll(".details-btn").forEach((btn) => {
   btn.addEventListener("click", function () {
     const card = this.closest(".car-card");
-    const carId = card.dataset.id; // A HTML-ben beállított data-id attribútum tartalmazza az autó azonosítóját
+    const carId = card.dataset.id;
 
     // Ha már van egy nyitott kártya, azt bezárjuk
     if (currentlyExpandedCard && currentlyExpandedCard !== card) {
@@ -631,9 +617,8 @@ document.querySelectorAll(".details-btn").forEach((btn) => {
       return;
     }
 
-    // Statikus adatok lekérése a carsData objektumból
+    // Statikus adatok lekérése
     const carData = carsData[carId];
-
     if (carData) {
       detailsPanel.innerHTML = `
         <div class="details">
@@ -651,15 +636,22 @@ document.querySelectorAll(".details-btn").forEach((btn) => {
       detailsPanel.classList.add("active");
       currentlyExpandedCard = card;
 
-      // Eseménykezelő a "Reserve" gombra
-      detailsPanel
-        .querySelector(".reserve-btn")
-        .addEventListener("click", function () {
-          // Az autó adatait elmentjük a localStorage-ba
+      // Itt jön a bejelentkezés-ellenőrzés
+      const reserveButton = detailsPanel.querySelector(".reserve-btn");
+      const isLoggedIn = !!localStorage.getItem("jwt");
+
+      if (isLoggedIn) {
+        // Gomb engedélyezése és kattintás
+        reserveButton.disabled = false;
+        reserveButton.addEventListener("click", function () {
           localStorage.setItem("selectedCar", JSON.stringify(carData));
-          // Átirányítás a reservation.html oldalra
           window.location.href = "../ReservationOldal/reservation.html";
         });
+      } else {
+        // Gomb tiltása és tooltip
+        reserveButton.disabled = true;
+        reserveButton.title = "Log in to reserve a car";
+      }
     } else {
       detailsPanel.innerHTML = `<p>No data available</p>`;
       detailsPanel.classList.add("active");
@@ -668,7 +660,6 @@ document.querySelectorAll(".details-btn").forEach((btn) => {
   });
 });
 
-// Segédfüggvény a kártya bezárásához
 function collapseCard(card) {
   if (!card) return;
   const detailsPanel = card.querySelector(".details-panel");
@@ -681,14 +672,13 @@ document.addEventListener("DOMContentLoaded", function () {
   if (window.location.hash) {
     const targetElement = document.querySelector(window.location.hash);
     if (targetElement) {
-      // Az alábbi metódus sima görgetéssel ugrik az elemhez
       targetElement.scrollIntoView({ behavior: "smooth" });
     }
   }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Autó kártyák tárolása és az eredeti sorrend megőrzése
+  // Eredeti sorrend megőrzése rendezéshez
   const carsGrid = document.querySelector(".cars-grid");
   const carCards = Array.from(carsGrid.querySelectorAll(".car-card"));
 
@@ -703,7 +693,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let sortedCards = [];
 
     if (value === "price") {
-      // Increases by price: alacsonyabb ártól a magasabb felé
       sortedCards = carCards.slice().sort((a, b) => {
         const priceA = parseInt(
           a.querySelector(".price").textContent.match(/\d+/)[0]
@@ -714,7 +703,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return priceA - priceB;
       });
     } else if (value === "price-desc") {
-      // Descending by price: drágábbtól az olcsóbb felé
       sortedCards = carCards.slice().sort((a, b) => {
         const priceA = parseInt(
           a.querySelector(".price").textContent.match(/\d+/)[0]
@@ -725,13 +713,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return priceB - priceA;
       });
     } else if (value === "none") {
-      // Eredeti sorrend visszaállítása
       sortedCards = carCards.slice().sort((a, b) => {
         return a.dataset.originalIndex - b.dataset.originalIndex;
       });
     }
 
-    // Töröljük a cars-grid tartalmát, majd a rendezett kártyákat újra hozzáadjuk
     carsGrid.innerHTML = "";
     sortedCards.forEach((card) => {
       carsGrid.appendChild(card);
