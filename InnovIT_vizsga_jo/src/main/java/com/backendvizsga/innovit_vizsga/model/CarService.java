@@ -4,18 +4,22 @@
  */
 package com.backendvizsga.innovit_vizsga.model;
 
+import static com.backendvizsga.innovit_vizsga.model.Users.emf;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -143,6 +147,43 @@ public class CarService implements Serializable {
     @Override
     public String toString() {
         return "com.backendvizsga.innovit_vizsga.model.CarService[ id=" + id + " ]";
+    }
+    
+    public Boolean updateCarService(Integer carId, Date serviceDate, String description, BigDecimal cost) {
+        EntityManager em = emf.createEntityManager();
+        Boolean toReturn = false;
+
+        try {
+            em.getTransaction().begin();
+
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("updateCarService");
+
+            spq.registerStoredProcedureParameter("car_idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("service_dateIN", Date.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("descriptionIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("costIN", BigDecimal.class, ParameterMode.IN);
+
+            spq.setParameter("car_idIN", carId);
+            spq.setParameter("service_dateIN", serviceDate);
+            spq.setParameter("descriptionIN", description);
+            spq.setParameter("costIN", cost);
+
+            spq.execute();
+            em.getTransaction().commit();
+
+            toReturn = true;
+
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            toReturn = false;
+        } finally {
+            em.clear();
+            em.close();
+            return toReturn;
+        }
     }
     
 }

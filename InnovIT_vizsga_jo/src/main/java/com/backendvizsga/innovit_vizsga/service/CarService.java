@@ -174,6 +174,10 @@ public class CarService {
             return false;
         }
     }
+
+    boolean updateCarService(Integer carId, Date serviceDate, String description, BigDecimal cost) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
      
      
     
