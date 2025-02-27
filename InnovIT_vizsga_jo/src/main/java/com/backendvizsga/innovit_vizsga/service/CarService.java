@@ -175,8 +175,35 @@ public class CarService {
         }
     }
 
-    boolean updateCarService(Integer carId, Date serviceDate, String description, BigDecimal cost) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public JSONObject updateCarById(Integer id, String brand, String model, String licensePlate, Short year, String fuelType, BigDecimal pricePerDay, String transmission, Integer doors, Boolean ac, Integer seats, String image) {
+        JSONObject toReturn = new JSONObject();
+        String status = "success";
+        int statusCode = 200;
+
+        try {
+            validateCarInputs(brand, model, licensePlate, year != null ? year.intValue() : null, fuelType, pricePerDay, transmission, doors, seats, image);
+
+            boolean result = layer.updateCarById(id, brand, model, licensePlate, year, fuelType, pricePerDay, transmission, doors, ac, seats, image);
+
+            if (!result) {
+                status = "error";
+                statusCode = 500;
+                toReturn.put("errorMessage", "Failed to update car.");
+            }
+
+        } catch (IllegalArgumentException e) {
+            status = "error";
+            statusCode = 400;
+            toReturn.put("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            status = "error";
+            statusCode = 500;
+            toReturn.put("errorMessage", "Internal Server Error: " + e.getMessage());
+        }
+
+        toReturn.put("status", status);
+        toReturn.put("statusCode", statusCode);
+        return toReturn;
     }
      
      

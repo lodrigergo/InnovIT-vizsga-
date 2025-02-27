@@ -383,4 +383,47 @@ public class CarController {
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
                 
     }
+    
+    @PUT
+    @Path("updateCarById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCarById(@QueryParam("id") Integer id, String json) {
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject response = new JSONObject();
+
+        try {
+            String brand = jsonObject.getString("brand");
+            String model = jsonObject.getString("model");
+            String licensePlate = jsonObject.getString("licensePlate");
+            Short year = (short) jsonObject.getInt("year");
+            String fuelType = jsonObject.getString("fuelType");
+            BigDecimal pricePerDay = jsonObject.getBigDecimal("pricePerDay");
+            String transmission = jsonObject.getString("transmission");
+            Integer doors = jsonObject.getInt("doors");
+            Boolean ac = jsonObject.getBoolean("ac");
+            Integer seats = jsonObject.getInt("seats");
+            String image = jsonObject.getString("image");
+
+            response = layer.updateCarById(id, brand, model, licensePlate, year, fuelType, pricePerDay, transmission, doors, ac, seats, image);
+
+            if (response.getString("status").equals("success")) {
+                return Response.status(Response.Status.OK).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } catch (JSONException e) {
+            response.put("status", "error");
+            response.put("statusCode", 400);
+            response.put("errorMessage", "Invalid JSON format: " + e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("statusCode", 500);
+            response.put("errorMessage", "Internal Server Error: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
 }

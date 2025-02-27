@@ -500,6 +500,58 @@ public class Cars implements Serializable {
         }
 
     }
+    
+    public Boolean updateCarById(Integer id, String brand, String model, String licensePlate, Short year, String fuelType, BigDecimal pricePerDay, String transmission, Integer doors, Boolean ac, Integer seats, String image) {
+        EntityManager em = emf.createEntityManager();
+        Boolean toReturn = false;
+
+        try {
+            em.getTransaction().begin();
+
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("updateCarById");
+
+            spq.registerStoredProcedureParameter("idIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("brandIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("modelIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("license_lateIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("yearIN", Short.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("fuel_typeIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("price_per_dayIN", BigDecimal.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("transmissionIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("doorsIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("ACIN", Boolean.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("seatIN", Integer.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("imageIN", String.class, ParameterMode.IN);
+
+            spq.setParameter("idIN", id);
+            spq.setParameter("brandIN", brand);
+            spq.setParameter("modelIN", model);
+            spq.setParameter("license_lateIN", licensePlate);
+            spq.setParameter("yearIN", year);
+            spq.setParameter("fuel_typeIN", fuelType);
+            spq.setParameter("price_per_dayIN", pricePerDay);
+            spq.setParameter("transmissionIN", transmission);
+            spq.setParameter("doorsIN", doors);
+            spq.setParameter("ACIN", ac);
+            spq.setParameter("seatIN", seats);
+            spq.setParameter("imageIN", image);
+
+            spq.execute();
+            em.getTransaction().commit();
+
+            toReturn = true;
+
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            toReturn = false;
+        } finally {
+            em.close();
+            return toReturn;
+        }
+    }
 
 
 }
