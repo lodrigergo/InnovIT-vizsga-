@@ -1,0 +1,111 @@
+
+.background-container{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("/talán_a_jó_bg.jpg");
+    background-attachment: fixed;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 50px 15px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+/* SEARCH BOX */
+.search-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    color: #000;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.search-box form .form-row {
+    margin-bottom: 20px;
+}
+
+.search-box form label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.search-box form input, 
+.search-box form button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.vehicle-type {
+    display: flex;
+    gap: 10px;
+}
+
+.vehicle-option {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.vehicle-option.active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.vehicle-option.active:hover {
+    background-color: blue;
+    transition: 0.3s;
+}
+
+.date-time {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.search-btn {
+    background: red;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+    margin: 0 auto;
+    display: block;
+}
+
+.search-btn:hover {
+    background: darkred;
+    transition: 0.3s;
+}

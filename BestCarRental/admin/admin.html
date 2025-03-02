@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Best Car Rental</title>
+    <link rel="stylesheet" href="admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Fejléc -->
+    <header class="admin-header">
+      <div class="container">
+        <h1>Admin Dashboard</h1>
+        <nav>
+          <ul class="nav-links">
+            <li>
+              <a href="#users"><i class="fas fa-users"></i> Felhasználók</a>
+            </li>
+            <li>
+              <a href="#cars"><i class="fas fa-car"></i> Autók</a>
+            </li>
+            <li>
+              <a href="#bookings"
+                ><i class="fas fa-calendar-alt"></i> Foglalások</a
+              >
+            </li>
+            <li>
+              <a href="../index.html" id="logout-btn"
+                ><i class="fas fa-sign-out-alt"></i> Kilépés</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Fő tartalom -->
+    <main class="admin-content">
+      <!-- Felhasználók kezelése -->
+      <section id="users" class="admin-section">
+        <h2>Felhasználók kezelése</h2>
+        <button id="load-users-btn" class="action-btn">
+          Felhasználók betöltése
+        </button>
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Szerep</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="cars" class="admin-section">
+        <h2>Autók kezelése</h2>
+        <button id="load-cars-btn" class="action-btn">Autók betöltése</button>
+        <table id="cars-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Márka</th>
+              <th>Típus</th>
+              <th>Rendszám</th>
+              <th>Év</th>
+              <th>Üzemanyag</th>
+              <th>Napidíj</th>
+              <th>Váltó</th>
+              <th>Ajtók</th>
+              <th>AC</th>
+              <th>Ülések</th>
+              <th>Kép</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dinamikusan töltődik be -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Foglalások kezelése -->
+      <section id="bookings" class="admin-section">
+        <h2>Foglalások kezelése</h2>
+        <button id="load-bookings-btn" class="action-btn">
+          Foglalások betöltése
+        </button>
+        <table id="bookings-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User ID</th>
+              <th>Autó ID</th>
+              <th>Kezdés</th>
+              <th>Befejezés</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="add-car" class="admin-section">
+        <h2>Autó hozzáadása</h2>
+        <form id="add-car-form">
+          <div class="form-group">
+            <label for="car-brand">Márka:</label>
+            <input type="text" id="car-brand" name="brand" required />
+          </div>
+          <div class="form-group">
+            <label for="car-model">Típus:</label>
+            <input type="text" id="car-model" name="model" required />
+          </div>
+          <div class="form-group">
+            <label for="car-licensePlate">Rendszám:</label>
+            <input
+              type="text"
+              id="car-licensePlate"
+              name="licensePlate"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-year">Év:</label>
+            <input
+              type="text"
+              id="car-year"
+              name="year"
+              placeholder="YYYY-MM-DD"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-fuelType">Üzemanyag:</label>
+            <input type="text" id="car-fuelType" name="fuelType" required />
+          </div>
+          <div class="form-group">
+            <label for="car-price">Napidíj:</label>
+            <input
+              type="number"
+              step="0.01"
+              id="car-price"
+              name="price"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-transmission">Váltó:</label>
+            <input
+              type="text"
+              id="car-transmission"
+              name="transmission"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="car-doors">Ajtók száma:</label>
+            <input type="number" id="car-doors" name="doors" required />
+          </div>
+          <div class="form-group">
+            <label for="car-ac">AC:</label>
+            <input type="checkbox" id="car-ac" name="AC" />
+          </div>
+          <div class="form-group">
+            <label for="car-seat">Ülések száma:</label>
+            <input type="number" id="car-seat" name="seat" required />
+          </div>
+          <div class="form-group">
+            <label for="car-image">Kép URL:</label>
+            <input type="text" id="car-image" name="image" required />
+          </div>
+          <div class="form-group full-width">
+            <button type="button" id="add-car-btn" class="action-btn">
+              Autó hozzáadása
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Lábléc -->
+    <footer class="admin-footer">
+      <div class="container">
+        <p>&copy; 2025 Best Car Rental - Admin Dashboard</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript példa: Eseménykezelők -->
+    <script src="admin.js"></script>
+  </body>
+</html>

@@ -1,584 +1,425 @@
-// A logóra kattintva az oldal tetejére ugrik és újratölti az oldalt
-document.getElementById('logo').addEventListener('click', function() {
-    window.scrollTo(0, 0); 
-    location.reload(); 
-});
-
-
-// Az oldal tetejére és újratöltésre a Home linkre kattintáskor
-document.getElementById('home-link').addEventListener('click', function(event) {
-    event.preventDefault(); 
-    window.scrollTo(0, 0); 
-    location.reload(); 
-});
-
-
-// Az összes vehicle-option kiválasztása
-const vehicleOptions = document.querySelectorAll('.vehicle-option');
-
-
-// Váltás a vehicle-option gombok között
-vehicleOptions.forEach(option => {
-    option.addEventListener('click', function() {
-        vehicleOptions.forEach(opt => opt.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-
-
-// Az "About" link kezelése
-document.querySelector('a[href="#about"]').addEventListener('click', function (event) {
-    event.preventDefault(); 
-    document.querySelector('#about').scrollIntoView({
-        behavior: 'smooth'
-    });
-});
-
-
-// A mezők azonosítása
-const locationInput = document.getElementById('location');
-const pickupDateInput = document.getElementById('pickup-date');
-const pickupTimeInput = document.getElementById('pickup-time');
-const dropoffDateInput = document.getElementById('dropoff-date');
-const dropoffTimeInput = document.getElementById('dropoff-time');
-
-
-// Az események kezelése
-locationInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); 
-        pickupDateInput.focus(); 
-    }
-});
-
-
-// További mezők eseménykezelése az Enter billentyűre
-pickupDateInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        pickupTimeInput.focus(); 
-    }
-});
-
-pickupTimeInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        dropoffDateInput.focus(); 
-    }
-});
-
-dropoffDateInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        dropoffTimeInput.focus(); 
-    }
-});
-
-
-// Kiválasztjuk a szükséges elemeket
-const loginBtn = document.querySelector('.login-btn'); 
-const loginPanel = document.getElementById('login-panel'); 
-const closeLoginPanel = document.getElementById('close-login-panel'); 
-
-
-// Félrekattintás esetén a panelek bezárása
-overlay.addEventListener('click', function (event) {
-    if (event.target === overlay) {
-        loginPanel.classList.remove('open'); 
-        registerPanel.classList.remove('open'); 
-        overlay.classList.remove('show'); 
-    }
-});
-
-
-// Login panel megjelenítése
-loginBtn.addEventListener('click', function () {
-    loginPanel.classList.add('open');
-    overlay.classList.add('show');
-});
-
-
-// Login panel elrejtése az X gombra kattintva
-closeLoginPanel.addEventListener('click', function () {
-    loginPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-});
-
-
-// Login panel elrejtése félrekattintáskor
-overlay.addEventListener('click', function () {
-    loginPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-});
-
-
-// Kiválasztjuk az elemeket
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-
-
-// Email validálás
-emailInput.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        const emailValue = emailInput.value.trim(); 
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(emailValue)) {
-            displayError(emailInput, 'Invalid email address');
-        } else {
-            removeError(emailInput);
-            passwordInput.focus(); 
-        }
-    }
-});
-
-
-// Jelszó validálás
-passwordInput.addEventListener('input', function () {
-    const passwordValue = passwordInput.value;
-
-    if (passwordValue.length > 20) {
-        displayError(passwordInput, 'Password cannot exceed 20 characters');
-    } else {
-        removeError(passwordInput);
-    }
-});
-
-
-// Jelszó validálása input eseményre
-passwordInput.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); 
-    }
-});
-
-
-// Hibaüzenet megjelenítése
-function displayError(inputElement, message) {
-    let errorElement = inputElement.nextElementSibling;
-
-    if (!errorElement || !errorElement.classList.contains('error-message')) {
-        errorElement = document.createElement('div');
-        errorElement.classList.add('error-message');
-        inputElement.parentElement.appendChild(errorElement);
-    }
-
-    errorElement.textContent = message; 
-    errorElement.style.color = 'red'; 
-}
-
-
-// Hibaüzenet eltávolítása
-function removeError(inputElement) {
-    const errorElement = inputElement.nextElementSibling;
-
-    if (errorElement && errorElement.classList.contains('error-message')) {
-        errorElement.remove(); 
-    }
-}
-
-
-// Log In gomb kiválasztása
-const logInButton = document.querySelector('.btn.login-btn');
-logInButton.disabled = true;
-logInButton.style.opacity = '0.6'; 
-
-
-// Email validálás frissítése
-emailInput.addEventListener('input', function () {
-    const emailValue = emailInput.value.trim();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(emailValue)) {
-        displayError(emailInput, 'Invalid email address');
-        updateButtonState(); 
-    } else {
-        removeError(emailInput);
-        updateButtonState();
-    }
-});
-
-
-// Jelszó validálás frissítése
-passwordInput.addEventListener('input', function () {
-    const passwordValue = passwordInput.value;
-
-    if (passwordValue.length > 20) {
-        displayError(passwordInput, 'Password cannot exceed 20 characters');
-        updateButtonState(); 
-    } else {
-        removeError(passwordInput);
-        updateButtonState(); 
-    }
-});
-
-
-// Gomb állapotának frissítése
-function updateButtonState() {
-    const emailValue = emailInput.value.trim();
-    const passwordValue = passwordInput.value;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (emailPattern.test(emailValue) && passwordValue.length > 0 && passwordValue.length <= 20) {
-        logInButton.disabled = false; 
-        logInButton.style.opacity = '1'; 
-    } else {
-        logInButton.disabled = true; 
-        logInButton.style.opacity = '0.6'; 
-    }
-}
-
-
-// Hibaüzenet eltávolítása gépelés közben az email mezőben
-emailInput.addEventListener('input', function () {
-    removeError(emailInput); 
-    updateButtonState(); 
-});
-
-
-// Email validálás csak a mező elhagyásakor (blur esemény)
-emailInput.addEventListener('blur', function () {
-    const emailValue = emailInput.value.trim();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(emailValue) && emailValue.length > 0) {
-        displayError(emailInput, 'Invalid email address');
-    }
-    updateButtonState(); 
-});
-
-
-// Kiválasztjuk a szükséges elemeket
-const createAccountBtn = document.querySelector('.create-account-btn'); 
-const registerPanel = document.getElementById('register-panel'); 
-const closeRegisterPanel = document.getElementById('close-register-panel'); 
-
-
-// Register panel megnyitása és Login panel bezárása
-createAccountBtn.addEventListener('click', function () {
-    loginPanel.classList.remove('open'); 
-    registerPanel.classList.add('open'); 
-});
-
-
-// Register panel bezárása az × gombra kattintva
-closeRegisterPanel.addEventListener('click', function () {
-    registerPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-});
-
-
-// Login panel bezárása az × gombra kattintva
-closeLoginPanel.addEventListener('click', function () {
-    loginPanel.classList.remove('open'); 
-});
-
-
-// Register panel mezők kiválasztása
-const registerEmail = document.getElementById('register-email');
-const registerPassword = document.getElementById('register-password');
-const confirmPassword = document.getElementById('confirm-password');
-const usernameInput = document.getElementById('username');
-const registerCreateAccountButton = document.querySelector('.register-create-account-btn');
-
-
-// Alapértelmezett: a Create Account gomb tiltva van
-registerCreateAccountButton.disabled = true;
-registerCreateAccountButton.style.opacity = '0.6'; 
-
-
-// Register Email Validáció
-registerEmail.addEventListener('blur', function () {
-    const emailValue = registerEmail.value.trim();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(emailValue) && emailValue.length > 0) {
-        displayError(registerEmail, 'Invalid email address'); 
-    } else if (emailValue.length === 0) {
-        displayError(registerEmail, 'Email is required'); 
-    } else {
-        removeError(registerEmail); 
-    }
-    updateRegisterButtonState(); 
-});
-
-
-// Register Password Validáció
-registerPassword.addEventListener('blur', function () {
-    const passwordValue = registerPassword.value;
-
-    if (passwordValue.length === 0) {
-        displayError(registerPassword, 'Password is required'); 
-    } else if (passwordValue.length > 20) {
-        displayError(registerPassword, 'Password cannot exceed 20 characters'); 
-    } else {
-        removeError(registerPassword); 
-    }
-    updateRegisterButtonState(); 
-});
-
-
-// Confirm Password Validáció
-confirmPassword.addEventListener('blur', function () {
-    if (confirmPassword.value !== registerPassword.value) {
-        displayError(confirmPassword, 'Passwords do not match'); 
-    } else {
-        removeError(confirmPassword); 
-    }
-    updateRegisterButtonState(); 
-});
-
-
-// Username Validáció
-usernameInput.addEventListener('blur', function () {
-    const usernameValue = usernameInput.value.trim();
-
-    if (usernameValue.length === 0) {
-        displayError(usernameInput, 'Username is required');
-    } else if (usernameValue.length > 20) {
-        displayError(usernameInput, 'Username cannot exceed 20 characters'); 
-    } else {
-        removeError(usernameInput); 
-    }
-    updateRegisterButtonState(); 
-});
-
-
-// Create Account Gomb Állapotának Frissítése
-function updateRegisterButtonState() {
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerEmail.value.trim());
-    const passwordValid = registerPassword.value.length > 0 && registerPassword.value.length <= 20;
-    const passwordsMatch = registerPassword.value === confirmPassword.value;
-    const usernameValid = usernameInput.value.trim().length > 0 && usernameInput.value.trim().length <= 20;
-
-    if (emailValid && passwordValid && passwordsMatch && usernameValid) {
-        registerCreateAccountButton.disabled = false; 
-        registerCreateAccountButton.style.opacity = '1';
-    } else {
-        registerCreateAccountButton.disabled = true; 
-        registerCreateAccountButton.style.opacity = '0.6';
-    }
-}
-
-
-// Hibaüzenet Kezelés
-function displayError(inputElement, message) {
-    let errorElement = inputElement.nextElementSibling;
-
-    if (!errorElement || !errorElement.classList.contains('error-message')) {
-        errorElement = document.createElement('div');
-        errorElement.classList.add('error-message');
-        inputElement.parentElement.appendChild(errorElement);
-    }
-
-    errorElement.textContent = message;
-    errorElement.style.color = 'red';
-}
-
-function removeError(inputElement) {
-    const errorElement = inputElement.nextElementSibling;
-
-    if (errorElement && errorElement.classList.contains('error-message')) {
-        errorElement.remove();
-    }
-}
-
-
-// Register panel Login gomb eseménykezelője
-const registerLoginBtn = document.querySelector('.register-panel .login-btn');
-
-registerLoginBtn.addEventListener('click', function () {
-    registerPanel.classList.remove('open'); 
-    loginPanel.classList.add('open'); 
-    overlay.classList.add('show'); 
-});
-
-
-// Login panel Create Account gomb eseménykezelője
-const loginCreateAccountBtn = document.querySelector('.login-panel .create-account-btn');
-loginCreateAccountBtn.addEventListener('click', function () {
-    loginPanel.classList.remove('open'); 
-    registerPanel.classList.add('open'); 
-    overlay.classList.add('show'); 
-});
-
-
-// Változók megadása
-const comfortMoreInfo = document.querySelector('.feature-item a');
-const comfortInfoPanel = document.getElementById('comfort-info-panel');
-
-
-// A panel megjelenítése
-comfortMoreInfo.addEventListener('mouseenter', function () {
-    comfortInfoPanel.style.display = 'block';
-});
-
-
-// A panel elrejtése, amikor az egér elhagyja a gombot vagy a panelt
-comfortMoreInfo.addEventListener('mouseleave', function () {
-    comfortInfoPanel.style.display = 'none';
-});
-comfortInfoPanel.addEventListener('mouseleave', function () {
-    comfortInfoPanel.style.display = 'none';
-});
-
-
-// Az elemek kiválasztása
-const loginButton = document.querySelector('.login-btn'); 
-const profileIcon = document.getElementById('profile-icon'); 
-
-
-// Login gomb eseménykezelő
-loginButton.addEventListener('click', function () {
-    loginPanel.classList.add('open'); 
-    document.getElementById('overlay').classList.add('show');
-});
-
-
-// Login panelben a bejelentkezéskor
-const loginSubmitButton = document.querySelector('.btn.login-btn');
-loginSubmitButton.addEventListener('click', function (event) {
-    event.preventDefault(); 
-    loginPanel.classList.remove('open'); 
-    document.getElementById('overlay').classList.remove('show'); 
-    loginButton.style.display = 'none'; 
-    profileIcon.style.display = 'block'; 
-});
-
-
-//A profil panel emnyitása
-const profilePanel = document.getElementById('profile-panel'); 
-const closeProfilePanel = document.getElementById('close-profile-panel'); 
-profileIcon.addEventListener('click', function () {
-    profilePanel.classList.add('open'); 
-    overlay.classList.add('show');
-});
-
-
-// Profilpanel bezárása az '×' gombra kattintva
-closeProfilePanel.addEventListener('click', function () {
-    profilePanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-});
-
-
-// Overlay-re kattintáskor a panel bezárása
-overlay.addEventListener('click', function () {
-    if (profilePanel.classList.contains('open')) {
-        profilePanel.classList.remove('open');
-        overlay.classList.remove('show');
-    }
-});
-
-
-// Logout gomb működésének kezelése
-const logoutButton = document.querySelector('.logout-btn'); 
-logoutButton.addEventListener('click', function () {
-    profilePanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-    profileIcon.style.display = 'none'; 
-    loginButton.style.display = 'block';
-});
-
-
-// Bejelentkezési állapot mentése
-localStorage.setItem('username', 'John Doe'); 
-const username = localStorage.getItem('username'); 
-
-
-// a profil panelhez való gombok és annak müködései
-document.addEventListener('DOMContentLoaded', function () {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (isLoggedIn === 'true') {
-        loginButton.style.display = 'none'; 
-        profileIcon.style.display = 'block'; 
-        profileIcon.style.opacity = '1'; 
-    } else {
-        loginButton.style.display = 'block'; 
-        profileIcon.style.display = 'none';
-    }
-});
-
-
-// Profil ikon animáció megjelenítése login után
-loginSubmitButton.addEventListener('click', function (event) {
+document.addEventListener("DOMContentLoaded", function () {
+  // LOGIN PANEL és kapcsolódó változók
+  const loginBtn = document.querySelector(".login-btn");
+  const loginPanel = document.getElementById("login-panel");
+  const overlay = document.getElementById("overlay");
+  const closeLoginPanel = document.getElementById("close-login-panel");
+  const loginSubmitBtn = document.querySelector("#login-panel .login-btn");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const profileIcon = document.getElementById("profile-icon");
+  const profilePanel = document.getElementById("profile-panel");
+  const closeProfilePanel = document.getElementById("close-profile-panel");
+  const usernameDisplay = profilePanel.querySelector("h2");
+  const logoutBtn = document.querySelector(".logout-btn");
+
+  // REGISZTRÁCIÓ PANEL és kapcsolódó változók
+  const registerPanel = document.getElementById("register-panel");
+  const closeRegisterPanel = document.getElementById("close-register-panel");
+  const createAccountBtn = document.querySelector(".create-account-btn");
+  const backToLoginBtn = document.querySelector(".register-panel .login-btn");
+
+  // Hibauzenetek létrehozása
+  function createErrorElement(input) {
+    const error = document.createElement("p");
+    error.style.color = "red";
+    error.style.fontSize = "14px";
+    input.parentNode.appendChild(error);
+    return error;
+  }
+
+  // Login panel hibaelemei
+  const emailError = createErrorElement(emailInput);
+  const passwordError = createErrorElement(passwordInput);
+
+  // Regisztrációs panel elemei és hibaelemei
+  const usernameInput = document.getElementById("username");
+  const registerEmailInput = document.getElementById("register-email");
+  const registerPasswordInput = document.getElementById("register-password");
+  const personalIdInput = document.getElementById("personal-id");
+
+  const usernameError = createErrorElement(usernameInput);
+  const registerEmailError = createErrorElement(registerEmailInput);
+  const registerPasswordError = createErrorElement(registerPasswordInput);
+  const personalIdError = createErrorElement(personalIdInput);
+
+  // PANEL KEZELÉS (megnyitás, bezárás)
+  loginBtn.addEventListener("click", function () {
+    loginPanel.classList.add("open");
+    overlay.classList.add("show");
+  });
+
+  function closeAllPanels() {
+    loginPanel.classList.remove("open");
+    registerPanel.classList.remove("open");
+    profilePanel.classList.remove("open");
+    overlay.classList.remove("show");
+  }
+
+  overlay.addEventListener("click", closeAllPanels);
+  closeLoginPanel.addEventListener("click", closeAllPanels);
+  closeRegisterPanel.addEventListener("click", closeAllPanels);
+
+  profileIcon.addEventListener("click", function () {
+    profilePanel.classList.add("open");
+    overlay.classList.add("show");
+  });
+
+  closeProfilePanel.addEventListener("click", function () {
+    profilePanel.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+
+  // Navigáció a login és regisztrációs panelekkel
+  createAccountBtn.addEventListener("click", function () {
+    loginPanel.classList.remove("open");
+    registerPanel.classList.add("open");
+  });
+
+  backToLoginBtn.addEventListener("click", function () {
+    registerPanel.classList.remove("open");
+    loginPanel.classList.add("open");
+  });
+
+  // LOGIN VALIDÁCIÓ ÉS API HÍVÁS
+  loginSubmitBtn.addEventListener("click", async function (event) {
     event.preventDefault();
-    localStorage.setItem('isLoggedIn', 'true'); 
-    loginPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-    loginButton.style.display = 'none'; 
-    profileIcon.style.display = 'block'; 
-    profileIcon.style.animation = 'profileIconFloatIn 1.5s ease-out'; 
-});
 
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-// Login gomb eseménykezelő
-loginButton.addEventListener('click', function () {
-    loginPanel.classList.add('open'); 
-    overlay.classList.add('show'); 
-});
+    // Egyszerű validáció
+    if (!email) {
+      emailError.textContent = "Kérlek add meg az email címed!";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailError.textContent = "Érvénytelen email!";
+    } else {
+      emailError.textContent = "";
+    }
 
+    if (!password) {
+      passwordError.textContent = "Kérlek add meg a jelszavad!";
+    } else if (password.length < 8 || password.length > 20) {
+      passwordError.textContent =
+        "A jelszónak 8-20 karakter hosszúnak kell lennie!";
+    } else if (!/^[A-Z]/.test(password)) {
+      passwordError.textContent = "A jelszónak nagybetűvel kell kezdődnie!";
+    } else {
+      passwordError.textContent = "";
+    }
 
-// Login panelben a bejelentkezéskor
-loginSubmitButton.addEventListener('click', function (event) {
-    event.preventDefault(); 
-    localStorage.setItem('isLoggedIn', 'true'); 
-    loginPanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-    loginButton.style.display = 'none'; 
-    profileIcon.style.display = 'block'; 
-});
+    if (emailError.textContent || passwordError.textContent) {
+      return;
+    }
 
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
-// Profil ikonra kattintáskor a panel megnyitása
-profileIcon.addEventListener('click', function () {
-    profilePanel.classList.add('open'); 
-    overlay.classList.add('show');
-});
+      const data = await response.json();
 
+      if (response.ok && data.status === "success") {
+        localStorage.setItem("jwt", data.result.jwt);
+        localStorage.setItem("username", data.result.name);
 
-// Profil panel bezárása
-document.getElementById('close-profile-panel').addEventListener('click', function () {
-    profilePanel.classList.remove('open');
-    overlay.classList.remove('show'); 
-});
+        // Frissítjük a profil panel felhasználó nevét
+        usernameDisplay.textContent = data.result.name;
 
+        closeAllPanels();
+        loginBtn.style.display = "none";
+        profileIcon.style.display = "block";
 
-// Logout gomb eseménykezelő
-logoutButton.addEventListener('click', function () {
-    localStorage.setItem('isLoggedIn', 'false');
-    profilePanel.classList.remove('open'); 
-    overlay.classList.remove('show'); 
-    loginButton.style.display = 'block'; 
-    profileIcon.style.display = 'none'; 
-});
+        // Elmentett profilkép betöltése, ha létezik
+        const profileImageKey = "profileImage_" + data.result.name;
+        const savedImage = localStorage.getItem(profileImageKey);
+        if (savedImage) {
+          document.getElementById("profile-image").src = savedImage;
+          document.getElementById("profile-icon").src = savedImage;
+        }
 
+        // Sikeres bejelentkezés alert
+        alert("Üdvözöllek, " + data.result.name + "!");
 
-// Válaszd ki az összes elem, amit animálni szeretnél
-const scrollElements = document.querySelectorAll('.scroll-animate');
-const elementInView = (el, offset = 0) => {
-    const elementTop = el.getBoundingClientRect().top;
-    return elementTop <= (window.innerHeight || document.documentElement.clientHeight) - offset;
-};
+        // Loader megjelenítése 1,5 másodpercig
+        showLoader();
+      } else {
+        passwordError.textContent = "Hibás email vagy jelszó!";
+      }
+    } catch (error) {
+      console.error("Hiba a bejelentkezés során:", error);
+      passwordError.textContent = "Hálózati hiba történt!";
+    }
+  });
 
+  // Loader megjelenítése
+  function showLoader() {
+    const loaderOverlay = document.getElementById("loader-overlay");
+    loaderOverlay.style.display = "flex"; // megjelenítjük az overlay-t (flex, hogy a spinner középre kerüljön)
+    setTimeout(() => {
+      loaderOverlay.style.display = "none";
+    }, 1500);
+  }
 
-//Ha görgetek akkor lesz látható az animáció
-const displayScrollElement = (element) => {
-    element.classList.add('visible');
-};
+  // Logout: töröljük a token és felhasználónév adatait, de megőrizzük a profilkép beállítást
+  logoutBtn.addEventListener("click", function () {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("username");
+    // A profilkép kulcsát nem töröljük, így új bejelentkezéskor megmarad a választott kép.
 
+    closeAllPanels();
 
-// Az animációk kezelése görgetéskor
-const handleScrollAnimation = () => {
-    scrollElements.forEach((el) => {
-        if (elementInView(el, 150)) {
-            displayScrollElement(el);
-        } 
+    loginBtn.style.display = "block";
+    profileIcon.style.display = "none";
+
+    alert("Sikeresen kijelentkeztél.");
+  });
+
+  // Ha a felhasználó már be van jelentkezve, betöltjük a mentett adatokat
+  const storedUsername = localStorage.getItem("username");
+  if (storedUsername) {
+    usernameDisplay.textContent = storedUsername;
+    loginBtn.style.display = "none";
+    profileIcon.style.display = "block";
+
+    // Mentett profilkép betöltése
+    const profileImageKey = "profileImage_" + storedUsername;
+    const savedImage = localStorage.getItem(profileImageKey);
+    if (savedImage) {
+      document.getElementById("profile-image").src = savedImage;
+      document.getElementById("profile-icon").src = savedImage;
+    }
+  }
+
+  // REGISZTRÁCIÓ VALIDÁCIÓ ÉS API HÍVÁS
+  const registerSubmitBtn = document.querySelector(
+    ".register-create-account-btn"
+  );
+
+  // "Touched" objektum a mezők validálásához
+  const touched = {
+    username: false,
+    registerEmail: false,
+    registerPassword: false,
+    personalId: false,
+  };
+
+  usernameInput.addEventListener("blur", () => {
+    touched.username = true;
+    validateRegistration();
+  });
+
+  registerEmailInput.addEventListener("blur", () => {
+    touched.registerEmail = true;
+    validateRegistration();
+  });
+
+  registerPasswordInput.addEventListener("blur", () => {
+    touched.registerPassword = true;
+    validateRegistration();
+  });
+
+  personalIdInput.addEventListener("blur", () => {
+    touched.personalId = true;
+    validateRegistration();
+  });
+
+  function validateRegistration() {
+    let valid = true;
+
+    // Username validáció
+    if (touched.username) {
+      if (!usernameInput.value.trim()) {
+        usernameError.textContent = "Felhasználónév megadása kötelező!";
+        valid = false;
+      } else {
+        usernameError.textContent = "";
+      }
+    } else {
+      usernameError.textContent = "";
+      if (!usernameInput.value.trim()) {
+        valid = false;
+      }
+    }
+
+    // Email validáció
+    if (touched.registerEmail) {
+      if (!registerEmailInput.value.trim()) {
+        registerEmailError.textContent = "Email megadása kötelező!";
+        valid = false;
+      } else if (
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerEmailInput.value.trim())
+      ) {
+        registerEmailError.textContent = "Érvénytelen email!";
+        valid = false;
+      } else {
+        registerEmailError.textContent = "";
+      }
+    } else {
+      registerEmailError.textContent = "";
+      if (!registerEmailInput.value.trim()) {
+        valid = false;
+      }
+    }
+
+    // Jelszó validáció
+    if (touched.registerPassword) {
+      if (!registerPasswordInput.value.trim()) {
+        registerPasswordError.textContent = "Jelszó megadása kötelező!";
+        valid = false;
+      } else {
+        registerPasswordError.textContent = "";
+      }
+    } else {
+      registerPasswordError.textContent = "";
+      if (!registerPasswordInput.value.trim()) {
+        valid = false;
+      }
+    }
+
+    // Personal-ID validáció
+    if (touched.personalId) {
+      if (!/^\d+[a-zA-Z]$/.test(personalIdInput.value.trim())) {
+        personalIdError.textContent =
+          "Personal-ID számokból álljon, az utolsó karakter betű legyen!";
+        valid = false;
+      } else {
+        personalIdError.textContent = "";
+      }
+    } else {
+      personalIdError.textContent = "";
+      if (!/^\d+[a-zA-Z]$/.test(personalIdInput.value.trim())) {
+        valid = false;
+      }
+    }
+
+    registerSubmitBtn.disabled = !valid;
+    return valid;
+  }
+
+  document.querySelectorAll("#register-panel input").forEach((input) => {
+    input.addEventListener("input", validateRegistration);
+  });
+
+  registerSubmitBtn.addEventListener("click", async function (event) {
+    event.preventDefault();
+    if (!validateRegistration()) return;
+
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/registerUser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: usernameInput.value.trim(),
+            email: registerEmailInput.value.trim(),
+            password: registerPasswordInput.value.trim(),
+            personalId: personalIdInput.value.trim(),
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Sikeres regisztráció! Most már bejelentkezhetsz.");
+        registerPanel.classList.remove("open");
+        loginPanel.classList.add("open");
+      } else {
+        alert(
+          "Hiba történt a regisztráció során: Létezik már ilyen email cimmel regisztrált felhasználó!"
+        );
+      }
+    } catch (error) {
+      console.error("Hiba a regisztráció során:", error);
+    }
+  });
+
+  // Profilkép kiválasztás: előre definiált képek eseménykezelője
+  document.querySelectorAll(".profile-option").forEach((option) => {
+    option.addEventListener("click", function () {
+      const selectedImage = this.getAttribute("data-image");
+      // Frissítjük a profil panel és a navbar képeit
+      document.getElementById("profile-image").src = selectedImage;
+      document.getElementById("profile-icon").src = selectedImage;
+      // Elmentjük a választást, ha be van jelentkezve a felhasználó
+      const currentUser = localStorage.getItem("username");
+      if (currentUser) {
+        localStorage.setItem("profileImage_" + currentUser, selectedImage);
+      }
     });
-};
+  });
+});
 
+const checkoutButtons = document.querySelectorAll(".flip-card-back button");
+checkoutButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    const targetId = this.getAttribute("data-target");
+    // Átirányítunk a cars.html oldalra a hash hozzáfűzésével
+    window.location.href = "./Carsoldal/cars.html#" + targetId;
+  });
+});
 
-// Görgetési esemény regisztrálása
-window.addEventListener('scroll', () => {
-    handleScrollAnimation();
+document.addEventListener("DOMContentLoaded", function () {
+  // Végigmegyünk minden feature item-en
+  const featureItems = document.querySelectorAll(".feature-item");
+
+  featureItems.forEach(function (item) {
+    const moreInfoButton = item.querySelector(".more-info");
+    const infoBox = item.querySelector(".info-box");
+
+    if (moreInfoButton && infoBox) {
+      // "More Info" gomb kattintására
+      moreInfoButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        // Megakadályozzuk, hogy az esemény továbbterjedjen a dokumentum click eseményéhez
+        e.stopPropagation();
+
+        // Bezárjuk az összes aktív infó dobozt (csak egy lehet egyszerre)
+        document
+          .querySelectorAll(".info-box.active")
+          .forEach(function (openBox) {
+            if (openBox !== infoBox) {
+              openBox.classList.remove("active");
+              const siblingButton =
+                openBox.parentElement.querySelector(".more-info");
+              if (siblingButton) {
+                siblingButton.style.display = "inline-block";
+              }
+            }
+          });
+
+        // Megnyitjuk a kiválasztott infó dobozt és elrejtjük a gombot
+        infoBox.classList.add("active");
+        moreInfoButton.style.display = "none";
+      });
+    }
+  });
+
+  // Globális kattintás: ha a felhasználó bárhová kattint az oldalon (nem az infó dobozra vagy a "More Info" gombra),
+  // akkor az aktív panel bezárul
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".info-box") && !e.target.closest(".more-info")) {
+      document
+        .querySelectorAll(".info-box.active")
+        .forEach(function (activeBox) {
+          activeBox.classList.remove("active");
+          const siblingButton =
+            activeBox.parentElement.querySelector(".more-info");
+          if (siblingButton) {
+            siblingButton.style.display = "inline-block";
+          }
+        });
+    }
+  });
 });

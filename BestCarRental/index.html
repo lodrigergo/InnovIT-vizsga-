@@ -9,18 +9,19 @@
 </head>
 <body>
     <!-- Az oldal navbárja és menüje -->
+     <div id="home"></div>
     <header class="navbar">
         <div class="container">
             <img src="./Photos/logo for the website.webp" alt="Best Car Rental Logo" class="logo" id="logo">
             <nav>
                 <ul class="nav-links">
-                    <li><a href="#home" id="home-link">Home</a></li>
+                    <li><a href="#home" class="home-link" id="home-link">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#">Cars</a></li>
-                    <li><a href="#">Reservations</a></li>
+                    <li><a href="./Carsoldal/cars.html">Cars</a></li>
+                    <li><a href="./ReservationOldal/reservation.html">Reservations</a></li>
                 </ul>
             </nav>
-            <button class="login-btn">Login/Registration</button>
+            <button class="login-btn">Login</button>
             <img src="./Photos/profile icon.webp" alt="Profile Icon" id="profile-icon" style="display: none; width: 40px; height: 40px; border-radius: 30%; margin-right: 20px;">
         </div>
     </header>
@@ -41,8 +42,8 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <label for="location">Pick-up and drop-off location</label>
-                        <input type="text" id="location" placeholder="Pick up and drop off location">
+                        <label for="location">Zakynthos Airport - our office</label>
+                        <input type="text" id="location" placeholder="Zakynthos Airport - our office">
                     </div>
                     <div class="form-row date-time">
                         <div>
@@ -61,6 +62,38 @@
             </div>
         </div>
     </section>
+
+    <!-- Bejelentkezés utáni profil  -->
+    <div id="profile-panel" class="profile-panel">
+        <div class="profile-header">
+            <img src="./Photos/avatar.jpg" alt="Profile Icon" class="profile-image" id="profile-image">
+            <h2>USERNAME</h2>
+            <span id="close-profile-panel" class="close-btn">&times;</span>
+        </div>
+        <div class="profile-image-selection">
+            <h3>Válassz profilképet:</h3>
+            <img src="./Photos/pepega_almos.png" alt="Pepega 1" class="profile-option" data-image="./Photos/pepega_almos.png">
+            <img src="./Photos/pepega_fizet.gif" alt="Pepega 2" class="profile-option" data-image="./Photos/pepega_fizet.gif">
+            <img src="./Photos/pepega_fogyatek.png" alt="Pepega 3" class="profile-option" data-image="./Photos/pepega_fogyatek.png">
+            <img src="./Photos/pepega_izgul.jpg" alt="Pepega 4" class="profile-option" data-image="./Photos/pepega_izgul.jpg">
+            <img src="./Photos/pepega_ordibal.png" alt="Pepega 5" class="profile-option" data-image="./Photos/pepega_ordibal.png">
+            <img src="./Photos/pepega_szomoru.jpg" alt="Pepega 6" class="profile-option" data-image="./Photos/pepega_szomoru.jpg">
+            <img src="./Photos/pepega_vidam.jpg" alt="Pepega 7" class="profile-option" data-image="./Photos/pepega_vidam.jpg">
+            <img src="./Photos/pepega_zenethallgat.png" alt="Pepega 8" class="profile-option" data-image="./Photos/pepega_zenethallgat.png">
+        </div>
+        <div class="profile-content">
+            <h3>WELCOME</h3>
+            <ul>
+                <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#about"><i class="fa fa-user"></i> About</a></li>
+                <li><a href="./Carsoldal/cars.html"><i class="fa fa-car"></i> Cars</a></li>
+                <li><a href="./ReservationOldal/reservation.html"><i class="fa fa-calendar"></i> Reservation</a></li>
+                <li><a href="#"><i class="fa fa-adjust"></i> Light / Dark</a></li>
+            </ul>
+            <hr>
+            <button class="logout-btn">Log Out</button>
+        </div>
+    </div>
 
 
 <!-- Bejelentkezési panel rész -->
@@ -83,7 +116,7 @@
                 </label>
                 <input type="password" id="password" placeholder="Password">
             </div>
-            <a href="#" class="forgot-password">Forgot Password?</a>
+            <a href="./ForgotPassword/forgotPassword.html" class="forgot-password">Forgot Password?</a>
             <button type="submit" class="btn login-btn">Log In</button>
             <button type="button" class="btn create-account-btn">Create Account</button>
         </form>
@@ -110,89 +143,239 @@
                 <input type="password" id="register-password" placeholder="Password">
             </div>
             <div class="form-group">
-                <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" placeholder="Confirm Password">
+                <label for="personal-id">Personal-ID:</label>
+                <input type="personal-id" id="personal-id" placeholder="personal-id">
             </div>
             <a href="#" class="forgot-password">Forgot Password?</a>
             <button type="submit" class="btn register-create-account-btn" disabled>Create Account</button>
-            <button type="button" class="btn login-btn">Login</button>
+            <button type="button" class="btn login-btn">Back To Login</button>
         </form>
     </div>
 
 
  <!-- About rész -->
+  <div>
     <section id="about">
         <div class="about-header">
-            <h2>About</h2>
+            <div><h2 class="hover-effect">About</h2></div> 
             <br>
-            <p>Introducing our latest collection that brings a little comfort to your holiday</p>
+            <blockquote class="about-quote">
+                "Introducing our latest collection that brings a little comfort to your holiday"
+            </blockquote>
             <br><br>
         </div>
         <div class="about-features">
-            <div class="feature-item">
-                <img src="./Photos/Comfortable-Car.jpg" alt="Comfort">
+            <div class="feature-item" style="position: relative;">
+                <div>
+                  <img src="./Photos/Comfortable-Car.jpg" alt="Comfort">
+                </div>
                 <h3>Comfort</h3>
-                <p>Experience unmatched comfort with our reliable and well-maintained rental cars.</p>
-                <a href="#">More Info →</a>
-            </div>
-            <div class="feature-item">
-                <img src="./Photos/62d84b3d3ba4466e76043bb4_Benefits of flexibility .png" alt="Flexibility">
+                <div>
+                  <p>Experience unmatched comfort with our reliable and well-maintained rental cars.</p>
+                </div>
+                <!-- "More Info" gomb -->
+                <a href="#" class="more-info">More Info →</a>
+                
+                <!-- Infó doboz, eleve rejtett -->
+                <div class="info-box">
+                  <h2>Comfort</h2>
+                  <p>
+                    A kényelem elengedhetetlen az autóbérlésnél, mert javítja az utazás élményét.<br>
+                    Vállalatunk a legmagasabb színvonalú komfort megoldásokat kínálja, hogy minden utazás kellemes legyen.<br>
+                    Válaszd a kényelmet, mert mi a minőséget és a komfortot tesszük elérhetővé!
+                    <br><br>
+                    <p>Nyomj bárhova az oldalon panel bezárásához!</p>
+                  </p>
+                </div>
+              </div>
+              
+              <div class="feature-item" style="position: relative;">
+                <div>
+                  <img src="./Photos/62d84b3d3ba4466e76043bb4_Benefits of flexibility .png" alt="Flexibility">
+                </div>
                 <h3>Flexibility</h3>
-                <p>Enjoy ultimate flexibility with rental options tailored to your schedule and needs.</p>
-                <a href="#">More Info →</a>
-            </div>
-            <div class="feature-item">
-                <img src="./Photos/Great-Customer-Support-jpg.webp" alt="Customer Support">
+                <div>
+                  <p>Enjoy ultimate flexibility with rental options tailored to your schedule and needs.</p>
+                </div>
+                <!-- "More Info" gomb -->
+                <a href="#" class="more-info" id="more-info-flexibility">More Info →</a>
+                
+                <!-- Infó doboz, eleve rejtett; aktiváláskor beúszik a balról -->
+                <div class="info-box" id="flexibility-info-box">
+                  <h2>Flexibility</h2>
+                  <p>
+                    Rugalmas autóbérlési megoldások, melyek alkalmazkodnak az Ön időbeosztásához.<br>
+                    Igény szerinti időpontválasztás és járműválaszték.<br>
+                    Egyszerű, kényelmes utazást biztosítunk minden körülmények között.
+                    <br><br>
+                    <p>Nyomj bárhova az oldalon panel bezárásához!</p>
+                  </p>
+                </div>
+              </div>
+              
+              <div class="feature-item" style="position: relative;">
+                <div>
+                  <img src="./Photos/Great-Customer-Support-jpg.webp" alt="Customer Support">
+                </div>
                 <h3>Customer Support</h3>
-                <p>Our 24/7 customer support ensures we're always here when you need us.</p>
-                <a href="#">More Info →</a>
-            </div>
+                <div>
+                  <p>Our 24/7 customer support ensures we're always here when you need us.</p>
+                </div>
+                <!-- "More Info" gomb -->
+                <a href="#" class="more-info" id="more-info-customer-support">More Info →</a>
+                
+                <!-- Infó doboz, eleve rejtett; aktiváláskor beúszik a balról -->
+                <div class="info-box" id="customer-support-info-box">
+                  <h2>Customer Support</h2>
+                  <p>
+                    Professzionális ügyfélszolgálat, ami mindig kész segíteni.<br>
+                    24 órás elérhetőség minden kérdésre.<br>
+                    Gyors és hatékony megoldások minden problémára.
+                    <br><br>
+                    <p>Nyomj bárhova az oldalon panel bezárásához!</p>
+                  </p>
+                </div>
+              </div>
+              
         </div>
+    
         <br>
-        <div class="about-cards">
-            <div class="about-card">
-                <h3>Best Car Rental</h3>
-                <p>One of our best-selling cars is the Volkswagen Golf 2018 version.</p>
-                <ul>
-                    <li>Comfort</li>
-                    <li>Favorable price</li>
-                    <li>Reliability</li>
-                </ul>
-                <img class="VW" src="./Photos/50-volkswagen-golf-2024-front-driving.webp" alt="Volkswagen Golf">
-                <br>
-                <button class="vwButton">CHECK OUT</button>
+
+        <!-- cardok  -->
+        <div class="carousel-container">
+            <div class="carousel">
+                <!-- Volkswagen Golf -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./Photos/VOlkswagen golf 2018.jpg" alt="Volkswagen Golf">
+                            <h3>Volkswagen Golf</h3>
+                            <p class="hover-info">Hover here for more info</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Best Car Rental</h3>
+                            <p>One of our best-selling cars is the Volkswagen Golf 2018 version.</p>
+                            <ul>
+                                <li>Comfort</li>
+                                <li>Favorable price</li>
+                                <li>Reliability</li>
+                            </ul>
+                            <button class="vwButton" data-target="card-volkswagen-golf-2018"><i class="fa fa-car"></i> CHECK OUT</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Volvo XC90 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./Photos/Volvo XC90 2019.jpeg" alt="Volvo XC90" data-id="2">
+                            <h3>Volvo XC90</h3>
+                            <p class="hover-info">Hover here for more info</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Best Car Rental</h3>
+                            <p>One of the cheapest vehicles in our range is the Volvo XC90, 2019 version.</p>
+                            <ul>
+                                <li>It is affordable</li>
+                                <li>Comfort</li>
+                                <li>Reliability</li>
+                            </ul>
+                            <button class="volvoButton" data-target="card-volvo-xc90-2019"><i class="fa fa-car"></i> CHECK OUT</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Toyota Corolla -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./Photos/Toyota Corolla 1.8 sedan. hybridjpg.png" alt="Toyota Corolla">
+                            <h3>Toyota Corolla</h3>
+                            <p class="hover-info">Hover here for more info</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Best Car Rental</h3>
+                            <p>Toyota Corolla 2021 Petrol</p>
+                            <ul>
+                                <li>Comfort</li>
+                                <li>Fuel Efficiency</li>
+                                <li>Reliability</li>
+                            </ul>
+                            <button class="corollaButton" data-target="card-toyota-corolla-2021"><i class="fa fa-car"></i> CHECK OUT</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Toyota Rav4 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./Photos/toyota rav4 ujabb.jpeg" alt="Toyota Rav4">
+                            <h3>Toyota Rav4</h3>
+                            <p class="hover-info">Hover here for more info</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Best Car Rental</h3>
+                            <p>Toyota Rav4 2021 Hybrid</p>
+                            <ul>
+                                <li>Spacious</li>
+                                <li>Hybrid Efficiency</li>
+                                <li>Reliability</li>
+                            </ul>
+                            <button class="rav4Button" data-target="card-toyota-rav4-2021"><i class="fa fa-car"></i> CHECK OUT</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Volvo V60 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./Photos/Volvo V60 2019.jpeg" alt="Volvo V60">
+                            <h3>Volvo V60</h3>
+                            <p class="hover-info">Hover here for more info</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Best Car Rental</h3>
+                            <p>Volvo V60 2019 Diesel</p>
+                            <ul>
+                                <li>Luxury</li>
+                                <li>Comfort</li>
+                                <li>Safety</li>
+                            </ul>
+                            <button class="v60Button" data-target="card-volvo-v60-2019"><i class="fa fa-car"></i> CHECK OUT</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Honda Civic -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="./Photos/Honda Civic 2020.jpeg" alt="Honda Civic">
+                            <h3>Honda Civic</h3>
+                            <p class="hover-info">Hover here for more info</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Best Car Rental</h3>
+                            <p>Honda Civic 2020 Diesel</p>
+                            <ul>
+                                <li>Sporty</li>
+                                <li>Fuel Efficiency</li>
+                                <li>Reliability</li>
+                            </ul>
+                            <button class="civicButton" data-target="card-honda-civic-2020"><i class="fa fa-car"></i> CHECK OUT</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="about-card highlighted">
-                <h3>Best Car Rental</h3>
-                <p>One of the cheapest vehicles in our range is the Volvo XC90, 2019 version.</p>
-                <ul>
-                    <li>It is affordable</li>
-                    <li>Comfort</li>
-                    <li>Reliability</li>
-                </ul>
-                <img class="Volvo" src="./Photos/2019-Volvo-XC90-1024x696.jpg" alt="Volvo XC90">
-                <br>
-                <button class="volvoButton">CHECK OUT</button>
-            </div>
-        </div>
+        </div>      
         <br>
         <blockquote class="about-quote">
             "On the road, responsibility is the best companion, attention is the surest travel companion. Drive so everyone gets home."
         </blockquote>
     </section>
-
-<!-- Információs panel a kényelemről -->
-    <div class="info-panel" id="comfort-info-panel">
-        <h3>Comfortable travel</h3>
-        <p>
-            Comfortable travel begins with a vehicle designed to meet your needs and preferences.
-            Our cars are equipped with modern features to ensure a smooth and enjoyable ride. From
-            spacious interiors to advanced climate control, every detail is tailored for your comfort.
-        </p>
-        <img src="./Photos/for about.webp" alt="VW Golf Comfort">
-        <button class="info-btn">On to the car</button>
-    </div>
-
 
 <!-- Vásárlói vélemények rész -->
     <section id="customer-opinions" class="customer-opinions">
@@ -241,62 +424,62 @@
         </div>
     </section>
 
-
-<!-- Profil panel bejelentkezés után -->
-    <div id="profile-panel" class="profile-panel">
-        <div class="profile-header">
-            <img src="./Photos/avatar.jpg" alt="Profile Icon" class="profile-image">
-            <h2>USERNAME</h2>
-            <span id="close-profile-panel" class="close-btn">&times;</span>
+<!-- Footer rész-->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3 class="horizontal">Best Car Rental</h3>
+            <p class="aligned-text">
+                We are a trusted car rental company dedicated to providing reliable vehicles 
+                and exceptional service to meet all your travel needs. Explore hassle-free rentals 
+                with flexible options and competitive rates.
+            </p>
         </div>
-        <div class="profile-content">
-            <h3>WELCOME</h3>
-            <ul>
-                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#about"><i class="fa fa-user"></i> About</a></li>
-                <li><a href="#"><i class="fa fa-car"></i> Cars</a></li>
-                <li><a href="#"><i class="fa fa-calendar"></i> Reservation</a></li>
-                <li><a href="#"><i class="fa fa-adjust"></i> Light / Dark</a></li>
-                <li><a href="#"><i class="fa fa-bell"></i> Notification</a></li>
-                <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
-            </ul>
-            <hr>
-            <button class="logout-btn">Log Out</button>
+        <div class="footer-section">
+            <h3>Take it up with us connection</h3>
+            <p>
+                <i class="fas fa-address-book"></i> Contact
+            </p>
+            <p>
+                <i class="fas fa-phone"></i> 06/20 123 4567
+            </p>
+            <p>
+                <i class="fas fa-envelope"></i>
+                <a href="https://mail.google.com/mail/u/1/" target="_blank">bestcarrentalmadeinhungary@gmail.com</a>
+            </p>
+        </div>
+        <div class="footer-section">
+            <h3>Who are we?</h3>
+            <a href="#about">
+                <i class="fas fa-info-circle"></i> About
+            </a>
+        </div>
+        <div class="footer-section">
+            <h3>Follow us!</h3>
+            <p>
+                <a href="https://www.facebook.com/profile.php?id=100010122408583&locale=hu_HU" target="_blank">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+            </p>
+            <p>
+                <a href="https://www.instagram.com/timar._david/" target="_blank">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </p>
+            <p>
+                <a href="https://x.com/home" target="_blank">
+                    <i class="fab fa-twitter"></i> Twitter
+                </a>
+            </p>
         </div>
     </div>
+</footer>
 
-    
-<!-- Footer rész-->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>Best Car Rental</h3>
-                <p>
-                    We are a trusted car rental company dedicated to providing reliable vehicles 
-                    and exceptional service to meet all your travel needs. Explore hassle-free rentals 
-                    with flexible options and competitive rates.
-                </p>
-            </div>
-            <div class="footer-section">
-                <h3>Take it up with us connection</h3>
-                <p><strong>Contact</strong></p>
-                <p>06/20 123 4567</p>
-                <p><a href="https://mail.google.com/mail/u/1/" target="_blank">bestcarrentalmadeinhungary@gmail.com</a></p>
-            </div>
-            <div class="footer-section">
-                <h3>Who are we?</h3>
-                <p><a href="#about">About</a></p>
-            </div>
-            <div class="footer-section">
-                <h3>Follow us!</h3>
-                <p><a href="https://www.facebook.com/profile.php?id=100010122408583&locale=hu_HU" target="_blank">Facebook</a></p>
-                <p><a href="https://www.instagram.com/timar._david/" target="_blank">Instagram</a></p>
-                <p><a href="https://x.com/home" target="_blank">Twitter</a></p>
-            </div>
-        </div>
-    </footer>
-    
 
-<script src="script.js"></script>
+ <!-- Loader Overlay (alapból rejtett) -->
+<div id="loader-overlay" class="loader-overlay">
+    <div class="loader"></div>
+  </div>      
+    <script src="script.js"></script>
 </body>
 </html>
