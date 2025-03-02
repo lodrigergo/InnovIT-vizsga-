@@ -1,23 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/WebServices/GenericResource.java to edit this template
- */
 package com.backendvizsga.innovit_vizsga.controller;
 
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
+import com.backendvizsga.innovit_vizsga.model.CarAvailability;
+import com.backendvizsga.innovit_vizsga.service.CarAvailabilityService;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-/**
- * REST Web Service
- *
- * @author User
- */
 @Path("carAvailability")
 public class CarAvailabilityController {
 

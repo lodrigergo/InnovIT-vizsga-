@@ -212,7 +212,6 @@ public class BookingsController {
         return Response.status(Response.Status.OK).entity(toReturn.toString()).type(MediaType.APPLICATION_JSON).build();
                 
     }
-    
     @GET
     @Path("searchCarsBetweenDates")
     @Produces(MediaType.APPLICATION_JSON)
