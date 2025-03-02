@@ -27,7 +27,7 @@ public class LoginTest {
     @Test
     public void testSuccessfulLogin() throws InterruptedException {
 
-        driver.get("http://127.0.0.1:5500/index.html");
+        driver.get("http://127.0.0.1:5501/index.html");
         Thread.sleep(2000);
 
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("login-btn")));
@@ -63,7 +63,7 @@ public class LoginTest {
     @Test
     public void testFailedLogin() throws InterruptedException {
 
-        driver.get("http://127.0.0.1:5500/index.html");
+        driver.get("http://127.0.0.1:5501/index.html");
         Thread.sleep(2000);
 
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("login-btn")));

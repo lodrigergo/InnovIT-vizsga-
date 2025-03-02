@@ -10,14 +10,6 @@
           <include name="testSuccessfulRegistration"/>
         </methods>
       </class> <!-- RegisterTest -->
-      <class name="LoginTest">
-        <methods>
-          <include name="tearDown"/>
-          <include name="testFailedLogin"/>
-          <include name="setUp"/>
-          <include name="testSuccessfulLogin"/>
-        </methods>
-      </class> <!-- LoginTest -->
     </classes>
   </test> <!-- Surefire test(failed) -->
 </suite> <!-- Failed suite [Surefire suite] -->
