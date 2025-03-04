@@ -227,54 +227,54 @@ function addCar() {
   const brand = document.getElementById("car-brand").value;
   const model = document.getElementById("car-model").value;
   const licensePlate = document.getElementById("car-licensePlate").value;
-  const year = document.getElementById("car-year").value;
+  const year = parseInt(document.getElementById("car-year").value);
   const fuelType = document.getElementById("car-fuelType").value;
-  const price = parseFloat(document.getElementById("car-price").value);
+  const pricePerDay = parseFloat(document.getElementById("car-price").value);
   const transmission = document.getElementById("car-transmission").value;
   const doors = parseInt(document.getElementById("car-doors").value);
   const ac = document.getElementById("car-ac").checked;
-  const seat = parseInt(document.getElementById("car-seat").value);
+  const seats = parseInt(document.getElementById("car-seat").value);
   const image = document.getElementById("car-image").value;
 
-  // Összeállítjuk a JSON objektumot
+  // Összeállítjuk a JSON objektumot a backend által elvárt kulcsokkal
   const carData = {
     brand: brand,
     model: model,
     licensePlate: licensePlate,
     year: year,
     fuelType: fuelType,
-    price: price,
+    pricePerDay: pricePerDay,
     transmission: transmission,
     doors: doors,
-    AC: ac,
-    seat: seat,
+    ac: ac,
+    seats: seats,
     image: image,
   };
 
   console.log("Elküldendő autó adatok:", JSON.stringify(carData));
 
-  fetch(
-    "http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/car/addCar",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(carData),
-    }
-  )
+  fetch("http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/car/addCar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(carData),
+  })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Hálózati hiba: " + response.status);
+        return response.json().then((errorData) => {
+          console.error("Backend hiba:", errorData);
+          throw new Error("Hálózati hiba: " + response.status);
+        });
       }
       return response.json();
     })
     .then((data) => {
-      if (data.statusCode === 200) {
+      if (data.status && data.status === "success") {
         alert("Autó sikeresen hozzáadva!");
-        loadCars();
+        loadCars(); // frissítjük az autók listáját
       } else {
-        alert("Hiba: " + data.status);
+        alert("Hiba: " + (data.errorMessage || data.status));
       }
     })
     .catch((error) => {
@@ -282,6 +282,8 @@ function addCar() {
       alert("Hiba történt az autó hozzáadásakor.");
     });
 }
+
+
 
 /**
  * Törli a megadott autót a backend DELETE végpontjának hívásával.
@@ -316,4 +318,123 @@ function deleteCar(id) {
       console.error("Error deleting car:", error);
       alert("Hiba történt az autó törlésekor.");
     });
+}
+
+// Új függvény az autó szerkesztéséhez
+function editCar(carId) {
+  if (confirm("Biztosan frissíteni szeretné az autót?")) {
+    // A prompt-ok segítségével kérjük be az új adatokat
+    const newBrand = prompt("Adja meg az új márkát:");
+    const newModel = prompt("Adja meg az új típust:");
+    const newLicensePlate = prompt("Adja meg az új rendszámot:");
+    const newYear = parseInt(prompt("Adja meg az új évet:"));
+    const newFuelType = prompt("Adja meg az új üzemanyagot:");
+    const newPricePerDay = parseFloat(prompt("Adja meg az új napidíjat:"));
+    const newTransmission = prompt("Adja meg az új váltót:");
+    const newDoors = parseInt(prompt("Adja meg az új ajtók számát:"));
+    const newAc = confirm("Van-e AC? (OK = Igen, Cancel = Nem)");
+    const newSeats = parseInt(prompt("Adja meg az új ülések számát:"));
+    const newImage = prompt("Adja meg az új kép URL-t:");
+
+    // Összeállítjuk az új adatokat egy JSON objektumba
+    const updatedCarData = {
+      brand: newBrand,
+      model: newModel,
+      licensePlate: newLicensePlate,
+      year: newYear,
+      fuelType: newFuelType,
+      pricePerDay: newPricePerDay,
+      transmission: newTransmission,
+      doors: newDoors,
+      ac: newAc,
+      seats: newSeats,
+      image: newImage
+    };
+
+    // API kérés a PUT metódussal
+    fetch(`http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/car/updateCarById?id=${carId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedCarData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          alert("Autó frissítve!");
+          loadCars(); // Frissítjük az autók listáját
+        } else {
+          alert("Hiba történt a frissítés során: " + (data.errorMessage || data.status));
+        }
+      })
+      .catch(error => {
+        console.error("Frissítési hiba:", error);
+        alert("Hiba történt az autó frissítésekor.");
+      });
+  }
+}
+
+// Az "edit-btn" eseménykezelő hozzárendelése a táblázathoz
+const carsTbody = document.querySelector("#cars-table tbody");
+if (carsTbody) {
+  carsTbody.addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("edit-btn")) {
+      const carId = event.target.getAttribute("data-id");
+      editCar(carId);
+    }
+    // A törléshez használt kód itt már létezhet...
+  });
+}
+
+// Új függvény a felhasználó szerkesztéséhez
+function editUser(userId) {
+  if (confirm("Biztosan frissíteni szeretné a felhasználót?")) {
+    // Prompt-okkal bekérjük az új adatokat
+    const newName = prompt("Adja meg az új nevet:");
+    const newEmail = prompt("Adja meg az új email címet:");
+    const newPassword = prompt("Adja meg az új jelszót:");
+    const newPersonalId = prompt("Adja meg az új személyi azonosítót:");
+
+    // Összeállítjuk az új adatokat egy JSON objektumba
+    const updatedUserData = {
+      name: newName,
+      email: newEmail,
+      password: newPassword,
+      personalId: newPersonalId
+    };
+
+    // API kérés a PUT metódussal
+    fetch(`http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/updateUserById?id=${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedUserData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          alert("Felhasználó frissítve!");
+          loadUsers(); // Frissítjük a felhasználók listáját
+        } else {
+          alert("Hiba történt a frissítés során: " + (data.errorMessage || data.status));
+        }
+      })
+      .catch(error => {
+        console.error("Frissítési hiba:", error);
+        alert("Hiba történt a felhasználó frissítésekor.");
+      });
+  }
+}
+
+// Az "edit-btn" eseménykezelő hozzárendelése a felhasználók táblázatához
+const usersTbody = document.querySelector("#users-table tbody");
+if (usersTbody) {
+  usersTbody.addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("edit-btn")) {
+      const userId = event.target.getAttribute("data-id");
+      editUser(userId);
+    }
+  });
 }
