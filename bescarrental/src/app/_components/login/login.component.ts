@@ -9,7 +9,7 @@ import { LoginService } from '../../_services/login.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   // Az Input property, mely alapján a panel megjelenése vezérelhető
@@ -28,7 +28,7 @@ export class LoginComponent {
   // Fontos: a router most public, vagy használjunk publikus metódust a navigációhoz
   constructor(
     private loginService: LoginService,
-    public router: Router  // Így a template-ben is elérhető lesz
+    public router: Router // Így a template-ben is elérhető lesz
   ) {}
 
   // Bezárja a panelt
@@ -54,21 +54,21 @@ export class LoginComponent {
 
     // Egyszerű validáció
     if (!email) {
-      this.emailError = "Kérlek add meg az email címed!";
+      this.emailError = 'Kérlek add meg az email címed!';
       valid = false;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      this.emailError = "Érvénytelen email!";
+      this.emailError = 'Érvénytelen email!';
       valid = false;
     }
 
     if (!password) {
-      this.passwordError = "Kérlek add meg a jelszavad!";
+      this.passwordError = 'Kérlek add meg a jelszavad!';
       valid = false;
     } else if (password.length < 8 || password.length > 20) {
-      this.passwordError = "A jelszónak 8-20 karakter hosszúnak kell lennie!";
+      this.passwordError = 'A jelszónak 8-20 karakter hosszúnak kell lennie!';
       valid = false;
     } else if (!/^[A-Z]/.test(password)) {
-      this.passwordError = "A jelszónak nagybetűvel kell kezdődnie!";
+      this.passwordError = 'A jelszónak nagybetűvel kell kezdődnie!';
       valid = false;
     }
 
@@ -77,24 +77,23 @@ export class LoginComponent {
     }
 
     // API hívás a LoginService segítségével
-    this.loginService.sendLogin({ email, password })
-      .subscribe({
-        next: (data) => {
-          if (data.status === "success") {
-            localStorage.setItem("jwt", data.result.jwt);
-            localStorage.setItem("username", data.result.name);
-            alert("Üdvözöllek, " + data.result.name + "!");
-            this.closePanelHandler();
-            this.router.navigate(['/profile']);
-          } else {
-            this.passwordError = "Hibás email vagy jelszó!";
-          }
-        },
-        error: (err) => {
-          console.error("Hiba a bejelentkezés során:", err);
-          this.passwordError = "Hálózati hiba történt!";
+    this.loginService.sendLogin({ email, password }).subscribe({
+      next: (data) => {
+        if (data.status === 'success') {
+          localStorage.setItem('jwt', data.result.jwt);
+          localStorage.setItem('username', data.result.name);
+          alert('Üdvözöllek, ' + data.result.name + '!');
+          this.closePanelHandler();
+          this.router.navigate(['/profile']);
+        } else {
+          this.passwordError = 'Hibás email vagy jelszó!';
         }
-      });
+      },
+      error: (err) => {
+        console.error('Hiba a bejelentkezés során:', err);
+        this.passwordError = 'Hálózati hiba történt!';
+      },
+    });
   }
 
   // Az overlay-re kattintva is bezárjuk a panelt

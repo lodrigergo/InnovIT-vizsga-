@@ -1,0 +1,429 @@
+<app-navbar></app-navbar>
+<app-login></app-login>
+<app-register></app-register>
+<!-- <app-register></app-register>
+<app-profile-panel></app-profile-panel> -->
+<div class="background-container">
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Rent a Car Online &</h1>
+      <p>Enjoy the Best Deals, Rates & Accessories</p>
+      <div class="search-box">
+        <form action="#">
+          <div class="form-row">
+            <label for="vehicle-type">What type of vehicle?</label>
+            <div class="vehicle-type">
+              <button type="button" class="vehicle-option active">Cars</button>
+              <button type="button" class="vehicle-option">Trucks</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="location">Zakynthos Airport - our office</label>
+            <input
+              type="text"
+              id="location"
+              placeholder="Zakynthos Airport - our office"
+            />
+          </div>
+          <div class="form-row date-time">
+            <div>
+              <label for="pickup-date">Date and time of recording</label>
+              <input type="date" id="pickup-date" />
+              <input type="time" id="pickup-time" />
+            </div>
+            <div>
+              <label for="dropoff-date">Release date and time</label>
+              <input type="date" id="dropoff-date" />
+              <input type="time" id="dropoff-time" />
+            </div>
+          </div>
+          <button type="submit" class="search-btn">Search</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div>
+  <section id="about">
+    <div class="about-header">
+      <div>
+        <h2 class="hover-effect">About</h2>
+        <br />
+        <blockquote class="about-quote">
+          "Introducing our latest collection that brings a little comfort to
+          your holiday"
+        </blockquote>
+        <br /><br />
+      </div>
+      <div class="about-features">
+        <div class="feature-item" style="position: relative">
+          <div>
+            <img src="Comfortable-Car.jpg" alt="Comfort" />
+          </div>
+          <h3>Comfort</h3>
+          <div>
+            <p>
+              Experience unmatched comfort with our reliable and well-maintained
+              rental cars.
+            </p>
+          </div>
+          <!-- "More Info" gomb -->
+          <a href="#" class="more-info">More Info →</a>
+
+          <!-- Infó doboz, eleve rejtett -->
+          <div class="info-box">
+            <h2>Comfort</h2>
+            <p>
+              A kényelem elengedhetetlen az autóbérlésnél, mert javítja az
+              utazás élményét.<br />
+              Vállalatunk a legmagasabb színvonalú komfort megoldásokat kínálja,
+              hogy minden utazás kellemes legyen.<br />
+              Válaszd a kényelmet, mert mi a minőséget és a komfortot tesszük
+              elérhetővé!
+              <br /><br />
+            </p>
+
+            <p>Nyomj bárhova az oldalon panel bezárásához!</p>
+          </div>
+        </div>
+
+        <div class="feature-item" style="position: relative">
+          <div>
+            <img
+              src="62d84b3d3ba4466e76043bb4_Benefits of flexibility .png"
+              alt="Flexibility"
+            />
+          </div>
+          <h3>Flexibility</h3>
+          <div>
+            <p>
+              Enjoy ultimate flexibility with rental options tailored to your
+              schedule and needs.
+            </p>
+          </div>
+          <!-- "More Info" gomb -->
+          <a href="#" class="more-info" id="more-info-flexibility"
+            >More Info →</a
+          >
+
+          <!-- Infó doboz, eleve rejtett; aktiváláskor beúszik a balról -->
+          <div class="info-box" id="flexibility-info-box">
+            <h2>Flexibility</h2>
+            <p>
+              Rugalmas autóbérlési megoldások, melyek alkalmazkodnak az Ön
+              időbeosztásához.<br />
+              Igény szerinti időpontválasztás és járműválaszték.<br />
+              Egyszerű, kényelmes utazást biztosítunk minden körülmények között.
+              <br /><br />
+            </p>
+
+            <p>Nyomj bárhova az oldalon panel bezárásához!</p>
+          </div>
+        </div>
+
+        <div class="feature-item" style="position: relative">
+          <div>
+            <img src="Great-Customer-Support-jpg.webp" alt="Customer Support" />
+          </div>
+          <h3>Customer Support</h3>
+          <div>
+            <p>
+              Our 24/7 customer support ensures we're always here when you need
+              us.
+            </p>
+          </div>
+          <!-- "More Info" gomb -->
+          <a href="#" class="more-info" id="more-info-customer-support"
+            >More Info →</a
+          >
+
+          <!-- Infó doboz, eleve rejtett; aktiváláskor beúszik a balról -->
+          <div class="info-box" id="customer-support-info-box">
+            <h2>Customer Support</h2>
+            <p>
+              Professzionális ügyfélszolgálat, ami mindig kész segíteni.<br />
+              24 órás elérhetőség minden kérdésre.<br />
+              Gyors és hatékony megoldások minden problémára.
+              <br /><br />
+            </p>
+
+            <p>Nyomj bárhova az oldalon panel bezárásához!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loader-overlay" class="loader-overlay">
+      <div class="loader"></div>
+    </div>
+  </section>
+</div>
+
+<!-- cardok  -->
+<div class="carousel-container">
+  <div class="carousel">
+    <!-- Volkswagen Golf -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="VOlkswagen golf 2018.jpg" alt="Volkswagen Golf" />
+          <h3>Volkswagen Golf</h3>
+          <p class="hover-info">Hover here for more info</p>
+        </div>
+        <div class="flip-card-back">
+          <h3>Best Car Rental</h3>
+          <p>
+            One of our best-selling cars is the Volkswagen Golf 2018 version.
+          </p>
+          <ul>
+            <li>Comfort</li>
+            <li>Favorable price</li>
+            <li>Reliability</li>
+          </ul>
+          <button class="vwButton" data-target="card-volkswagen-golf-2018">
+            <i class="fa fa-car"></i> CHECK OUT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volvo XC90 -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="Volvo XC90 2019.jpeg" alt="Volvo XC90" data-id="2" />
+          <h3>Volvo XC90</h3>
+          <p class="hover-info">Hover here for more info</p>
+        </div>
+        <div class="flip-card-back">
+          <h3>Best Car Rental</h3>
+          <p>
+            One of the cheapest vehicles in our range is the Volvo XC90, 2019
+            version.
+          </p>
+          <ul>
+            <li>It is affordable</li>
+            <li>Comfort</li>
+            <li>Reliability</li>
+          </ul>
+          <button class="volvoButton" data-target="card-volvo-xc90-2019">
+            <i class="fa fa-car"></i> CHECK OUT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toyota Corolla -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img
+            src="Toyota Corolla 1.8 sedan. hybridjpg.png"
+            alt="Toyota Corolla"
+          />
+          <h3>Toyota Corolla</h3>
+          <p class="hover-info">Hover here for more info</p>
+        </div>
+        <div class="flip-card-back">
+          <h3>Best Car Rental</h3>
+          <p>Toyota Corolla 2021 Petrol</p>
+          <ul>
+            <li>Comfort</li>
+            <li>Fuel Efficiency</li>
+            <li>Reliability</li>
+          </ul>
+          <button class="corollaButton" data-target="card-toyota-corolla-2021">
+            <i class="fa fa-car"></i> CHECK OUT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toyota Rav4 -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="toyota rav4 ujabb.jpeg" alt="Toyota Rav4" />
+          <h3>Toyota Rav4</h3>
+          <p class="hover-info">Hover here for more info</p>
+        </div>
+        <div class="flip-card-back">
+          <h3>Best Car Rental</h3>
+          <p>Toyota Rav4 2021 Hybrid</p>
+          <ul>
+            <li>Spacious</li>
+            <li>Hybrid Efficiency</li>
+            <li>Reliability</li>
+          </ul>
+          <button class="rav4Button" data-target="card-toyota-rav4-2021">
+            <i class="fa fa-car"></i> CHECK OUT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volvo V60 -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="Volvo V60 2019.jpeg" alt="Volvo V60" />
+          <h3>Volvo V60</h3>
+          <p class="hover-info">Hover here for more info</p>
+        </div>
+        <div class="flip-card-back">
+          <h3>Best Car Rental</h3>
+          <p>Volvo V60 2019 Diesel</p>
+          <ul>
+            <li>Luxury</li>
+            <li>Comfort</li>
+            <li>Safety</li>
+          </ul>
+          <button class="v60Button" data-target="card-volvo-v60-2019">
+            <i class="fa fa-car"></i> CHECK OUT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Honda Civic -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="Honda Civic 2020.jpeg" alt="Honda Civic" />
+          <h3>Honda Civic</h3>
+          <p class="hover-info">Hover here for more info</p>
+        </div>
+        <div class="flip-card-back">
+          <h3>Best Car Rental</h3>
+          <p>Honda Civic 2020 Diesel</p>
+          <ul>
+            <li>Sporty</li>
+            <li>Fuel Efficiency</li>
+            <li>Reliability</li>
+          </ul>
+          <button class="civicButton" data-target="card-honda-civic-2020">
+            <i class="fa fa-car"></i> CHECK OUT
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<blockquote class="about-quote">
+  "On the road, responsibility is the best companion, attention is the surest
+  travel companion. Drive so everyone gets home."
+</blockquote>
+
+<!-- Vásárlói vélemények rész -->
+<section id="customer-opinions" class="customer-opinions">
+  <h2>Our customers opinion</h2>
+  <p>
+    The heart of our business is excellent customer service. Hear what our
+    satisfied customers have kindly shared.
+  </p>
+  <div class="opinions-container">
+    <div class="opinion-card">
+      <div class="stars">★★★★★</div>
+      <p>
+        Best Car Rental's offers were very useful for me. They also excel in
+        quality, speed and comfort.
+      </p>
+      <div class="customer-info">
+        <img
+          src="https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+          alt="Customer Avatar"
+        />
+        <div>
+          <strong>Oliver Smith</strong>
+          <p>Taxi driver</p>
+        </div>
+      </div>
+    </div>
+    <div class="opinion-card">
+      <div class="stars">★★★★★</div>
+      <p>
+        I can only recommend them, everything was as described in the rented
+        car. The tank was full as it was write.
+      </p>
+      <div class="customer-info">
+        <img
+          src="https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+          alt="Customer Avatar"
+        />
+        <div>
+          <strong>James Taylor</strong>
+          <p>Truck driver</p>
+        </div>
+      </div>
+    </div>
+    <div class="opinion-card">
+      <div class="stars">★★★★★</div>
+      <p>
+        My company needed a car quickly and I saw their ad and it's still the
+        day I managed to rent one in minutes.
+      </p>
+      <div class="customer-info">
+        <img
+          src="https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+          alt="Customer Avatar"
+        />
+        <div>
+          <strong>Emily Brown</strong>
+          <p>Entrepreneur</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer rész-->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3 class="horizontal">Best Car Rental</h3>
+      <p class="aligned-text">
+        We are a trusted car rental company dedicated to providing reliable
+        vehicles and exceptional service to meet all your travel needs. Explore
+        hassle-free rentals with flexible options and competitive rates.
+      </p>
+    </div>
+    <div class="footer-section">
+      <h3>Take it up with us connection</h3>
+      <p><i class="fas fa-address-book"></i> Contact</p>
+      <p><i class="fas fa-phone"></i> 06/20 123 4567</p>
+      <p>
+        <i class="fas fa-envelope"></i>
+        <a href="https://mail.google.com/mail/u/1/" target="_blank"
+          >bestcarrentalmadeinhungary&#64;gmail.com</a
+        >
+      </p>
+    </div>
+    <div class="footer-section">
+      <h3>Who are we?</h3>
+      <a href="#about"> <i class="fas fa-info-circle"></i> About </a>
+    </div>
+    <div class="footer-section">
+      <h3>Follow us!</h3>
+      <p>
+        <a
+          href="https://www.facebook.com/profile.php?id=100010122408583&locale=hu_HU"
+          target="_blank"
+        >
+          <i class="fab fa-facebook"></i> Facebook
+        </a>
+      </p>
+      <p>
+        <a href="https://www.instagram.com/timar._david/" target="_blank">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+      </p>
+      <p>
+        <a href="https://x.com/home" target="_blank">
+          <i class="fab fa-twitter"></i> Twitter
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
