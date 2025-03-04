@@ -9,7 +9,7 @@ body {
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
-    url("./Photos/talán\ a\ jó\ bg.jpg") no-repeat center center / cover;
+    url("") no-repeat center center / cover;
   background-attachment: fixed;
   color: #fff;
 }
