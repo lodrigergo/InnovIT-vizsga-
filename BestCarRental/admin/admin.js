@@ -438,3 +438,101 @@ if (usersTbody) {
     }
   });
 }
+
+// Foglalások lekérése a backendről
+function loadBookings() {
+  fetch("http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/BookingsController/getAllBookings", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Hálózati hiba: " + response.status);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.statusCode === 200) {
+        populateBookingsTable(data.Bookings);
+      } else {
+        alert("Hiba: " + data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Hiba a foglalások lekérésekor:", error);
+      alert("Hiba történt a foglalások lekérésekor.");
+    });
+}
+
+// Foglalások megjelenítése a táblázatban
+function populateBookingsTable(bookingsArray) {
+  const tbody = document.querySelector("#bookings-table tbody");
+  tbody.innerHTML = ""; // Korábbi sorok törlése
+
+  bookingsArray.forEach((booking) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${booking.id}</td>
+      <td>${booking.userId}</td>
+      <td>${booking.carId}</td>
+      <td>${booking.pickupDate}</td>
+      <td>${booking.returnDate}</td>
+      <td>
+        <!-- Itt opcionálisan elhelyezhetsz műveleti gombokat, például törlés -->
+        <button class="delete-booking-btn" data-id="${booking.id}">Törlés</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Admin oldalon a foglalások betöltésére szolgáló gomb eseménykezelője
+document.addEventListener("DOMContentLoaded", function () {
+  const loadBookingsBtn = document.getElementById("load-bookings-btn");
+  if (loadBookingsBtn) {
+    loadBookingsBtn.addEventListener("click", loadBookings);
+  }
+
+  // (Opcionális) Törlés kezelése a foglalásoknál
+  const bookingsTbody = document.querySelector("#bookings-table tbody");
+  if (bookingsTbody) {
+    bookingsTbody.addEventListener("click", function (event) {
+      if (event.target && event.target.classList.contains("delete-booking-btn")) {
+        const bookingId = event.target.getAttribute("data-id");
+        if (confirm("Biztosan törli a foglalást?")) {
+          deleteBooking(bookingId);
+        }
+      }
+    });
+  }
+});
+
+// (Opcionális) Foglalás törlése a backend DELETE végpont segítségével
+function deleteBooking(bookingId) {
+  fetch(`http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/BookingsController/deleteBookingById?id=${bookingId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Hálózati hiba: " + response.status);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.result === "success") {
+        alert("Foglalás törölve!");
+        loadBookings();
+      } else {
+        alert("Hiba történt a törlés során.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting booking:", error);
+      alert("Hiba történt a foglalás törlésekor.");
+    });
+}
