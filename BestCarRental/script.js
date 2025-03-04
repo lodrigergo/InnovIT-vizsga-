@@ -423,3 +423,106 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchForm = document.querySelector(".search-box form");
+
+  searchForm.addEventListener("submit", function (e) {
+    e.preventDefault(); // Megakadályozzuk az űrlap alapértelmezett elküldését
+
+    // Lekérjük a felhasználó által megadott dátumokat
+    const pickupDateInput = document.getElementById("pickup-date").value;
+    const dropoffDateInput = document.getElementById("dropoff-date").value;
+
+    if (!pickupDateInput || !dropoffDateInput) {
+      alert("Kérlek add meg mind a felvétel, mind a leadás dátumát!");
+      return;
+    }
+
+    // Az időpontokhoz hozzáadjuk a " 00:00:00" részt
+    const pickupDate = encodeURIComponent(pickupDateInput + " 00:00:00");
+    const returnDate = encodeURIComponent(dropoffDateInput + " 00:00:00");
+
+    // A megadott URL a BookingsController végponthoz
+    const url = `http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/BookingsController/searchCarsBetweenDates?pickupDate=${pickupDate}&returnDate=${returnDate}`;
+
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Hálózati hiba: " + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Eredmények megjelenítése
+        displaySearchResults(data);
+      })
+      .catch(error => {
+        console.error("Hiba a keresési eredmények lekérésekor:", error);
+        alert("Hiba történt a keresés során!");
+      });
+  });
+});
+
+// Eredmények megjelenítése egy dinamikusan létrehozott konténerben
+function displaySearchResults(results) {
+  let resultsContainer = document.getElementById("search-results");
+  if (!resultsContainer) {
+    resultsContainer = document.createElement("div");
+    resultsContainer.id = "search-results";
+    resultsContainer.style.marginTop = "20px";
+    // A hero-content elem alá helyezzük el az eredményeket
+    const heroContent = document.querySelector(".hero-content");
+    heroContent.appendChild(resultsContainer);
+  }
+  
+  resultsContainer.innerHTML = "";
+
+  // Ha nincs találat, értesítjük a felhasználót
+  if (results.length === 0) {
+    resultsContainer.innerHTML = "<p>Nincs elérhető autó a megadott időpontok között.</p>";
+    return;
+  }
+
+  // Rácsos konténer a kártyákhoz
+  const gridContainer = document.createElement("div");
+  gridContainer.className = "search-results-container";
+
+  results.forEach(car => {
+    const card = document.createElement("div");
+    card.className = "search-result-card";
+
+    // Kártya címe: márka és típus (kattintható)
+    const carTitle = document.createElement("h3");
+    carTitle.textContent = `${car.brand} ${car.model}`;
+    carTitle.style.cursor = "pointer"; // mutatja, hogy kattintható
+
+    // Kattintásra átirányít a Cars oldalra (pl. hash-ben átadva az autó ID-t)
+    carTitle.addEventListener("click", function () {
+      window.location.href = "./Carsoldal/cars.html#" + car.car_id;
+    });
+
+    // Autó azonosító
+    const carId = document.createElement("p");
+    carId.innerHTML = `<strong>ID:</strong> ${car.car_id}`;
+
+    // Felvétel dátuma
+    const pickupDate = document.createElement("p");
+    pickupDate.innerHTML = `<strong>Felvétel:</strong> ${car.pickup_date}`;
+
+    // Leadás dátuma
+    const returnDate = document.createElement("p");
+    returnDate.innerHTML = `<strong>Leadás:</strong> ${car.return_date}`;
+
+    // Kártya tartalmának összeállítása
+    card.appendChild(carTitle);
+    card.appendChild(carId);
+    card.appendChild(pickupDate);
+    card.appendChild(returnDate);
+
+    gridContainer.appendChild(card);
+  });
+
+  resultsContainer.appendChild(gridContainer);
+}
+
