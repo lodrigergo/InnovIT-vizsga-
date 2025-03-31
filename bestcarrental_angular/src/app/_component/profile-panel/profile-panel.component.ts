@@ -1,11 +1,155 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { LoginService } from '../../_service/login.service';
+import { ProfilePanelService } from '../../_service/profile-panel.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile-panel',
-  imports: [],
-  templateUrl: './profile-panel.component.html',
-  styleUrl: './profile-panel.component.css'
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div class="profile-panel-container">
+      <div id="profile-panel" class="profile-panel" [class.open]="isPanelOpen">
+        <div class="profile-header">
+          <img
+            [src]="loginService.profileImageUrl$ | async"
+            alt="Profile Icon"
+            class="profile-image"
+            id="profile-image"
+          />
+          <h2>USERNAME</h2>
+          <button
+            id="close-profile-panel"
+            class="close-btn"
+            (click)="closePanel()"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="profile-image-selection">
+          <h3>Válassz profilképet:</h3>
+          <img
+            src="pepega_almos.png"
+            alt="Pepega 1"
+            class="profile-option"
+            data-image="pepega_almos.png"
+            (click)="loginService.changeProfileImage('pepega_almos.png')"
+          />
+          <img
+            src="pepega_fizet.gif"
+            alt="Pepega 2"
+            class="profile-option"
+            data-image="pepega_fizet.gif"
+            (click)="loginService.changeProfileImage('pepega_fizet.gif')"
+          />
+          <img
+            src="pepega_fogyatek.png"
+            alt="Pepega 3"
+            class="profile-option"
+            data-image="pepega_fogyatek.png"
+            (click)="loginService.changeProfileImage('pepega_fogyatek.png')"
+          />
+          <img
+            src="pepega_izgul.jpg"
+            alt="Pepega 4"
+            class="profile-option"
+            data-image="pepega_izgul.jpg"
+            (click)="loginService.changeProfileImage('pepega_izgul.jpg')"
+          />
+          <img
+            src="pepega_ordibal.png"
+            alt="Pepega 5"
+            class="profile-option"
+            data-image="pepega_ordibal.png"
+            (click)="loginService.changeProfileImage('pepega_ordibal.png')"
+          />
+          <img
+            src="pepega_szomoru.jpg"
+            alt="Pepega 6"
+            class="profile-option"
+            data-image="pepega_szomoru.jpg"
+            (click)="loginService.changeProfileImage('pepega_szomoru.jpg')"
+          />
+          <img
+            src="pepega_vidam.jpg"
+            alt="Pepega 7"
+            class="profile-option"
+            data-image="pepega_vidam.jpg"
+            (click)="loginService.changeProfileImage('pepega_vidam.jpg')"
+          />
+          <img
+            src="pepega_zenethallgat.png"
+            alt="Pepega 8"
+            class="profile-option"
+            data-image="pepega_zenethallgat.png"
+            (click)="loginService.changeProfileImage('pepega_zenethallgat.png')"
+          />
+        </div>
+        <div class="profile-content">
+          <h3>WELCOME</h3>
+          <ul>
+            <li>
+              <a href="#home"><i class="fa fa-home"></i> Home</a>
+            </li>
+            <li>
+              <a href="#about"><i class="fa fa-user"></i> About</a>
+            </li>
+            <li>
+              <a href="../cars/cars.component.html"
+                ><i class="fa fa-car"></i> Cars</a
+              >
+            </li>
+            <li>
+              <a href="..//reservation/reservation.component.html"
+                ><i class="fa fa-calendar"></i> Reservation</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-adjust"></i> Light / Dark</a>
+            </li>
+          </ul>
+          <hr />
+          <button class="logout-btn" (click)="logout()">Log Out</button>
+        </div>
+      </div>
+      <div
+        id="profile-panel-overlay"
+        class="profile-panel-overlay"
+        [class.show]="isPanelOpen"
+        (click)="closePanel()"
+      ></div>
+    </div>
+  `,
+  styleUrls: ['./profile-panel.component.css'],
 })
-export class ProfilePanelComponent {
+export class ProfilePanelComponent implements OnInit, OnDestroy {
+  isPanelOpen = false;
+  private panelSubscription?: Subscription;
 
+  constructor(
+    public loginService: LoginService,
+    private profilePanelService: ProfilePanelService
+  ) {}
+
+  ngOnInit(): void {
+    this.panelSubscription =
+      this.profilePanelService.profilePanelOpen$.subscribe((isOpen) => {
+        this.isPanelOpen = isOpen;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.panelSubscription?.unsubscribe();
+  }
+
+  closePanel(): void {
+    this.profilePanelService.closePanel();
+  }
+
+  logout(): void {
+    this.loginService.logout();
+    this.profilePanelService.closePanel();
+    console.log('Kijelentkezés');
+  }
 }

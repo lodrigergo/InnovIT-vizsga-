@@ -1,12 +1,13 @@
-// src/app/_component/navbar/navbar.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../_service/login.service';
+import { ProfilePanelService } from '../../_service/profile-panel.service';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProfilePanelComponent],
   template: `
     <header class="navbar">
       <div class="container">
@@ -28,23 +29,51 @@ import { LoginService } from '../../_service/login.service';
             </li>
           </ul>
         </nav>
-        <!-- A login gomb megnyomásával meghívjuk a service openPanel() metódusát -->
-        <button class="login-btn" (click)="openLoginPanel()">Login</button>
+        <button
+          *ngIf="!(loginService.isLoggedIn$ | async)"
+          class="login-btn"
+          (click)="openLoginPanel()"
+        >
+          Login
+        </button>
         <img
-          src="profile icon.webp"
+          *ngIf="loginService.isLoggedIn$ | async"
+          [src]="loginService.profileImageUrl$ | async"
           alt="Profile Icon"
           id="profile-icon"
-          style="display: none; width: 40px; height: 40px; border-radius: 30%; margin-right: 20px;"
+          style="width: 40px; height: 40px; border-radius: 30%; margin-right: 20px; cursor: pointer;"
+          (click)="openProfilePanel()"
         />
       </div>
     </header>
+    <app-profile-panel></app-profile-panel>
+    <div
+      *ngIf="profilePanelService.profilePanelOpen$ | async"
+      class="overlay show"
+      (click)="closeProfilePanel()"
+    ></div>
   `,
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
-  constructor(private loginService: LoginService) {}
+  constructor(
+    public loginService: LoginService,
+    public profilePanelService: ProfilePanelService
+  ) {}
 
   openLoginPanel(): void {
     this.loginService.openPanel();
+  }
+
+  openProfilePanel(): void {
+    this.profilePanelService.openPanel();
+  }
+
+  closeProfilePanel(): void {
+    this.profilePanelService.closePanel();
+  }
+
+  logout(): void {
+    this.loginService.logout();
   }
 }
