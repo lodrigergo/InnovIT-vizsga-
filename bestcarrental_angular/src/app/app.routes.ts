@@ -10,7 +10,7 @@ import { AuthGuard } from './_guard/auth.guard';
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'cars', component: CarsComponent, canActivate: [AuthGuard] },
+  { path: 'cars', component: CarsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'reservation', component: ReservationComponent },
   { path: 'navbar', component: NavbarComponent },
