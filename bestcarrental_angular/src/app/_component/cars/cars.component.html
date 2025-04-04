@@ -1,1 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cars</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./cars.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="container">
+        <img
+          src="logo for the website.webp"
+          alt="Best Car Rental Logo"
+          class="logo"
+          id="logo"
+        />
+        <nav>
+          <ul class="nav-links">
+            <li>
+              <a
+                [routerLink]="['/']"
+                fragment="home"
+                class="home-link"
+                id="home-link"
+                >Home</a
+              >
+            </li>
+            <li><a [routerLink]="['/']" fragment="about">About</a></li>
+            <li><a [routerLink]="['/cars']">Cars</a></li>
+            <li>
+              <a [routerLink]="['/reservation']">Reservations</a>
+            </li>
+          </ul>
+        </nav>
+        <button
+          class="login-btn"
+          (click)="openLoginPanel()"
+          *ngIf="!isLoggedIn"
+        >
+          Login
+        </button>
+        <img
+          src="{{ profileImageUrl || 'profile icon.webp' }}"
+          alt="Profile Icon"
+          id="profile-icon"
+          style="
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 30%;
+            margin-right: 20px;
+          "
+          (click)="openProfilePanel()"
+          *ngIf="isLoggedIn"
+        />
+      </div>
+    </div>
+    <div
+      id="overlay"
+      class="overlay"
+      (click)="closeOverlay()"
+      [style.display]="showLoginPanel || showRegisterPanel ? 'block' : 'none'"
+    ></div>
+    <div
+      id="login-panel"
+      class="login-panel"
+      [style.display]="showLoginPanel ? 'block' : 'none'"
+    >
+      <div class="login-header">
+        <h2>LOGIN</h2>
+        <span
+          id="close-login-panel"
+          class="close-btn"
+          (click)="closeLoginPanel()"
+          >&times;</span
+        >
+      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+        <div class="form-group">
+          <label for="email"><i class="fa fa-envelope"></i> Email:</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            formControlName="email"
+          />
+          <div
+            *ngIf="
+              loginForm.controls['email'].invalid &&
+              (loginForm.controls['email'].dirty ||
+                loginForm.controls['email'].touched)
+            "
+          >
+            <div *ngIf="loginForm.controls['email'].errors?.['required']">
+              Email cím megadása kötelező.
+            </div>
+            <div *ngIf="loginForm.controls['email'].errors?.['email']">
+              Érvényes email címet adj meg.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password"><i class="fa fa-key"></i> Password:</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <div
+            *ngIf="
+              loginForm.controls['password'].invalid &&
+              (loginForm.controls['password'].dirty ||
+                loginForm.controls['password'].touched)
+            "
+          >
+            <div *ngIf="loginForm.controls['password'].errors?.['required']">
+              Jelszó megadása kötelező.
+            </div>
+          </div>
+        </div>
+        <div *ngIf="loginErrorMessage" class="error-message">
+          {{ loginErrorMessage }}
+        </div>
+        <a [routerLink]="['/forgot-password']" class="forgot-password"
+          >Forgot Password?</a
+        >
+        <button
+          type="submit"
+          class="btn login-btn"
+          [disabled]="loginForm.invalid"
+        >
+          Log In
+        </button>
+        <button
+          type="button"
+          class="btn create-account-btn"
+          (click)="openRegisterPanel()"
+        >
+          Create Account
+        </button>
+      </form>
+    </div>
+    <div
+      id="register-panel"
+      class="register-panel"
+      [style.display]="showRegisterPanel ? 'block' : 'none'"
+    >
+      <div class="register-header">
+        <h2>Register</h2>
+        <span
+          id="close-register-panel"
+          class="close-btn"
+          (click)="closeRegisterPanel()"
+          >&times;</span
+        >
+      </div>
+      <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            formControlName="username"
+          />
+          <div
+            *ngIf="
+              registerForm.controls['username'].invalid &&
+              (registerForm.controls['username'].dirty ||
+                registerForm.controls['username'].touched)
+            "
+          >
+            <div *ngIf="registerForm.controls['username'].errors?.['required']">
+              Felhasználónév megadása kötelező.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="register-email"
+            placeholder="Email"
+            formControlName="email"
+          />
+          <div
+            *ngIf="
+              registerForm.controls['email'].invalid &&
+              (registerForm.controls['email'].dirty ||
+                registerForm.controls['email'].touched)
+            "
+          >
+            <div *ngIf="registerForm.controls['email'].errors?.['required']">
+              Email cím megadása kötelező.
+            </div>
+            <div *ngIf="registerForm.controls['email'].errors?.['email']">
+              Érvényes email címet adj meg.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="register-password"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <div
+            *ngIf="
+              registerForm.controls['password'].invalid &&
+              (registerForm.controls['password'].dirty ||
+                registerForm.controls['password'].touched)
+            "
+          >
+            <div *ngIf="registerForm.controls['password'].errors?.['required']">
+              Jelszó megadása kötelező.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="personal-id">Personal-ID:</label>
+          <input
+            type="personal-id"
+            id="personal-id"
+            placeholder="personal-id"
+            formControlName="personalId"
+          />
+          <div
+            *ngIf="
+              registerForm.controls['personalId'].invalid &&
+              (registerForm.controls['personalId'].dirty ||
+                registerForm.controls['personalId'].touched)
+            "
+          >
+            <div
+              *ngIf="registerForm.controls['personalId'].errors?.['required']"
+            >
+              Személyi azonosító megadása kötelező.
+            </div>
+          </div>
+        </div>
+        <div *ngIf="registerErrorMessage" class="error-message">
+          {{ registerErrorMessage }}
+        </div>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+        <button
+          type="submit"
+          class="btn register-create-account-btn"
+          [disabled]="registerForm.invalid"
+        >
+          Create Account
+        </button>
+        <button type="button" class="btn login-btn" (click)="openLoginPanel()">
+          Back To Login
+        </button>
+      </form>
+    </div>
+    <div
+      id="profile-panel"
+      class="profile-panel"
+      [style.display]="isLoggedIn ? 'block' : 'none'"
+    >
+      <div class="profile-header">
+        <img
+          src="{{ profileImageUrl || 'profile icon.webp' }}"
+          alt="Profile Icon"
+          class="profile-image"
+        />
+        <h2>{{ userName || "USERNAME" }}</h2>
+        <span id="close-profile-panel" class="close-btn">&times;</span>
+      </div>
+      <div class="profile-image-selection">
+        <h3>Válassz profilképet:</h3>
+        <img
+          src="pepega_almos.png"
+          alt="Pepega 1"
+          class="profile-option"
+          data-image="../Photos/pepega_almos.png"
+        />
+        <img
+          src="pepega_fizet.gif"
+          alt="Pepega 2"
+          class="profile-option"
+          data-image="../Photos/pepega_fizet.gif"
+        />
+        <img
+          src="pepega_fogyatek.png"
+          alt="Pepega 3"
+          class="profile-option"
+          data-image="../Photos/pepega_fogyatek.png"
+        />
+        <img
+          src="pepega_izgul.jpg"
+          alt="Pepega 4"
+          class="profile-option"
+          data-image="../Photos/pepega_izgul.jpg"
+        />
+        <img
+          src="pepega_ordibal.png"
+          alt="Pepega 5"
+          class="profile-option"
+          data-image="../Photos/pepega_ordibal.png"
+        />
+        <img
+          src="pepega_szomoru.jpg"
+          alt="Pepega 6"
+          class="profile-option"
+          data-image="../Photos/pepega_szomoru.jpg"
+        />
+        <img
+          src="pepega_vidam.jpg"
+          alt="Pepega 7"
+          class="profile-option"
+          data-image="../Photos/pepega_vidam.jpg"
+        />
+        <img
+          src="pepega_zenethallgat.png"
+          alt="Pepega 8"
+          class="profile-option"
+          data-image="../Photos/pepega_zenethallgat.png"
+        />
+      </div>
+      <div class="profile-content">
+        <h3>WELCOME</h3>
+        <ul>
+          <li>
+            <a [routerLink]="['/']" fragment="home"
+              ><i class="fa fa-home"></i> Home</a
+            >
+          </li>
+          <li>
+            <a [routerLink]="['/']" fragment="about"
+              ><i class="fa fa-user"></i> About</a
+            >
+          </li>
+          <li>
+            <a [routerLink]="['/cars']"><i class="fa fa-car"></i> Cars</a>
+          </li>
+          <li>
+            <a [routerLink]="['/reservation']"
+              ><i class="fa fa-calendar"></i> Reservation</a
+            >
+          </li>
+          <li>
+            <a href="#"><i class="fa fa-adjust"></i> Light / Dark</a>
+          </li>
+        </ul>
+        <hr />
+        <button class="logout-btn" (click)="loginService.logout()">
+          Log Out
+        </button>
+      </div>
+    </div>
+    <div class="container">
+      <aside class="sidebar">
+        <h2>Filter</h2>
+        <div class="filter-group">
+          <h3>Brand</h3>
+          <label><input type="checkbox" id="Fiat" name="Fiat" /> Fiat</label>
+          <label><input type="checkbox" id="Honda" name="Honda" /> Honda</label>
+          <label
+            ><input type="checkbox" id="Volkswagen" name="Volkswagen" />
+            Volkswagen</label
+          >
+          <label><input type="checkbox" id="Volvo" name="Volvo" /> Volvo</label>
+          <label
+            ><input type="checkbox" id="Toyota" name="Toyota" /> Toyota</label
+          >
+        </div>
+        <div class="filter-group">
+          <h3>Persons</h3>
+          <label><input type="checkbox" id="9" name="9" /> 9</label>
+          <label><input type="checkbox" id="7" name="7" /> 7</label>
+          <label><input type="checkbox" id="5" name="5" /> 5</label>
+        </div>
+        <div class="filter-group">
+          <h3>Price</h3>
+          <label
+            ><input type="checkbox" id="10€-30€" name="10€-30€" /> 10€ -
+            30€</label
+          >
+          <label
+            ><input type="checkbox" id="30€-50€" name="30€-50€" /> 30€
+            -50€</label
+          >
+          <label
+            ><input type="checkbox" id="50€-61€" name="50€-61€" /> 50€ -
+            61€</label
+          >
+          <label
+            ><input type="checkbox" id="61€-85€" name="61€-85€" /> 61€ -
+            85€</label
+          >
+        </div>
+        <div class="filter-group">
+          <h3>Year</h3>
+          <label><input type="checkbox" id="2018" name="2018" /> 2018</label>
+          <label><input type="checkbox" id="2019" name="2019" /> 2019</label>
+          <label><input type="checkbox" id="2020" name="2020" /> 2020</label>
+          <label><input type="checkbox" id="2021" name="2021" /> 2021</label>
+          <label><input type="checkbox" id="2022" name="2022" /> 2022</label>
+        </div>
+        <div class="filter-group">
+          <h3>Fuel</h3>
+          <label
+            ><input type="checkbox" id="Petrol" name="Petrol" /> Petrol</label
+          >
+          <label
+            ><input type="checkbox" id="Diesel" name="Diesel" /> Diesel</label
+          >
+          <label
+            ><input type="checkbox" id="Hybrid" name="Hybrid" /> Hybrid</label
+          >
+        </div>
+        <button class="reset-filters-btn">Reset Filters</button>
+      </aside>
+      <main class="main-content">
+        <h1>Cars</h1>
+        <div class="arrangement">
+          <label for="arrange">Arrangement:</label>
+          <select id="arrange">
+            <option value="none">None</option>
+            <option value="price">Increases by price</option>
+            <option value="price-desc">Descending by price</option>
+          </select>
+        </div>
+        <div class="cars-grid">
+          <div class="car-card" id="card-toyota-corolla" data-id="1">
+            <img
+              src="Toyota Corolla 1.8 sedan. hybridjpg.png"
+              alt="Toyota Corolla"
+            />
+            <h3>Toyota Corolla 2021 Petrol</h3>
+            <button
+              class="details-btn"
+              data-card-id="card-toyota-corolla"
+              data-id="1"
+            >
+              Check out our car
+            </button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Petrol</div>
+                <div><i class="fas fa-cogs"></i> A</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 5</div>
+              </div>
+              <div class="price">61€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-toyota-rav4" data-id="2">
+            <img src="toyota rav4 ujabb.jpeg" alt="Toyota Rav4" />
+            <h3>Toyota Rav4 2021 Hybrid</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Hybrid</div>
+                <div><i class="fas fa-cogs"></i> A</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 5</div>
+              </div>
+              <div class="price">70€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-fiat-500" data-id="3">
+            <img
+              src="Fiat', '500', 'JKL-654', 2022, 'Benzin.jpeg"
+              alt="Fiat 500"
+            />
+            <h3>Fiat 500 2022 Petrol</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Petrol</div>
+                <div><i class="fas fa-cogs"></i> Manual</div>
+                <div><i class="fas fa-user"></i> 4</div>
+              </div>
+              <div class="price">45€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-volkswagen-golf-2018" data-id="4">
+            <img src="VOlkswagen golf 2018.jpg" alt="Volkswagen Golf 2018" />
+            <h3>Volkswagen Golf 2018 Diesel</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Diesel</div>
+                <div><i class="fas fa-cogs"></i> Manual</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 5</div>
+              </div>
+              <div class="price">55€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-volkswagen-passat-2018" data-id="5">
+            <img
+              src="Volkswagen-passat-2018.webp"
+              alt="Volkswagen Passat 2018"
+            />
+            <h3>Volkswagen Passat 2018 Diesel</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Diesel</div>
+                <div><i class="fas fa-cogs"></i> Automatic</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 5</div>
+              </div>
+              <div class="price">60€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-volvo-v60" data-id="6">
+            <img src="Volvo V60 2019.jpeg" alt="Volvo V60" />
+            <h3>Volvo V60 2019 Diesel</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Diesel</div>
+                <div><i class="fas fa-cogs"></i> Manual</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 5</div>
+              </div>
+              <div class="price">65€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-volvo-xc90" data-id="7">
+            <img src="Volvo XC90 2019.jpeg" alt="Volvo XC90" />
+            <h3>Volvo XC90 2020 Hybrid</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Hybrid</div>
+                <div><i class="fas fa-cogs"></i> Automatic</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 7</div>
+              </div>
+              <div class="price">85€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-honda-civic" data-id="8">
+            <img src="Honda Civic 2020.jpeg" alt="Honda Civic" />
+            <h3>Honda Civic 2020 Petrol</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Petrol</div>
+                <div><i class="fas fa-cogs"></i> Manual</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 5</div>
+              </div>
+              <div class="price">50€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+          <div class="car-card" id="card-honda-accord" data-id="9">
+            <img src="honda_accord_2020_uj.jpg" alt="Honda Accord" />
+            <h3>Honda Accord 2020 Petrol</h3>
+            <button class="details-btn">Check out our car</button>
+            <div class="details-panel">
+              <div class="details">
+                <div><i class="fas fa-car"></i> 4</div>
+                <div><i class="fas fa-gas-pump"></i> Petrol</div>
+                <div><i class="fas fa-cogs"></i> Automatic</div>
+                <div><i class="fas fa-snowflake"></i> AC</div>
+                <div><i class="fas fa-user"></i> 5</div>
+              </div>
+              <div class="price">70€ / Day</div>
+              <button class="reserve-btn">Reserve</button>
+            </div>
+          </div>
+        </div>
+        <div class="pagination">
+          <button disabled>Prev</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>Next</button>
+        </div>
+      </main>
+    </div>
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3 class="horizontal">Best Car Rental</h3>
+          <p class="aligned-text">
+            We are a trusted car rental company dedicated to providing reliable
+            vehicles and exceptional service to meet all your travel needs.
+            Explore hassle-free rentals with flexible options and competitive
+            rates.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Take it up with us connection</h3>
+          <p><i class="fas fa-address-book"></i> Contact</p>
+          <p><i class="fas fa-phone"></i> 06/20 123 4567</p>
+          <p>
+            <i class="fas fa-envelope"></i>
+            <a href="https://mail.google.com/mail/u/1/" target="_blank">
+              bestcarrentalmadeinhungary"&#64;"gmail.com</a
+            >
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Who are we?</h3>
+          <a [routerLink]="['/']" fragment="about"
+            ><i class="fas fa-info-circle"></i> About</a
+          >
+        </div>
+        <div class="footer-section">
+          <h3>Follow us!</h3>
+          <p>
+            <a
+              href="https://www.facebook.com/profile.php?id=100010122408583&locale=hu_HU"
+              target="_blank"
+            >
+              <i class="fab fa-facebook"></i> Facebook</a
+            >
+          </p>
+          <p>
+            <a href="https://www.instagram.com/timar._david/" target="_blank">
+              <i class="fab fa-instagram"></i> Instagram</a
+            >
+          </p>
+          <p>
+            <a href="https://x.com/home" target="_blank">
+              <i class="fab fa-twitter"></i> Twitter</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
 
+    <div id="loader-overlay" class="loader-overlay">
+      <div class="loader"></div>
+    </div>
+    <script src="cars.js"></script>
+  </body>
+</html>
+
+<!-- import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { LoginService } from '../../_service/login.service';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { RegisterService } from '../../_service/register.service';
+import { Subscription } from 'rxjs';
+
+@Component({
+  selector: 'app-cars',
+  standalone: true,
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  templateUrl: './cars.component.html',
+  styleUrls: ['./cars.css'],
+})
+export class CarsComponent implements OnInit, OnDestroy {
+  showLoginPanel = false;
+  showRegisterPanel = false;
+  isLoggedIn = false;
+  userName: string | null = null;
+  profileImageUrl: string | null = null;
+  loginForm: FormGroup;
+  registerForm: FormGroup;
+  loginErrorMessage: string = '';
+  registerErrorMessage: string = '';
+  showProfilePanel = false;
+
+  private isLoggedInSubscription: Subscription | undefined;
+  private userNameSubscription: Subscription | undefined;
+  private profileImageUrlSubscription: Subscription | undefined;
+
+  constructor(
+    private loginService: LoginService,
+    private registerService: RegisterService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
+    this.registerForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      personalId: ['', Validators.required],
+    });
+  }
+
+  ngOnInit(): void {
+    this.loginService.checkLoginStatus();
+
+    this.isLoggedInSubscription = this.loginService.isLoggedIn$.subscribe(
+      (loggedIn) => (this.isLoggedIn = loggedIn)
+    );
+    this.userNameSubscription = this.loginService.userName$.subscribe(
+      (userName) => (this.userName = userName)
+    );
+    this.profileImageUrlSubscription =
+      this.loginService.profileImageUrl$.subscribe(
+        (profileImageUrl) => (this.profileImageUrl = profileImageUrl)
+      );
+  }
+
+  ngOnDestroy(): void {
+    if (this.isLoggedInSubscription) {
+      this.isLoggedInSubscription.unsubscribe();
+    }
+    if (this.userNameSubscription) {
+      this.userNameSubscription.unsubscribe();
+    }
+    if (this.profileImageUrlSubscription) {
+      this.profileImageUrlSubscription.unsubscribe();
+    }
+  }
+
+  openLoginPanel() {
+    this.showLoginPanel = true;
+    this.showRegisterPanel = false;
+    document.getElementById('overlay')!.style.display = 'block';
+    this.loginErrorMessage = '';
+  }
+
+  closeLoginPanel() {
+    this.showLoginPanel = false;
+    document.getElementById('overlay')!.style.display = 'none';
+    this.loginForm.reset();
+  }
+
+  openRegisterPanel() {
+    this.showRegisterPanel = true;
+    this.showLoginPanel = false;
+    document.getElementById('overlay')!.style.display = 'block';
+    this.registerErrorMessage = '';
+  }
+
+  closeRegisterPanel() {
+    this.showRegisterPanel = false;
+    document.getElementById('overlay')!.style.display = 'none';
+    this.registerForm.reset();
+  }
+
+  openProfilePanel() {
+    this.showProfilePanel = true;
+    document.getElementById('overlay')!.style.display = 'block';
+  }
+
+  closeProfilePanel() {
+    this.showProfilePanel = false;
+    document.getElementById('overlay')!.style.display = 'none';
+  }
+
+  closeOverlay() {
+    this.closeLoginPanel();
+    this.closeRegisterPanel();
+    this.closeProfilePanel();
+  }
+
+  submitLogin() {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.loginService.login({ email, password }).subscribe({
+        next: (response) => {
+          console.log('Sikeres bejelentkezés!', response);
+          this.closeLoginPanel();
+        },
+        error: (error) => {
+          console.error('Sikertelen bejelentkezés!', error);
+          this.loginErrorMessage = 'Hibás email vagy jelszó!';
+        },
+      });
+    }
+  }
+
+  submitRegister() {
+    if (this.registerForm.valid) {
+      this.registerService.register(this.registerForm.value).subscribe({
+        next: (response) => {
+          console.log('Sikeres regisztráció!', response);
+          this.closeRegisterPanel();
+          this.openLoginPanel();
+        },
+        error: (error) => {
+          console.error('Sikertelen regisztráció!', error);
+          this.registerErrorMessage = 'A regisztráció sikertelen!';
+        },
+      });
+    }
+  }
+
+  logout() {
+    this.loginService.logout();
+    this.isLoggedIn = false;
+    this.userName = null;
+    this.profileImageUrl = null;
+    this.router.navigate(['/']);
+  }
+}
+ -->

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { LoginService } from '../../_service/login.service';
 import { ProfilePanelService } from '../../_service/profile-panel.service';
 import { Subscription } from 'rxjs';
@@ -7,18 +7,27 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-profile-panel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AsyncPipe],
   template: `
-    <div class="profile-panel-container">
+    <div
+      class="profile-panel-container"
+      *ngIf="loginService.isLoggedIn$ | async"
+    >
       <div id="profile-panel" class="profile-panel" [class.open]="isPanelOpen">
         <div class="profile-header">
-          <img
-            [src]="loginService.profileImageUrl$ | async"
-            alt="Profile Icon"
-            class="profile-image"
-            id="profile-image"
-          />
-          <h2>USERNAME</h2>
+          <ng-container
+            *ngIf="loginService.profileImageUrl$ | async as profileImageUrl"
+          >
+            <img
+              [src]="profileImageUrl"
+              alt="Profile Icon"
+              class="profile-image"
+              id="profile-image"
+            />
+          </ng-container>
+          <ng-container *ngIf="loginService.userName$ | async as userName">
+            <h2>{{ userName }}</h2>
+          </ng-container>
           <button
             id="close-profile-panel"
             class="close-btn"
@@ -120,6 +129,10 @@ import { Subscription } from 'rxjs';
         (click)="closePanel()"
       ></div>
     </div>
+    <div
+      class="profile-panel-container"
+      *ngIf="!(loginService.isLoggedIn$ | async)"
+    ></div>
   `,
   styleUrls: ['./profile-panel.component.css'],
 })
@@ -137,10 +150,12 @@ export class ProfilePanelComponent implements OnInit, OnDestroy {
       this.profilePanelService.profilePanelOpen$.subscribe((isOpen) => {
         this.isPanelOpen = isOpen;
       });
+    console.log('ProfilePanelComponent ngOnInit');
   }
 
   ngOnDestroy(): void {
     this.panelSubscription?.unsubscribe();
+    console.log('ProfilePanelComponent ngOnDestroy');
   }
 
   closePanel(): void {

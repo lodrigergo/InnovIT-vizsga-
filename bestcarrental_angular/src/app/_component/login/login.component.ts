@@ -158,7 +158,11 @@ export class LoginComponent implements OnInit {
           const profileImageUrl =
             response.result.profileImageUrl || 'profile icon.webp';
           const token = response.result.jwt;
-          this.loginService.loginSuccess(profileImageUrl, token);
+          this.loginService.loginSuccess(
+            profileImageUrl,
+            token,
+            response.result.name
+          );
           this.loginError = '';
         },
         error: (error) => {

@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../_service/login.service';
 import { ProfilePanelService } from '../../_service/profile-panel.service';
-import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, ProfilePanelComponent],
+  imports: [CommonModule],
   template: `
     <header class="navbar">
       <div class="container">
@@ -58,7 +58,8 @@ import { ProfilePanelComponent } from '../profile-panel/profile-panel.component'
 export class NavbarComponent {
   constructor(
     public loginService: LoginService,
-    public profilePanelService: ProfilePanelService
+    private profilePanelService: ProfilePanelService,
+    private router: Router
   ) {}
 
   openLoginPanel(): void {
