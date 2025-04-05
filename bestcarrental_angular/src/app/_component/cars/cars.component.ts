@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './cars.component.html',
-  styleUrls: ['./cars.css'],
+  styleUrls: ['./cars.component.css'],
 })
 export class CarsComponent implements OnInit, OnDestroy {
   showLoginPanel = false;
@@ -29,7 +29,7 @@ export class CarsComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   loginErrorMessage: string = '';
   registerErrorMessage: string = '';
-  showProfilePanel = false; // Flag a profil panel láthatóságához
+  showProfilePanel = false;
 
   private isLoggedInSubscription: Subscription | undefined;
   private userNameSubscription: Subscription | undefined;

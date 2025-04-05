@@ -1,13 +1,15 @@
+// navbar.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../_service/login.service';
 import { ProfilePanelService } from '../../_service/profile-panel.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProfilePanelComponent, RouterModule],
   template: `
     <header class="navbar">
       <div class="container">
@@ -19,11 +21,18 @@ import { Router } from '@angular/router';
         />
         <nav>
           <ul class="nav-links">
-            <li><a href="#home" class="home-link" id="home-link">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="../cars/cars.component.html">Cars</a></li>
             <li>
-              <a href="../reservation/reservation.component.html"
+              <a
+                routerLink="/"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >Home</a
+              >
+            </li>
+            <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+            <li><a routerLink="/cars" routerLinkActive="active">Cars</a></li>
+            <li>
+              <a routerLink="/reservations" routerLinkActive="active"
                 >Reservations</a
               >
             </li>
@@ -58,7 +67,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   constructor(
     public loginService: LoginService,
-    private profilePanelService: ProfilePanelService,
+    public profilePanelService: ProfilePanelService,
     private router: Router
   ) {}
 
