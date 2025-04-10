@@ -50,7 +50,8 @@ import { ProfilePanelComponent } from '../profile-panel/profile-panel.component'
           [src]="loginService.profileImageUrl$ | async"
           alt="Profile Icon"
           id="profile-icon"
-          style="width: 40px; height: 40px; border-radius: 30%; margin-right: 20px; cursor: pointer;"
+          class="profileIconInHomePage"
+          style="width: 40px; height: 40px; border-radius: 30%; margin-right: 20px; cursor: pointer; transition: transform 0.3s ease;"
           (click)="openProfilePanel()"
         />
       </div>

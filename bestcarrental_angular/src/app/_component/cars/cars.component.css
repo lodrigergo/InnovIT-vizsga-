@@ -411,7 +411,7 @@ h1 {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 .arrangement label {
   margin-right: 10px;
@@ -430,8 +430,6 @@ h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-color: #888;
 }
-
-/* ========== Autók Rácsa és Kártyák ========== */
 
 .cars-grid {
   display: grid;
@@ -543,6 +541,7 @@ h1 {
   cursor: pointer;
   font-weight: bold;
   transition: background 0.3s;
+  width: 100%;
 }
 .reserve-btn:hover {
   background: linear-gradient(135deg, #e60000, #cc0000);

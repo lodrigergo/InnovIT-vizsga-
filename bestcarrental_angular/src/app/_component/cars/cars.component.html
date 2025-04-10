@@ -344,213 +344,241 @@
     <h2>Filter</h2>
     <div class="filter-group">
       <h3>Brand</h3>
-      <label><input type="checkbox" id="Fiat" name="Fiat" /> Fiat</label>
-      <label><input type="checkbox" id="Honda" name="Honda" /> Honda</label>
       <label
-        ><input type="checkbox" id="Volkswagen" name="Volkswagen" />
+        ><input
+          type="checkbox"
+          id="Fiat"
+          name="Fiat"
+          (change)="updateFilter('brand', 'Fiat', $event)"
+        />
+        Fiat</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Honda"
+          name="Honda"
+          (change)="updateFilter('brand', 'Honda', $event)"
+        />
+        Honda</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Volkswagen"
+          name="Volkswagen"
+          (change)="updateFilter('brand', 'Volkswagen', $event)"
+        />
         Volkswagen</label
       >
-      <label><input type="checkbox" id="Volvo" name="Volvo" /> Volvo</label>
-      <label><input type="checkbox" id="Toyota" name="Toyota" /> Toyota</label>
+      <label
+        ><input
+          type="checkbox"
+          id="Volvo"
+          name="Volvo"
+          (change)="updateFilter('brand', 'Volvo', $event)"
+        />
+        Volvo</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Toyota"
+          name="Toyota"
+          (change)="updateFilter('brand', 'Toyota', $event)"
+        />
+        Toyota</label
+      >
     </div>
     <div class="filter-group">
       <h3>Persons</h3>
-      <label><input type="checkbox" id="9" name="9" /> 9</label>
-      <label><input type="checkbox" id="7" name="7" /> 7</label>
-      <label><input type="checkbox" id="5" name="5" /> 5</label>
+      <label
+        ><input
+          type="checkbox"
+          id="9"
+          name="9"
+          (change)="updateFilter('persons', '9', $event)"
+        />
+        9</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="7"
+          name="7"
+          (change)="updateFilter('persons', '7', $event)"
+        />
+        7</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="5"
+          name="5"
+          (change)="updateFilter('persons', '5', $event)"
+        />
+        5</label
+      >
     </div>
     <div class="filter-group">
       <h3>Price</h3>
       <label
-        ><input type="checkbox" id="10€-30€" name="10€-30€" /> 10€ - 30€</label
+        ><input
+          type="checkbox"
+          id="10€-30€"
+          name="10€-30€"
+          (change)="updateFilter('price', '10€-30€', $event)"
+        />
+        10€ - 30€</label
       >
       <label
-        ><input type="checkbox" id="30€-50€" name="30€-50€" /> 30€ - 50€</label
+        ><input
+          type="checkbox"
+          id="30€-50€"
+          name="30€-50€"
+          (change)="updateFilter('price', '30€-50€', $event)"
+        />
+        30€ - 50€</label
       >
       <label
-        ><input type="checkbox" id="50€-61€" name="50€-61€" /> 50€ - 61€</label
+        ><input
+          type="checkbox"
+          id="50€-61€"
+          name="50€-61€"
+          (change)="updateFilter('price', '50€-61€', $event)"
+        />
+        50€ - 61€</label
       >
       <label
-        ><input type="checkbox" id="61€-85€" name="61€-85€" /> 61€ - 85€</label
+        ><input
+          type="checkbox"
+          id="61€-85€"
+          name="61€-85€"
+          (change)="updateFilter('price', '61€-85€', $event)"
+        />
+        61€ - 85€</label
       >
     </div>
     <div class="filter-group">
       <h3>Year</h3>
-      <label><input type="checkbox" id="2018" name="2018" /> 2018</label>
-      <label><input type="checkbox" id="2019" name="2019" /> 2019</label>
-      <label><input type="checkbox" id="2020" name="2020" /> 2020</label>
-      <label><input type="checkbox" id="2021" name="2021" /> 2021</label>
-      <label><input type="checkbox" id="2022" name="2022" /> 2022</label>
+      <label
+        ><input
+          type="checkbox"
+          id="2018"
+          name="2018"
+          (change)="updateFilter('year', '2018', $event)"
+        />
+        2018</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2019"
+          name="2019"
+          (change)="updateFilter('year', '2019', $event)"
+        />
+        2019</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2020"
+          name="2020"
+          (change)="updateFilter('year', '2020', $event)"
+        />
+        2020</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2021"
+          name="2021"
+          (change)="updateFilter('year', '2021', $event)"
+        />
+        2021</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2022"
+          name="2022"
+          (change)="updateFilter('year', '2022', $event)"
+        />
+        2022</label
+      >
     </div>
     <div class="filter-group">
       <h3>Fuel</h3>
-      <label><input type="checkbox" id="Petrol" name="Petrol" /> Petrol</label>
-      <label><input type="checkbox" id="Diesel" name="Diesel" /> Diesel</label>
-      <label><input type="checkbox" id="Hybrid" name="Hybrid" /> Hybrid</label>
+      <label
+        ><input
+          type="checkbox"
+          id="Petrol"
+          name="Petrol"
+          (change)="updateFilter('fuel', 'Petrol', $event)"
+        />
+        Petrol</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Diesel"
+          name="Diesel"
+          (change)="updateFilter('fuel', 'Diesel', $event)"
+        />
+        Diesel</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Hybrid"
+          name="Hybrid"
+          (change)="updateFilter('fuel', 'Hybrid', $event)"
+        />
+        Hybrid</label
+      >
     </div>
-    <button class="reset-filters-btn">Reset Filters</button>
+    <button class="reset-filters-btn" (click)="resetFilters()">
+      Reset Filters
+    </button>
   </aside>
   <main class="main-content">
     <h1>Cars</h1>
     <div class="arrangement">
       <label for="arrange">Arrangement:</label>
-      <select id="arrange">
+      <select id="arrange" (change)="onArrangementChange($event)">
         <option value="none">None</option>
         <option value="price">Increases by price</option>
         <option value="price-desc">Descending by price</option>
       </select>
     </div>
     <div class="cars-grid">
-      <div class="car-card" id="card-toyota-corolla" data-id="1">
-        <img
-          src="Toyota Corolla 1.8 sedan. hybridjpg.png"
-          alt="Toyota Corolla"
-        />
-        <h3>Toyota Corolla 2021 Petrol</h3>
-        <button
-          class="details-btn"
-          data-card-id="card-toyota-corolla"
-          data-id="1"
-        >
+      <div *ngFor="let car of filteredCars" class="car-card">
+        <img [src]="car.image" [alt]="car.brand + ' ' + car.model" />
+        <h3>{{ car.brand }} {{ car.model }}</h3>
+        <button class="details-btn" (click)="toggleDetails(car.id)">
           Check out our car
         </button>
-        <div class="details-panel">
+        <div
+          class="details-panel"
+          [ngClass]="{ active: selectedCarId === car.id }"
+        >
           <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Petrol</div>
-            <div><i class="fas fa-cogs"></i> A</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 5</div>
+            <div><i class="fas fa-car"></i> {{ car.details.doors }} doors</div>
+            <div>
+              <i class="fas fa-gas-pump"></i> {{ car.details.fuelType }}
+            </div>
+            <div>
+              <i class="fas fa-cogs"></i> {{ car.details.transmission }}
+            </div>
+            <div *ngIf="car.details.airConditioning">
+              <i class="fas fa-snowflake"></i> AC
+            </div>
+            <div>
+              <i class="fas fa-user-friends"></i> {{ car.details.seats }} seats
+            </div>
           </div>
-          <div class="price">61€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-toyota-rav4" data-id="2">
-        <img src="toyota rav4 ujabb.jpeg" alt="Toyota Rav4" />
-        <h3>Toyota Rav4 2021 Hybrid</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Hybrid</div>
-            <div><i class="fas fa-cogs"></i> A</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 5</div>
-          </div>
-          <div class="price">70€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-fiat-500" data-id="3">
-        <img src="Fiat', '500', 'JKL-654', 2022, 'Benzin.jpeg" alt="Fiat 500" />
-        <h3>Fiat 500 2022 Petrol</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Petrol</div>
-            <div><i class="fas fa-cogs"></i> Manual</div>
-            <div><i class="fas fa-user"></i> 4</div>
-          </div>
-          <div class="price">45€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-volkswagen-golf-2018" data-id="4">
-        <img src="VOlkswagen golf 2018.jpg" alt="Volkswagen Golf 2018" />
-        <h3>Volkswagen Golf 2018 Diesel</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Diesel</div>
-            <div><i class="fas fa-cogs"></i> Manual</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 5</div>
-          </div>
-          <div class="price">55€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-volkswagen-passat-2018" data-id="5">
-        <img src="Volkswagen-passat-2018.webp" alt="Volkswagen Passat 2018" />
-        <h3>Volkswagen Passat 2018 Diesel</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Diesel</div>
-            <div><i class="fas fa-cogs"></i> Automatic</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 5</div>
-          </div>
-          <div class="price">60€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-volvo-v60" data-id="6">
-        <img src="Volvo V60 2019.jpeg" alt="Volvo V60" />
-        <h3>Volvo V60 2019 Diesel</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Diesel</div>
-            <div><i class="fas fa-cogs"></i> Manual</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 5</div>
-          </div>
-          <div class="price">65€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-volvo-xc90" data-id="7">
-        <img src="Volvo XC90 2019.jpeg" alt="Volvo XC90" />
-        <h3>Volvo XC90 2020 Hybrid</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Hybrid</div>
-            <div><i class="fas fa-cogs"></i> Automatic</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 7</div>
-          </div>
-          <div class="price">85€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-honda-civic" data-id="8">
-        <img src="Honda Civic 2020.jpeg" alt="Honda Civic" />
-        <h3>Honda Civic 2020 Petrol</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Petrol</div>
-            <div><i class="fas fa-cogs"></i> Manual</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 5</div>
-          </div>
-          <div class="price">50€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
-        </div>
-      </div>
-      <div class="car-card" id="card-honda-accord" data-id="9">
-        <img src="honda_accord_2020_uj.jpg" alt="Honda Accord" />
-        <h3>Honda Accord 2020 Petrol</h3>
-        <button class="details-btn">Check out our car</button>
-        <div class="details-panel">
-          <div class="details">
-            <div><i class="fas fa-car"></i> 4</div>
-            <div><i class="fas fa-gas-pump"></i> Petrol</div>
-            <div><i class="fas fa-cogs"></i> Automatic</div>
-            <div><i class="fas fa-snowflake"></i> AC</div>
-            <div><i class="fas fa-user"></i> 5</div>
-          </div>
-          <div class="price">70€ / Day</div>
-          <button class="reserve-btn">Reserve</button>
+          <div class="price">{{ car.price }}€ / Day</div>
+          <button class="reserve-btn">Reservation</button>
         </div>
       </div>
     </div>
