@@ -6,13 +6,16 @@ import { ReservationComponent } from './_component/reservation/reservation.compo
 import { NavbarComponent } from './_component/navbar/navbar.component';
 import { ForgotPasswordComponent } from './_component/forgot-password/forgot-password.component';
 import { AuthGuard } from './_guard/auth.guard';
+import { AdminComponent } from './_component/admin/admin.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'cars', component: CarsComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'reservation/:carId', component: ReservationComponent },
   { path: 'reservation', component: ReservationComponent },
   { path: 'navbar', component: NavbarComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'admin', component: AdminComponent },
 ];

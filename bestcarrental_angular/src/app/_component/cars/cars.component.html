@@ -544,7 +544,7 @@
   <main class="main-content">
     <h1>Cars</h1>
     <div class="arrangement">
-      <label for="arrange">Arrangement:</label>
+      <label for="arrange"> Arrangement:</label>
       <select id="arrange" (change)="onArrangementChange($event)">
         <option value="none">None</option>
         <option value="price">Increases by price</option>
@@ -578,7 +578,9 @@
             </div>
           </div>
           <div class="price">{{ car.price }}€ / Day</div>
-          <button class="reserve-btn">Reservation</button>
+          <button class="reserve-btn" (click)="onReservationClick(car)">
+            Reservation
+          </button>
         </div>
       </div>
     </div>

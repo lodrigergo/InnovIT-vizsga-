@@ -1,0 +1,502 @@
+<header class="admin-header">
+  <div class="container">
+    <h1>Admin Dashboard</h1>
+    <nav>
+      <ul class="nav-links">
+        <li>
+          <a href="#users"><i class="fas fa-users"></i> Felhasználók</a>
+        </li>
+        <li>
+          <a href="#cars"><i class="fas fa-car"></i> Autók</a>
+        </li>
+        <li>
+          <a href="#bookings"><i class="fas fa-calendar-alt"></i> Foglalások</a>
+        </li>
+        <li>
+          <a href="../index.html" id="logout-btn"
+            ><i class="fas fa-sign-out-alt"></i> Kilépés</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="admin-content">
+  <section id="users" class="admin-section" #usersSection>
+    <h2>Felhasználók kezelése</h2>
+    <button id="load-users-btn" class="action-btn" (click)="loadUsers()">
+      Felhasználók betöltése
+    </button>
+    <table id="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Szerep</th>
+          <th>Műveletek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.isAdmin ? "Admin" : "Felhasználó" }}</td>
+          <td>
+            <button class="edit-btn" (click)="openEditUserModal(user)">
+              Szerkesztés
+            </button>
+            <button class="delete-btn" (click)="openDeleteUserModal(user.id)">
+              Törlés
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="cars" class="admin-section" #carsSection>
+    <h2>Autók kezelése</h2>
+    <button id="load-cars-btn" class="action-btn" (click)="loadCars()">
+      Autók betöltése
+    </button>
+    <table id="cars-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Márka</th>
+          <th>Típus</th>
+          <th>Rendszám</th>
+          <th>Év</th>
+          <th>Üzemanyag</th>
+          <th>Napidíj</th>
+          <th>Váltó</th>
+          <th>Ajtók</th>
+          <th>AC</th>
+          <th>Ülések</th>
+          <th>Kép</th>
+          <th>Műveletek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let car of cars">
+          <td>{{ car.id }}</td>
+          <td>{{ car.brand }}</td>
+          <td>{{ car.model }}</td>
+          <td>{{ car.licensePlate }}</td>
+          <td>{{ car.year }}</td>
+          <td>{{ car.fuelType }}</td>
+          <td>{{ car.pricePerDay }}</td>
+          <td>{{ car.transmission }}</td>
+          <td>{{ car.doors }}</td>
+          <td>{{ car.AC ? "Igen" : "Nem" }}</td>
+          <td>{{ car.seats }}</td>
+          <td>
+            <img
+              [src]="
+                'http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/images/' +
+                car.image
+              "
+              alt="Car Image"
+              style="width: 100px"
+            />
+          </td>
+          <td>
+            <button class="edit-btn" (click)="openEditCarModal(car)">
+              Szerkesztés
+            </button>
+            <button class="delete-btn" (click)="openDeleteCarModal(car.id)">
+              Törlés
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="bookings" class="admin-section" #bookingsSection>
+    <h2>Foglalások kezelése</h2>
+    <button id="load-bookings-btn" class="action-btn" (click)="loadBookings()">
+      Foglalások betöltése
+    </button>
+    <table id="bookings-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User ID</th>
+          <th>Autó ID</th>
+          <th>Kezdés</th>
+          <th>Befejezés</th>
+          <th>Műveletek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td>{{ booking.id }}</td>
+          <td>{{ booking.userId }}</td>
+          <td>{{ booking.carId }}</td>
+          <td>{{ booking.pickupDate }}</td>
+          <td>{{ booking.returnDate }}</td>
+          <td>
+            <button
+              class="delete-btn"
+              (click)="openDeleteBookingModal(booking.id)"
+            >
+              Törlés
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="add-car" class="admin-section">
+    <h2>Autó hozzáadása</h2>
+    <form id="add-car-form">
+      <div class="form-group">
+        <label for="car-brand">Márka:</label>
+        <input type="text" id="car-brand" name="brand" required />
+      </div>
+      <div class="form-group">
+        <label for="car-model">Típus:</label>
+        <input type="text" id="car-model" name="model" required />
+      </div>
+      <div class="form-group">
+        <label for="car-licensePlate">Rendszám:</label>
+        <input type="text" id="car-licensePlate" name="licensePlate" required />
+      </div>
+      <div class="form-group">
+        <label for="car-year">Év:</label>
+        <input
+          type="number"
+          id="car-year"
+          name="year"
+          pattern="[0-9]{4}"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="car-fuelType">Üzemanyag:</label>
+        <input type="text" id="car-fuelType" name="fuelType" required />
+      </div>
+      <div class="form-group">
+        <label for="car-price">Napidíj:</label>
+        <input
+          type="number"
+          step="0.01"
+          id="car-price"
+          name="pricePerDay"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="car-transmission">Váltó:</label>
+        <input type="text" id="car-transmission" name="transmission" required />
+      </div>
+      <div class="form-group">
+        <label for="car-doors">Ajtók száma:</label>
+        <input type="number" id="car-doors" name="doors" required />
+      </div>
+      <div class="form-group">
+        <label for="car-ac">AC:</label>
+        <input type="checkbox" id="car-ac" name="ac" />
+      </div>
+      <div class="form-group">
+        <label for="car-seat">Ülések száma:</label>
+        <input type="number" id="car-seat" name="seats" required />
+      </div>
+      <div class="form-group">
+        <label for="car-image">Kép URL:</label>
+        <input type="text" id="car-image" name="image" required />
+      </div>
+      <div class="form-group full-width">
+        <button
+          type="button"
+          id="add-car-btn"
+          class="action-btn"
+          (click)="addCar()"
+        >
+          Autó hozzáadása
+        </button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<div
+  class="modal-overlay"
+  [class.show]="
+    isEditCarModalVisible ||
+    isEditUserModalVisible ||
+    isDeleteUserModalVisible ||
+    isDeleteCarModalVisible ||
+    isDeleteBookingModalVisible
+  "
+></div>
+
+<div class="edit-car-modal" [class.show]="isEditCarModalVisible">
+  <div class="modal-header">
+    <h2>Autó szerkesztése</h2>
+    <button class="close-button" (click)="closeEditCarModal()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <form id="edit-car-form" *ngIf="selectedCar">
+      <div class="form-group">
+        <label for="edit-car-brand">Márka:</label>
+        <input
+          type="text"
+          id="edit-car-brand"
+          name="brand"
+          [(ngModel)]="selectedCar.brand"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-model">Típus:</label>
+        <input
+          type="text"
+          id="edit-car-model"
+          name="model"
+          [(ngModel)]="selectedCar.model"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-licensePlate">Rendszám:</label>
+        <input
+          type="text"
+          id="edit-car-licensePlate"
+          name="licensePlate"
+          [(ngModel)]="selectedCar.licensePlate"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-year">Év:</label>
+        <input
+          type="number"
+          id="edit-car-year"
+          name="year"
+          [(ngModel)]="selectedCar.year"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-fuelType">Üzemanyag:</label>
+        <input
+          type="text"
+          id="edit-car-fuelType"
+          name="fuelType"
+          [(ngModel)]="selectedCar.fuelType"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-price">Napidíj:</label>
+        <input
+          type="number"
+          step="0.01"
+          id="edit-car-price"
+          name="pricePerDay"
+          [(ngModel)]="selectedCar.pricePerDay"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-transmission">Váltó:</label>
+        <input
+          type="text"
+          id="edit-car-transmission"
+          name="transmission"
+          [(ngModel)]="selectedCar.transmission"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-doors">Ajtók száma:</label>
+        <input
+          type="number"
+          id="edit-car-doors"
+          name="doors"
+          [(ngModel)]="selectedCar.doors"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-ac">AC:</label>
+        <input
+          type="checkbox"
+          id="edit-car-ac"
+          name="ac"
+          [(ngModel)]="selectedCar.AC"
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-seats">Ülések száma:</label>
+        <input
+          type="number"
+          id="edit-car-seats"
+          name="seats"
+          [(ngModel)]="selectedCar.seats"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-image">Kép URL:</label>
+        <input
+          type="text"
+          id="edit-car-image"
+          name="image"
+          [(ngModel)]="selectedCar.image"
+          required
+        />
+      </div>
+      <div class="form-group full-width">
+        <button type="button" class="action-btn" (click)="updateCar()">
+          Mentés
+        </button>
+        <button type="button" class="cancel-btn" (click)="closeEditCarModal()">
+          Mégse
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  class="edit-user-modal"
+  [class.show]="isEditUserModalVisible"
+  *ngIf="isEditUserModalVisible && selectedUser"
+>
+  <div class="modal-header">
+    <h2>Felhasználó szerkesztése</h2>
+    <button class="close-button" (click)="closeEditUserModal()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <form id="edit-user-form">
+      <div class="form-group">
+        <label for="edit-user-name">Név:</label>
+        <input
+          type="text"
+          id="edit-user-name"
+          name="name"
+          [(ngModel)]="selectedUser.name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-user-email">Email:</label>
+        <input
+          type="email"
+          id="edit-user-email"
+          name="email"
+          [(ngModel)]="selectedUser.email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-user-password">Jelszó:</label>
+        <input
+          type="password"
+          id="edit-user-password"
+          name="password"
+          [(ngModel)]="selectedUser.password"
+        />
+      </div>
+      <input
+        type="hidden"
+        name="personalId"
+        [(ngModel)]="selectedUser.personalId"
+      />
+      <div class="form-group full-width">
+        <button type="button" class="action-btn" (click)="updateUser()">
+          Mentés
+        </button>
+        <button type="button" class="cancel-btn" (click)="closeEditUserModal()">
+          Mégse
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="delete-confirmation-modal" [class.show]="isDeleteUserModalVisible">
+  <div class="modal-header">
+    <h2>Felhasználó törlése</h2>
+    <button class="close-button" (click)="closeDeleteUserModal()">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Biztosan törölni szeretné a felhasználót?</p>
+    <div class="form-group full-width">
+      <button
+        type="button"
+        class="action-btn delete-btn"
+        (click)="confirmDeleteUser()"
+      >
+        Törlés
+      </button>
+      <button type="button" class="cancel-btn" (click)="closeDeleteUserModal()">
+        Mégse
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="delete-confirmation-modal" [class.show]="isDeleteCarModalVisible">
+  <div class="modal-header">
+    <h2>Autó törlése</h2>
+    <button class="close-button" (click)="closeDeleteCarModal()">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Biztosan törölni szeretné az autót?</p>
+    <div class="form-group full-width">
+      <button
+        type="button"
+        class="action-btn delete-btn"
+        (click)="confirmDeleteCar()"
+      >
+        Törlés
+      </button>
+      <button type="button" class="cancel-btn" (click)="closeDeleteCarModal()">
+        Mégse
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="delete-confirmation-modal"
+  [class.show]="isDeleteBookingModalVisible"
+>
+  <div class="modal-header">
+    <h2>Foglalás törlése</h2>
+    <button class="close-button" (click)="closeDeleteBookingModal()">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Biztosan törölni szeretné a foglalást?</p>
+    <div class="form-group full-width">
+      <button
+        type="button"
+        class="action-btn delete-btn"
+        (click)="confirmDeleteBooking()"
+      >
+        Törlés
+      </button>
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="closeDeleteBookingModal()"
+      >
+        Mégse
+      </button>
+    </div>
+  </div>
+</div>

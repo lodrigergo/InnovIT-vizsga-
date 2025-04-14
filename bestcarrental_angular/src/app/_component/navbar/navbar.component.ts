@@ -32,9 +32,7 @@ import { ProfilePanelComponent } from '../profile-panel/profile-panel.component'
             <li><a routerLink="/about" routerLinkActive="active">About</a></li>
             <li><a routerLink="/cars" routerLinkActive="active">Cars</a></li>
             <li>
-              <a routerLink="/reservations" routerLinkActive="active"
-                >Reservations</a
-              >
+              <a [routerLink]="['/reservation']">Reservations</a>
             </li>
           </ul>
         </nav>

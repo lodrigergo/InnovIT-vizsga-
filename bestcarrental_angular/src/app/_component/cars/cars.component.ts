@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { LoginService } from '../../_service/login.service';
 import {
   FormBuilder,
@@ -8,9 +8,9 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { RegisterService } from '../../_service/register.service';
 import { Subscription } from 'rxjs';
+import { CarsService } from '../../_service/cars.service';
 
 interface Car {
   id: number;
@@ -222,7 +222,8 @@ export class CarsComponent implements OnInit, OnDestroy {
     private loginService: LoginService,
     private registerService: RegisterService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private carsService: CarsService // Injektáld a CarsService-t
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -251,6 +252,8 @@ export class CarsComponent implements OnInit, OnDestroy {
       );
 
     this.filteredCars = [...this.allCars];
+    this.carsService.setAvailableCars(this.allCars);
+    console.log('Available cars set in CarsComponent:', this.allCars);
   }
 
   ngOnDestroy(): void {
@@ -448,5 +451,10 @@ export class CarsComponent implements OnInit, OnDestroy {
   onArrangementChange(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.arrangeCars(selectedValue);
+  }
+
+  onReservationClick(car: Car): void {
+    this.carsService.setSelectedCar(car);
+    this.router.navigate(['/reservation']);
   }
 }
