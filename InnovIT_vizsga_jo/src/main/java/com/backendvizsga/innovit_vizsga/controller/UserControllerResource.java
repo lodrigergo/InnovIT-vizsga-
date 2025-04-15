@@ -235,6 +235,24 @@ public class UserControllerResource {
         return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
     }
     
+    @POST
+    @Path("registerAdmin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.APPLICATION_JSON)
+    public Response registerAdmin(String bodyString) {
+        JSONObject body = new JSONObject(bodyString);
+        
+        Users a = new Users(
+                body.getString("name"),
+                body.getString("email"),
+                body.getString("password"),
+                body.getString("personalId")
+        );
+        
+        JSONObject obj = layer.registerAdmin(a);
+        return Response.status(obj.getInt("statusCode")).entity(obj.toString()).type(MediaType.APPLICATION_JSON).build();
+    }
+    
     @DELETE
     @Path("deleteUserById")
     @Consumes(MediaType.APPLICATION_JSON)
