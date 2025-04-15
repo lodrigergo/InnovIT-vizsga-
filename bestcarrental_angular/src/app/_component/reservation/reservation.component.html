@@ -215,10 +215,16 @@
 
 <div class="container reservation-container">
   <div class="step">
-    <div [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+    <div
+      [class.active]="currentStep === 1"
+      [class.completed]="isReservationCompleted"
+    >
       1 Foglalás megerősítése
     </div>
-    <div [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+    <div
+      [class.active]="currentStep === 2"
+      [class.completed]="isReservationCompleted && currentStep > 1"
+    >
       2 Foglalás elküldve
     </div>
   </div>
@@ -262,7 +268,12 @@
       </button>
       <div class="confirmation-popup" *ngIf="isConfirmationPopupVisible">
         <h3>{{ confirmationMessage }}</h3>
-        <button (click)="closeConfirmationPopup()">OK</button>
+        <div class="popup-buttons">
+          <button (click)="closeConfirmationPopup()">OK</button>
+          <button class="delete-button" (click)="deleteReservation()">
+            Törlés
+          </button>
+        </div>
       </div>
     </div>
     <div

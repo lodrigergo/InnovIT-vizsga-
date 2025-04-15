@@ -45,7 +45,9 @@ export class ReservationComponent implements OnInit, OnDestroy {
   isLoading = false;
   isConfirmationPopupVisible = false;
   confirmationMessage = '';
-
+  isReservationConfirmedStepActive: boolean = false;
+  isReservationSentStepCompleted: boolean = false;
+  isReservationCompleted: boolean = false;
   loginEmail = '';
   loginPassword = '';
   emailError = '';
@@ -143,15 +145,24 @@ export class ReservationComponent implements OnInit, OnDestroy {
     const reservationConfirmed = localStorage.getItem('reservationConfirmed');
     const reservedCarDetails = localStorage.getItem('reservedCarDetails');
 
+    this.isConfirmationPopupVisible = !!(
+      reservationConfirmed && reservedCarDetails
+    );
+    this.isOverlayActive = this.isConfirmationPopupVisible;
+
     if (reservationConfirmed && reservedCarDetails) {
-      this.isConfirmationPopupVisible = true;
-      this.isOverlayActive = true;
       const car = JSON.parse(reservedCarDetails) as Car;
       this.confirmationMessage = `Korábbi foglalása: ${car.brand} ${car.model}.`;
       this.selectedCar = car;
       this.carImage = car.image || 'car_image_placeholder.jpg';
+      this.isReservationConfirmedStepActive = true; // Ha van mentett foglalás, az első lépés aktív
+      this.isReservationSentStepCompleted = true; // És a második is befejezett
+      this.currentStep = 2;
     } else {
       this.loadSavedSelectedCarId();
+      this.isReservationConfirmedStepActive = false; // Alapértelmezésben inaktív
+      this.isReservationSentStepCompleted = false; // Alapértelmezésben nem befejezett
+      this.currentStep = 1;
     }
   }
 
@@ -292,9 +303,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
         JSON.stringify(this.selectedCar)
       );
 
-      // A kiválasztott autó törlése a localStorage-ból és a service-ből (a részletes adatokat mentettük)
-      localStorage.removeItem('selectedCarId');
-      this.carsService.clearSelectedCar();
+      this.isReservationConfirmedStepActive = true; // A "Lefoglalom" gombra kattintás után az első lépés aktívvá válik
+      this.isReservationSentStepCompleted = false; // A második még nem befejezett
     } else if (!this.isLoggedIn) {
       alert('Kérlek jelentkezz be a foglalás véglegesítéséhez!');
     } else {
@@ -305,13 +315,34 @@ export class ReservationComponent implements OnInit, OnDestroy {
   closeConfirmationPopup(): void {
     this.isConfirmationPopupVisible = false;
     this.isOverlayActive = false;
-    this.currentStep++;
+    this.isReservationSentStepCompleted = true; // A felugró ablak bezárásakor a második lépés befejezetté válik
+    this.currentStep = 2;
     this.confirmationMessage = '';
+    this.clearSelectedCarData();
+  }
+
+  deleteReservation(): void {
+    this.clearReservationData();
+    this.clearSelectedCarData();
+    this.selectedCar = null;
+    this.carImage = 'car_image_placeholder.jpg';
+    this.currentStep = 1;
+    this.isConfirmationPopupVisible = false;
+    this.isOverlayActive = false;
+    this.confirmationMessage = '';
+    this.isReservationConfirmedStepActive = false; // Törléskor visszaállítjuk az alapértelmezett állapotot
+    this.isReservationSentStepCompleted = false;
+    alert('A foglalás törölve.');
+  }
+
+  clearSelectedCarData(): void {
+    localStorage.removeItem('selectedCarId');
+    this.carsService.clearSelectedCar();
   }
 
   clearReservationData(): void {
     localStorage.removeItem('reservationConfirmed');
     localStorage.removeItem('reservedCarDetails');
-    localStorage.removeItem('selectedCarId');
+    this.clearSelectedCarData();
   }
 }
