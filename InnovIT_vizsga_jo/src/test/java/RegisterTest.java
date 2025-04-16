@@ -24,47 +24,72 @@ public class RegisterTest {
 
     @Test
     public void testSuccessfulRegistration() throws InterruptedException {
-        driver.get("http://127.0.0.1:5501/index.html");
+        driver.get("http://localhost:4200/home");
         Thread.sleep(2000);
 
+        System.out.println("Keresem a bejelentkező gombot...");
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("login-btn")));
         Thread.sleep(1000);
+        System.out.println("Bejelentkező gomb megtalálva, kattintás...");
         loginButton.click();
 
+        System.out.println("Keresem a create-account gombot...");
         WebElement createAccountButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("create-account-btn")));
-        Thread.sleep(1000);
+        Thread.sleep(2000);
+        System.out.println("Create-account gomb megtalálva, kattintás...");
         createAccountButton.click();
 
-        WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
-        Thread.sleep(1000);
+       
+        System.out.println("Keresem a regisztrációs panelt...");
+        WebElement registerPanel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("register-panel")));
+        Thread.sleep(2000);
+        Assert.assertTrue(registerPanel.isDisplayed(), "A regisztrációs panel nem jelent meg a create-account gombra kattintás után!");
+
+        System.out.println("Keresem az űrlapmezőket...");
+        WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+        Thread.sleep(2000);
+        System.out.println("Username mező megtalálva, kitöltés...");
         usernameField.sendKeys("newuser");
 
         WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("register-email")));
-        Thread.sleep(1000);
+        Thread.sleep(2000);
+        System.out.println("Email mező megtalálva, kitöltés...");
         emailField.sendKeys("neoxevil@gmail.com");
 
         WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("register-password")));
-        Thread.sleep(1000);
+        Thread.sleep(2000);
+        System.out.println("Password mező megtalálva, kitöltés...");
         passwordField.sendKeys("Alma123!");
 
         WebElement personalIdField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("personal-id")));
-        Thread.sleep(1000);
+        Thread.sleep(2000);
+        System.out.println("Personal ID mező megtalálva, kitöltés...");
         personalIdField.sendKeys("435678A");
 
+        System.out.println("Keresem a regisztrációs gombot...");
         WebElement registerButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".register-create-account-btn")));
-        Thread.sleep(1000);
+        Thread.sleep(2000);
+        System.out.println("Regisztrációs gomb megtalálva, kattintás...");
         registerButton.click();
 
-        wait.until(ExpectedConditions.alertIsPresent());
-        String alertText = driver.switchTo().alert().getText();
-        driver.switchTo().alert().accept();
+       
+        System.out.println("Keresem a sikeres regisztrációs üzenetet...");
+        WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".success-overlay .popup-message p")));
         Thread.sleep(2000);
+        Assert.assertTrue(successMessage.isDisplayed(), "A sikeres regisztrációs üzenet nem jelent meg!");
+        Assert.assertEquals(successMessage.getText(), "Thank you for your registration! You can now log in.",
+                "Az üzenet szövege nem a várt!");
 
-        WebElement loginPanel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("login-panel")));
-        Assert.assertTrue(loginPanel.isDisplayed(), "A login panel nem jelent meg újra sikeres regisztráció után!");
+        System.out.println("Keresem a Go to Login gombot...");
+        WebElement goToLoginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".success-overlay .login-btn")));
+        Thread.sleep(2000);
+        System.out.println("Go to Login gomb megtalálva, kattintás...");
+        goToLoginButton.click();
 
-        Assert.assertEquals(alertText, "Sikeres regisztráció! Most már bejelentkezhetsz.", 
-            "Az alert szövege nem a várt üzenetet tartalmazza!");
+        System.out.println("Keresem a bejelentkező panelt...");
+        WebElement loginPanel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("app-login")));
+        Thread.sleep(2000);
+        Assert.assertTrue(loginPanel.isDisplayed(), "A bejelentkező panel nem jelent meg újra sikeres regisztráció után!");
     }
 
     @AfterMethod
