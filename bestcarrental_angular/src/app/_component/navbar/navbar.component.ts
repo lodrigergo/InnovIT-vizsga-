@@ -1,4 +1,3 @@
-// navbar.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../_service/login.service';
