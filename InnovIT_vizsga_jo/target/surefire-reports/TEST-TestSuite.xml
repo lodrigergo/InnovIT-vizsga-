@@ -1,86 +1,102 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="TestSuite" time="36.836" tests="3" errors="0" skipped="0" failures="0">
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="4" failures="1" name="TestSuite" time="97.887" errors="0" skipped="0">
   <properties>
-    <property name="java.specification.version" value="23"/>
-    <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.class.path" value="/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo/target/test-classes:/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo/target/classes:/Users/lodrigergo/.m2/repository/mysql/mysql-connector-java/8.0.23/mysql-connector-java-8.0.23.jar:/Users/lodrigergo/.m2/repository/com/google/protobuf/protobuf-java/3.11.4/protobuf-java-3.11.4.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt/0.9.1/jjwt-0.9.1.jar:/Users/lodrigergo/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.9.6/jackson-databind-2.9.6.jar:/Users/lodrigergo/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar:/Users/lodrigergo/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.9.6/jackson-core-2.9.6.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt-api/0.11.5/jjwt-api-0.11.5.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt-impl/0.11.5/jjwt-impl-0.11.5.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt-jackson/0.11.5/jjwt-jackson-0.11.5.jar:/Users/lodrigergo/.m2/repository/cn/idea360/api-signature/1.2.0/api-signature-1.2.0.jar:/Users/lodrigergo/.m2/repository/org/projectlombok/lombok/1.18.26/lombok-1.18.26.jar:/Users/lodrigergo/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar:/Users/lodrigergo/.m2/repository/javax/javaee-web-api/7.0/javaee-web-api-7.0.jar:/Users/lodrigergo/.m2/repository/org/json/json/20231013/json-20231013.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-java/4.18.1/selenium-java-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-api/4.18.1/selenium-api-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/4.18.1/selenium-chrome-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/com/google/auto/service/auto-service-annotations/1.1.1/auto-service-annotations-1.1.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-chromium-driver/4.18.1/selenium-chromium-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-json/4.18.1/selenium-json-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-manager/4.18.1/selenium-manager-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v120/4.18.1/selenium-devtools-v120-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v121/4.18.1/selenium-devtools-v121-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v122/4.18.1/selenium-devtools-v122-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v85/4.18.1/selenium-devtools-v85-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-edge-driver/4.18.1/selenium-edge-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/4.18.1/selenium-firefox-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-http/4.18.1/selenium-http-4.18.1.jar:/Users/lodrigergo/.m2/repository/dev/failsafe/failsafe/3.3.2/failsafe-3.3.2.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/4.18.1/selenium-ie-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/4.18.1/selenium-remote-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar:/Users/lodrigergo/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/lodrigergo/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/lodrigergo/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/lodrigergo/.m2/repository/org/checkerframework/checker-qual/3.41.0/checker-qual-3.41.0.jar:/Users/lodrigergo/.m2/repository/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.jar:/Users/lodrigergo/.m2/repository/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/semconv/opentelemetry-semconv/1.23.1-alpha/opentelemetry-semconv-1.23.1-alpha.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-api/1.35.0/opentelemetry-api-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-context/1.35.0/opentelemetry-context-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-exporter-logging/1.35.0/opentelemetry-exporter-logging-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-common/1.35.0/opentelemetry-sdk-common-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure-spi/1.35.0/opentelemetry-sdk-extension-autoconfigure-spi-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure/1.35.0/opentelemetry-sdk-extension-autoconfigure-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-api-events/1.35.0-alpha/opentelemetry-api-events-1.35.0-alpha.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-trace/1.35.0/opentelemetry-sdk-trace-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-extension-incubator/1.35.0-alpha/opentelemetry-extension-incubator-1.35.0-alpha.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk/1.35.0/opentelemetry-sdk-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-metrics/1.35.0/opentelemetry-sdk-metrics-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-logs/1.35.0/opentelemetry-sdk-logs-1.35.0.jar:/Users/lodrigergo/.m2/repository/net/bytebuddy/byte-buddy/1.14.12/byte-buddy-1.14.12.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-os/4.18.1/selenium-os-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/apache/commons/commons-exec/1.3/commons-exec-1.3.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/4.18.1/selenium-safari-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-support/4.18.1/selenium-support-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/testng/testng/7.9.0/testng-7.9.0.jar:/Users/lodrigergo/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/Users/lodrigergo/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar:/Users/lodrigergo/.m2/repository/org/webjars/jquery/3.7.1/jquery-3.7.1.jar:"/>
-    <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="sun.arch.data.model" value="64"/>
-    <property name="java.vendor.url" value="https://java.oracle.com/"/>
-    <property name="user.timezone" value="Europe/Budapest"/>
-    <property name="os.name" value="Mac OS X"/>
-    <property name="java.vm.specification.version" value="23"/>
-    <property name="user.country" value="US"/>
-    <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-23.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo/target/surefire/surefirebooter-20250302210225785_3.jar /Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo/target/surefire 2025-03-02T21-02-25_745-jvmRun1 surefire-20250302210225785_1tmp surefire_0-20250302210225785_2tmp"/>
-    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
-    <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo/target/test-classes:/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo/target/classes:/Users/lodrigergo/.m2/repository/mysql/mysql-connector-java/8.0.23/mysql-connector-java-8.0.23.jar:/Users/lodrigergo/.m2/repository/com/google/protobuf/protobuf-java/3.11.4/protobuf-java-3.11.4.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt/0.9.1/jjwt-0.9.1.jar:/Users/lodrigergo/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.9.6/jackson-databind-2.9.6.jar:/Users/lodrigergo/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.9.0/jackson-annotations-2.9.0.jar:/Users/lodrigergo/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.9.6/jackson-core-2.9.6.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt-api/0.11.5/jjwt-api-0.11.5.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt-impl/0.11.5/jjwt-impl-0.11.5.jar:/Users/lodrigergo/.m2/repository/io/jsonwebtoken/jjwt-jackson/0.11.5/jjwt-jackson-0.11.5.jar:/Users/lodrigergo/.m2/repository/cn/idea360/api-signature/1.2.0/api-signature-1.2.0.jar:/Users/lodrigergo/.m2/repository/org/projectlombok/lombok/1.18.26/lombok-1.18.26.jar:/Users/lodrigergo/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar:/Users/lodrigergo/.m2/repository/javax/javaee-web-api/7.0/javaee-web-api-7.0.jar:/Users/lodrigergo/.m2/repository/org/json/json/20231013/json-20231013.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-java/4.18.1/selenium-java-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-api/4.18.1/selenium-api-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/4.18.1/selenium-chrome-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/com/google/auto/service/auto-service-annotations/1.1.1/auto-service-annotations-1.1.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-chromium-driver/4.18.1/selenium-chromium-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-json/4.18.1/selenium-json-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-manager/4.18.1/selenium-manager-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v120/4.18.1/selenium-devtools-v120-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v121/4.18.1/selenium-devtools-v121-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v122/4.18.1/selenium-devtools-v122-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v85/4.18.1/selenium-devtools-v85-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-edge-driver/4.18.1/selenium-edge-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/4.18.1/selenium-firefox-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-http/4.18.1/selenium-http-4.18.1.jar:/Users/lodrigergo/.m2/repository/dev/failsafe/failsafe/3.3.2/failsafe-3.3.2.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/4.18.1/selenium-ie-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/4.18.1/selenium-remote-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar:/Users/lodrigergo/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/lodrigergo/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/lodrigergo/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/lodrigergo/.m2/repository/org/checkerframework/checker-qual/3.41.0/checker-qual-3.41.0.jar:/Users/lodrigergo/.m2/repository/com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0.jar:/Users/lodrigergo/.m2/repository/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/semconv/opentelemetry-semconv/1.23.1-alpha/opentelemetry-semconv-1.23.1-alpha.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-api/1.35.0/opentelemetry-api-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-context/1.35.0/opentelemetry-context-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-exporter-logging/1.35.0/opentelemetry-exporter-logging-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-common/1.35.0/opentelemetry-sdk-common-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure-spi/1.35.0/opentelemetry-sdk-extension-autoconfigure-spi-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure/1.35.0/opentelemetry-sdk-extension-autoconfigure-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-api-events/1.35.0-alpha/opentelemetry-api-events-1.35.0-alpha.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-trace/1.35.0/opentelemetry-sdk-trace-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-extension-incubator/1.35.0-alpha/opentelemetry-extension-incubator-1.35.0-alpha.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk/1.35.0/opentelemetry-sdk-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-metrics/1.35.0/opentelemetry-sdk-metrics-1.35.0.jar:/Users/lodrigergo/.m2/repository/io/opentelemetry/opentelemetry-sdk-logs/1.35.0/opentelemetry-sdk-logs-1.35.0.jar:/Users/lodrigergo/.m2/repository/net/bytebuddy/byte-buddy/1.14.12/byte-buddy-1.14.12.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-os/4.18.1/selenium-os-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/apache/commons/commons-exec/1.3/commons-exec-1.3.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/4.18.1/selenium-safari-driver-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/seleniumhq/selenium/selenium-support/4.18.1/selenium-support-4.18.1.jar:/Users/lodrigergo/.m2/repository/org/testng/testng/7.9.0/testng-7.9.0.jar:/Users/lodrigergo/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/Users/lodrigergo/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar:/Users/lodrigergo/.m2/repository/org/webjars/jquery/3.7.1/jquery-3.7.1.jar:"/>
-    <property name="sun.cpu.endian" value="little"/>
-    <property name="user.home" value="/Users/lodrigergo"/>
-    <property name="user.language" value="en"/>
-    <property name="java.specification.vendor" value="Oracle Corporation"/>
-    <property name="java.version.date" value="2024-10-15"/>
-    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk-23.jdk/Contents/Home"/>
-    <property name="file.separator" value="/"/>
-    <property name="basedir" value="/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo"/>
-    <property name="java.vm.compressedOopsMode" value="Zero based"/>
-    <property name="line.separator" value="&#10;"/>
-    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo/target/surefire/surefirebooter-20250302210225785_3.jar"/>
-    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
-    <property name="java.runtime.version" value="23.0.1+11-39"/>
-    <property name="user.name" value="lodrigergo"/>
-    <property name="stdout.encoding" value="UTF-8"/>
-    <property name="path.separator" value=":"/>
-    <property name="os.version" value="15.1"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.version" value="17.0.12+8-LTS-286"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\nikoh\Documents\GitHub\InnovIT-vizsga-\InnovIT_vizsga_jo"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="path.separator" value=";"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="maven.ext.class.path" value="/Applications/Apache NetBeans.app/Contents/Resources/netbeans/java/maven-nblib/netbeans-eventspy.jar"/>
-    <property name="localRepository" value="/Users/lodrigergo/.m2/repository"/>
-    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="java.io.tmpdir" value="/var/folders/74/b2kvm4ks3x7bnpbg92265jjm0000gn/T/"/>
-    <property name="java.version" value="23.0.1"/>
-    <property name="user.dir" value="/Users/lodrigergo/Documents/GitHub/InnovIT-vizsga-/InnovIT_vizsga_jo"/>
-    <property name="os.arch" value="aarch64"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="HU"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="native.encoding" value="UTF-8"/>
-    <property name="java.library.path" value="/Users/lodrigergo/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="user.dir" value="C:\Users\nikoh\Documents\GitHub\InnovIT-vizsga-\InnovIT_vizsga_jo"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="java.runtime.version" value="17.0.12+8-LTS-286"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\nikoh\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="maven.ext.class.path" value="C:\Program Files\NetBeans-12.5\netbeans\java\maven-nblib\netbeans-eventspy.jar"/>
+    <property name="classworlds.conf" value="C:\Program Files\NetBeans-12.5\netbeans\java\maven\bin\..\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1250"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-17\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\dotnet\;C:\Users\nikoh\.config\herd-lite\bin;C:\Users\nikoh\AppData\Local\Microsoft\WindowsApps;C:\Users\nikoh\AppData\Roaming\npm;C:\Users\nikoh\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\nikoh\AppData\Local\GitHubDesktop\bin;."/>
+    <property name="maven.conf" value="C:\Program Files\NetBeans-12.5\netbeans\java\maven\bin\../conf"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="java.class.version" value="61.0"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.0"/>
+    <property name="library.jansi.path" value="C:\Program Files\NetBeans-12.5\netbeans\java\maven\bin\..\lib\jansi-native"/>
+    <property name="user.home" value="C:\Users\nikoh"/>
+    <property name="user.timezone" value="Europe/Budapest"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="17"/>
+    <property name="user.name" value="nikoh"/>
+    <property name="java.class.path" value="C:\Program Files\NetBeans-12.5\netbeans\java\maven\bin\..\boot\plexus-classworlds-2.6.0.jar"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=C:\Program Files\NetBeans-12.5\netbeans\java\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 clean install"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-17"/>
+    <property name="user.language" value="hu"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
-    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.version" value="17.0.12"/>
+    <property name="native.encoding" value="Cp1250"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="java.vm.version" value="23.0.1+11-39"/>
-    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
-    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
-    <property name="java.class.version" value="67.0"/>
+    <property name="maven.home" value="C:\Program Files\NetBeans-12.5\netbeans\java\maven\bin\.."/>
+    <property name="file.separator" value="\"/>
+    <property name="java.version.date" value="2024-07-16"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="testFailedLogin" classname="LoginTest" time="9.766">
-    <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-Mar 02, 2025 9:02:27 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
-WARNING: Unable to find CDP implementation matching 133
-Mar 02, 2025 9:02:27 PM org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
-WARNING: Unable to find version of CDP to use for 133.0.6943.142. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.18.1` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
-]]></system-err>
+  <testcase classname="LoginTest" name="testFailedLogin" time="11.524"/>
+  <testcase classname="LoginTest" name="testSuccessfulLogin" time="34.078"/>
+  <testcase classname="RegisterTest" name="testSuccessfulRegistration" time="39.321">
+    <failure message="Expected condition failed: waiting for visibility of element located by By.cssSelector: .success-overlay .popup-message p (tried for 20 second(s) with 500 milliseconds interval)
+Build info: version: &apos;4.18.1&apos;, revision: &apos;b1d3319b48&apos;
+System info: os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 135.0.7049.85, chrome: {chromedriverVersion: 135.0.7049.95 (de2eb485a195..., userDataDir: C:\Users\nikoh\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:63353}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:63353/devtoo..., se:cdpVersion: 135.0.7049.85, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 772c57d14df8728a105ddffa242a572b" type="org.openqa.selenium.TimeoutException">org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of element located by By.cssSelector: .success-overlay .popup-message p (tried for 20 second(s) with 500 milliseconds interval)
+Build info: version: &apos;4.18.1&apos;, revision: &apos;b1d3319b48&apos;
+System info: os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.12&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 135.0.7049.85, chrome: {chromedriverVersion: 135.0.7049.95 (de2eb485a195..., userDataDir: C:\Users\nikoh\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:63353}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:63353/devtoo..., se:cdpVersion: 135.0.7049.85, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 772c57d14df8728a105ddffa242a572b
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at RegisterTest.testSuccessfulRegistration(RegisterTest.java:77)
+</failure>
+    <system-out>Keresem a bejelentkező gombot...
+Bejelentkező gomb megtalálva, kattintás...
+Keresem a create-account gombot...
+Create-account gomb megtalálva, kattintás...
+Keresem a regisztrációs panelt...
+Keresem az űrlapmezőket...
+Username mező megtalálva, kitöltés...
+Email mező megtalálva, kitöltés...
+Password mező megtalálva, kitöltés...
+Personal ID mező megtalálva, kitöltés...
+Keresem a regisztrációs gombot...
+Regisztrációs gomb megtalálva, kattintás...
+Keresem a sikeres regisztrációs üzenetet...
+</system-out>
+    <system-err>ápr. 16, 2025 10:50:42 DE. org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+WARNING: Unable to find CDP implementation matching 135
+ápr. 16, 2025 10:50:42 DE. org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
+WARNING: Unable to find version of CDP to use for 135.0.7049.85. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.18.1` where the version (&quot;v86&quot;) matches the version of the chromium-based browser you&apos;re using and the version number of the artifact is the same as Selenium&apos;s.
+</system-err>
   </testcase>
-  <testcase name="testSuccessfulLogin" classname="LoginTest" time="9.766">
-    <system-err><![CDATA[Mar 02, 2025 9:02:37 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
-WARNING: Unable to find CDP implementation matching 133
-Mar 02, 2025 9:02:37 PM org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
-WARNING: Unable to find version of CDP to use for 133.0.6943.142. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.18.1` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
-]]></system-err>
-  </testcase>
-  <testcase name="testSuccessfulRegistration" classname="RegisterTest" time="13.376">
-    <system-err><![CDATA[Mar 02, 2025 9:02:48 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
-WARNING: Unable to find CDP implementation matching 133
-Mar 02, 2025 9:02:48 PM org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
-WARNING: Unable to find version of CDP to use for 133.0.6943.142. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.18.1` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
-]]></system-err>
-  </testcase>
+  <testcase classname="SearchTest.SearchTest" name="testSearchDateAndCarList" time="12.964"/>
 </testsuite>
