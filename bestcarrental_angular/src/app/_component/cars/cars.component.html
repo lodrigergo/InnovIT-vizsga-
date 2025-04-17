@@ -1,346 +1,7 @@
-<div class="navbar">
-  <div class="container">
-    <img
-      src="logo for the website.webp"
-      alt="Best Car Rental Logo"
-      class="logo"
-      id="logo"
-    />
-    <nav>
-      <ul class="nav-links">
-        <li>
-          <a
-            [routerLink]="['/']"
-            fragment="home"
-            class="home-link"
-            id="home-link"
-            >Home</a
-          >
-        </li>
-        <li><a [routerLink]="['/']" fragment="about">About</a></li>
-        <li><a [routerLink]="['/cars']">Cars</a></li>
-        <li>
-          <a [routerLink]="['/reservation']">Reservations</a>
-        </li>
-      </ul>
-    </nav>
-    <button class="login-btn" (click)="openLoginPanel()" *ngIf="!isLoggedIn">
-      Login
-    </button>
-    <img
-      src="{{ profileImageUrl || 'profile icon.webp' }}"
-      alt="Profile Icon"
-      id="profile-icon"
-      style="
-        width: 40px;
-        height: 40px;
-        border-radius: 30%;
-        margin-right: 20px;
-        cursor: pointer;
-      "
-      (click)="openProfilePanel()"
-      *ngIf="isLoggedIn"
-    />
-  </div>
-</div>
-<div
-  id="overlay"
-  class="overlay"
-  (click)="closeOverlay()"
-  [class.show]="
-    (loginService.loginPanelOpen$ | async) ||
-    (registerService.registerPanelOpen$ | async) ||
-    showProfilePanel
-  "
-></div>
-<div
-  id="login-panel"
-  class="login-panel"
-  [class.open]="loginService.loginPanelOpen$ | async"
->
-  <div class="login-header">
-    <h2>LOGIN</h2>
-    <span id="close-login-panel" class="close-btn" (click)="closeLoginPanel()"
-      >&times;</span
-    >
-  </div>
-  <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
-    <div class="form-group">
-      <label for="email"><i class="fa fa-envelope"></i> Email:</label>
-      <input
-        type="email"
-        id="email"
-        placeholder="Email"
-        formControlName="email"
-      />
-      <div
-        *ngIf="
-          loginForm.controls['email'].invalid &&
-          (loginForm.controls['email'].dirty ||
-            loginForm.controls['email'].touched)
-        "
-      >
-        <div *ngIf="loginForm.controls['email'].errors?.['required']">
-          Email cím megadása kötelező.
-        </div>
-        <div *ngIf="loginForm.controls['email'].errors?.['email']">
-          Érvényes email címet adj meg.
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="password"><i class="fa fa-key"></i> Password:</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="Password"
-        formControlName="password"
-      />
-      <div
-        *ngIf="
-          loginForm.controls['password'].invalid &&
-          (loginForm.controls['password'].dirty ||
-            loginForm.controls['password'].touched)
-        "
-      >
-        <div *ngIf="loginForm.controls['password'].errors?.['required']">
-          Jelszó megadása kötelező.
-        </div>
-      </div>
-    </div>
-    <div *ngIf="loginErrorMessage" class="error-message">
-      {{ loginErrorMessage }}
-    </div>
-    <a [routerLink]="['/forgot-password']" class="forgot-password"
-      >Forgot Password?</a
-    >
-    <button type="submit" class="btn login-btn" [disabled]="loginForm.invalid">
-      Log In
-    </button>
-    <button
-      type="button"
-      class="btn create-account-btn"
-      (click)="openRegisterPanel()"
-    >
-      Create Account
-    </button>
-  </form>
-</div>
-<div
-  id="register-panel"
-  class="register-panel"
-  [class.open]="registerService.registerPanelOpen$ | async"
->
-  <div class="register-header">
-    <h2>Register</h2>
-    <span
-      id="close-register-panel"
-      class="close-btn"
-      (click)="closeRegisterPanel()"
-      >&times;</span
-    >
-  </div>
-  <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input
-        type="text"
-        id="username"
-        placeholder="Username"
-        formControlName="username"
-      />
-      <div
-        *ngIf="
-          registerForm.controls['username'].invalid &&
-          (registerForm.controls['username'].dirty ||
-            registerForm.controls['username'].touched)
-        "
-      >
-        <div *ngIf="registerForm.controls['username'].errors?.['required']">
-          Felhasználónév megadása kötelező.
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input
-        type="email"
-        id="register-email"
-        placeholder="Email"
-        formControlName="email"
-      />
-      <div
-        *ngIf="
-          registerForm.controls['email'].invalid &&
-          (registerForm.controls['email'].dirty ||
-            registerForm.controls['email'].touched)
-        "
-      >
-        <div *ngIf="registerForm.controls['email'].errors?.['required']">
-          Email cím megadása kötelező.
-        </div>
-        <div *ngIf="registerForm.controls['email'].errors?.['email']">
-          Érvényes email címet adj meg.
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input
-        type="password"
-        id="register-password"
-        placeholder="Password"
-        formControlName="password"
-      />
-      <div
-        *ngIf="
-          registerForm.controls['password'].invalid &&
-          (registerForm.controls['password'].dirty ||
-            registerForm.controls['password'].touched)
-        "
-      >
-        <div *ngIf="registerForm.controls['password'].errors?.['required']">
-          Jelszó megadása kötelező.
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="personal-id">Personal-ID:</label>
-      <input
-        type="text"
-        id="personal-id"
-        placeholder="personal-id"
-        formControlName="personalId"
-      />
-      <div
-        *ngIf="
-          registerForm.controls['personalId'].invalid &&
-          (registerForm.controls['personalId'].dirty ||
-            registerForm.controls['personalId'].touched)
-        "
-      >
-        <div *ngIf="registerForm.controls['personalId'].errors?.['required']">
-          Személyi azonosító megadása kötelező.
-        </div>
-      </div>
-    </div>
-    <div *ngIf="registerErrorMessage" class="error-message">
-      {{ registerErrorMessage }}
-    </div>
-    <a [routerLink]="['/forgot-password']" class="forgot-password"
-      >Forgot Password?</a
-    >
-    <button
-      type="submit"
-      class="btn register-create-account-btn"
-      [disabled]="registerForm.invalid"
-    >
-      Create Account
-    </button>
-    <button type="button" class="btn login-btn" (click)="openLoginPanel()">
-      Back To Login
-    </button>
-  </form>
-</div>
-<div
-  id="profile-panel"
-  class="profile-panel"
-  [ngClass]="{ open: showProfilePanel }"
->
-  <div class="profile-header">
-    <img
-      src="{{ profileImageUrl || 'profile icon.webp' }}"
-      alt="Profile Icon"
-      class="profile-image"
-    />
-    <h2>{{ userName }}</h2>
-    <span
-      id="close-profile-panel"
-      class="close-btn"
-      (click)="closeProfilePanel()"
-      >&times;</span
-    >
-  </div>
-  <div class="profile-image-selection">
-    <h3>Válassz profilképet:</h3>
-    <img
-      src="pepega_almos.png"
-      alt="Pepega 1"
-      class="profile-option"
-      data-image=".pepega_almos.png"
-    />
-    <img
-      src="pepega_fizet.gif"
-      alt="Pepega 2"
-      class="profile-option"
-      data-image=".pepega_fizet.gif"
-    />
-    <img
-      src="pepega_fogyatek.png"
-      alt="Pepega 3"
-      class="profile-option"
-      data-image=".pepega_fogyatek.png"
-    />
-    <img
-      src="pepega_izgul.jpg"
-      alt="Pepega 4"
-      class="profile-option"
-      data-image=".pepega_izgul.jpg"
-    />
-    <img
-      src="pepega_ordibal.png"
-      alt="Pepega 5"
-      class="profile-option"
-      data-image=".pepega_ordibal.png"
-    />
-    <img
-      src="pepega_szomoru.jpg"
-      alt="Pepega 6"
-      class="profile-option"
-      data-image=".pepega_szomoru.jpg"
-    />
-    <img
-      src="pepega_vidam.jpg"
-      alt="Pepega 7"
-      class="profile-option"
-      data-image=".pepega_vidam.jpg"
-    />
-    <img
-      src="pepega_zenethallgat.png"
-      alt="Pepega 8"
-      class="profile-option"
-      data-image=".pepega_zenethallgat.png"
-    />
-  </div>
-  <div class="profile-content">
-    <h3>WELCOME</h3>
-    <ul>
-      <li>
-        <a [routerLink]="['/']" fragment="home"
-          ><i class="fa fa-home"></i> Home</a
-        >
-      </li>
-      <li>
-        <a [routerLink]="['/']" fragment="about"
-          ><i class="fa fa-user"></i> About</a
-        >
-      </li>
-      <li>
-        <a [routerLink]="['/cars']"><i class="fa fa-car"></i> Cars</a>
-      </li>
-      <li>
-        <a [routerLink]="['/reservation']"
-          ><i class="fa fa-calendar"></i> Reservation</a
-        >
-      </li>
-      <li>
-        <a href="#"><i class="fa fa-adjust"></i> Light / Dark</a>
-      </li>
-    </ul>
-    <hr />
-    <button class="logout-btn" (click)="logout()">Log Out</button>
-  </div>
-</div>
+<app-navbar></app-navbar>
+<app-login></app-login>
+<app-profile-panel></app-profile-panel>
+<app-register></app-register>
 <div class="container">
   <aside class="sidebar">
     <h2>Filter</h2>
@@ -580,17 +241,24 @@
             </div>
           </div>
           <div class="price">{{ car.price }}€ / Day</div>
-          <button class="reserve-btn" (click)="onReservationClick(car)">
+          <button
+            class="reserve-btn"
+            (click)="
+              !isLoggedIn ? showLoginNotificationBar() : onReservationClick(car)
+            "
+            [disabled]="!isLoggedIn"
+          >
             Reservation
           </button>
         </div>
+        <div
+          *ngIf="showNotificationBar"
+          class="notification-bar"
+          [ngClass]="{ error: notificationType === 'error' }"
+        >
+          {{ notificationMessage }}
+        </div>
       </div>
-    </div>
-    <div class="pagination">
-      <button disabled>Prev</button>
-      <button class="active">1</button>
-      <button>2</button>
-      <button>Next</button>
     </div>
   </main>
 </div>
@@ -647,4 +315,103 @@
 
 <div id="loader-overlay" class="loader-overlay" style="display: none">
   <div class="loader"></div>
+</div>
+<div
+  id="profile-panel"
+  class="profile-panel"
+  [ngClass]="{ open: showProfilePanel }"
+>
+  <div class="profile-header">
+    <img
+      src="{{ profileImageUrl || 'profile icon.webp' }}"
+      alt="Profile Icon"
+      class="profile-image"
+    />
+    <h2>{{ userName }}</h2>
+    <span
+      id="close-profile-panel"
+      class="close-btn"
+      (click)="closeProfilePanel()"
+      >&times;</span
+    >
+  </div>
+  <div class="profile-image-selection">
+    <h3>Válassz profilképet:</h3>
+    <img
+      src="pepega_almos.png"
+      alt="Pepega 1"
+      class="profile-option"
+      data-image=".pepega_almos.png"
+    />
+    <img
+      src="pepega_fizet.gif"
+      alt="Pepega 2"
+      class="profile-option"
+      data-image=".pepega_fizet.gif"
+    />
+    <img
+      src="pepega_fogyatek.png"
+      alt="Pepega 3"
+      class="profile-option"
+      data-image=".pepega_fogyatek.png"
+    />
+    <img
+      src="pepega_izgul.jpg"
+      alt="Pepega 4"
+      class="profile-option"
+      data-image=".pepega_izgul.jpg"
+    />
+    <img
+      src="pepega_ordibal.png"
+      alt="Pepega 5"
+      class="profile-option"
+      data-image=".pepega_ordibal.png"
+    />
+    <img
+      src="pepega_szomoru.jpg"
+      alt="Pepega 6"
+      class="profile-option"
+      data-image=".pepega_szomoru.jpg"
+    />
+    <img
+      src="pepega_vidam.jpg"
+      alt="Pepega 7"
+      class="profile-option"
+      data-image=".pepega_vidam.jpg"
+    />
+    <img
+      src="pepega_zenethallgat.png"
+      alt="Pepega 8"
+      class="profile-option"
+      data-image=".pepega_zenethallgat.png"
+    />
+  </div>
+  <div class="profile-content">
+    <h3>WELCOME</h3>
+    <ul>
+      <li>
+        <a [routerLink]="['/']" fragment="home"
+          ><i class="fa fa-home"></i> Home</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="['/']" fragment="about"
+          ><i class="fa fa-user"></i> About</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="['/cars']"><i class="fa fa-car"></i> Cars</a>
+      </li>
+      <li>
+        <a [routerLink]="['/reservation']"
+          ><i class="fa fa-calendar"></i> Reservation</a
+        >
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-adjust"></i> Light / Dark</a>
+      </li>
+    </ul>
+    <hr />
+    <button class="logout-btn" (click)="logout()">Log Out</button>
+  </div>
 </div>

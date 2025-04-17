@@ -114,9 +114,6 @@ import { Subscription } from 'rxjs';
                 ><i class="fa fa-calendar"></i> Reservation</a
               >
             </li>
-            <li>
-              <a href="#"><i class="fa fa-adjust"></i> Light / Dark</a>
-            </li>
           </ul>
           <hr />
           <button class="logout-btn" (click)="logout()">Log Out</button>

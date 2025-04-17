@@ -104,6 +104,7 @@ export class LoginService {
     localStorage.setItem(this.userNameKey, userName);
     console.log('loginSuccess - profileImageUrl saved:', profileImageUrl);
     console.log('loginSuccess - userName saved:', userName);
+    this.closePanel();
     this.router.navigate(['/home']);
   }
 

@@ -97,17 +97,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
       </form>
     </div>
 
-    <div *ngIf="loginSuccess" class="success-overlay show">
-      <div class="popup">
-        <div class="popup-header">
-          <button class="popup-close-btn" (click)="closeSuccessPopup()">
-            &times;
-          </button>
-        </div>
-        <div class="popup-message">
-          <p>Welcome, {{ loggedInUsername }}!</p>
-        </div>
-      </div>
+    <div *ngIf="notificationMessage" class="notification-bar">
+      {{ notificationMessage }}
     </div>
   `,
   styleUrls: ['./login.component.css'],
@@ -118,6 +109,8 @@ export class LoginComponent implements OnInit {
   loginSuccess = false;
   loggedInUsername: string = '';
   loginError: string = '';
+  notificationMessage: string | null = null;
+  private notificationTimeout: any;
 
   constructor(
     private loginService: LoginService,
@@ -164,28 +157,39 @@ export class LoginComponent implements OnInit {
             response.result.name
           );
           this.loginError = '';
+          this.showNotification('Sikeres bejelentkezés!');
         },
         error: (error) => {
           console.error('Hiba a bejelentkezés során:', error);
           this.loginSuccess = false;
+          let errorMessage =
+            'Hiba történt a bejelentkezés során. Kérjük, próbálja újra.';
           if (error.status === 401) {
-            this.loginError = 'Hibás email cím vagy jelszó.';
+            errorMessage = 'Hibás email cím vagy jelszó.';
           } else if (error.status === 404) {
-            this.loginError = 'A felhasználó nem található.';
-          } else {
-            this.loginError =
-              'Hiba történt a bejelentkezés során. Kérjük, próbálja újra.';
+            errorMessage = 'A felhasználó nem található.';
           }
+          this.loginError = errorMessage;
+          this.showNotification(this.loginError);
         },
       });
     } else {
       console.log('A form érvénytelen.');
       this.loginError = 'Kérjük, töltse ki a mezőket megfelelően.';
+      this.showNotification(this.loginError);
     }
   }
 
   closeSuccessPopup(): void {
     this.loginSuccess = false;
     this.closePanel();
+  }
+
+  showNotification(message: string): void {
+    this.notificationMessage = message;
+    clearTimeout(this.notificationTimeout);
+    this.notificationTimeout = setTimeout(() => {
+      this.notificationMessage = null;
+    }, 3000);
   }
 }

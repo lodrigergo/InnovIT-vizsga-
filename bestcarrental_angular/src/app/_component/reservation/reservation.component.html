@@ -1,219 +1,19 @@
-<div id="home"></div>
-<header class="navbar">
-  <div class="container">
-    <img
-      src="logo for the website.webp"
-      alt="Best Car Rental Logo"
-      class="logo"
-      id="logo"
-    />
-    <nav>
-      <ul class="nav-links">
-        <li><a routerLink="/home" class="home-link" id="home-link">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a routerLink="/cars">Cars</a></li>
-        <li><a routerLink="/reservation">Reservations</a></li>
-      </ul>
-    </nav>
-    <button
-      class="login-btn"
-      (click)="openLoginPanel()"
-      *ngIf="!(loginService.isLoggedIn$ | async)"
-    >
-      Login
-    </button>
-    <img
-      [src]="loginService.profileImageUrl$ | async"
-      alt="Profile Icon"
-      id="profile-icon"
-      style="
-        display: none; /* Alapértelmezésben rejtett */
-        width: 40px;
-        height: 40px;
-        border-radius: 30%;
-        margin-right: 20px;
-        cursor: pointer;
-      "
-      (click)="openProfilePanel()"
-      *ngIf="loginService.isLoggedIn$ | async"
-      style="display: block"
-    />
-  </div>
-</header>
-
-<div id="profile-panel" class="profile-panel" [class.open]="isProfilePanelOpen">
-  <div class="profile-header">
-    <img
-      [src]="profileImageSource"
-      alt="Profile Icon"
-      class="profile-image"
-      id="profile-image"
-    />
-    <input
-      type="file"
-      id="profile-image-input"
-      accept="image/*"
-      style="display: none"
-      (change)="onProfileImageChange($event)"
-    />
-    <h2>{{ username }}</h2>
-    <span id="close-profile-panel" class="close-btn" (click)="closeAllPanels()"
-      >&times;</span
-    >
-  </div>
-  <div class="profile-content">
-    <h3>WELCOME</h3>
-    <ul>
-      <li>
-        <a routerLink="/home"><i class="fa fa-home"></i> Home</a>
-      </li>
-      <li>
-        <a href="#about"><i class="fa fa-user"></i> About</a>
-      </li>
-      <li>
-        <a routerLink="/cars"><i class="fa fa-car"></i> Cars</a>
-      </li>
-      <li>
-        <a routerLink="/reservation"
-          ><i class="fa fa-calendar"></i> Reservation</a
-        >
-      </li>
-      <li>
-        <a href="#"><i class="fa fa-adjust"></i> Light / Dark</a>
-      </li>
-    </ul>
-    <hr />
-    <button class="logout-btn" (click)="logout()">Log Out</button>
-  </div>
-</div>
-
-<div
-  id="overlay"
-  class="overlay"
-  [class.show]="isOverlayActive"
-  (click)="closeAllPanels()"
-></div>
-<div id="login-panel" class="login-panel" [class.open]="isLoginPanelOpen">
-  <div class="login-header">
-    <h2>LOGIN</h2>
-    <span id="close-login-panel" class="close-btn" (click)="closeAllPanels()"
-      >&times;</span
-    >
-  </div>
-  <form (submit)="login($event)">
-    <div class="form-group">
-      <label for="email"> <i class="fa fa-envelope"></i> Email: </label>
-      <input
-        type="email"
-        id="email"
-        [(ngModel)]="loginEmail"
-        name="email"
-        placeholder="Email"
-      />
-      <p class="error-message" *ngIf="emailError">{{ emailError }}</p>
-    </div>
-    <div class="form-group">
-      <label for="password"> <i class="fa fa-key"></i> Password: </label>
-      <input
-        type="password"
-        id="password"
-        [(ngModel)]="loginPassword"
-        name="password"
-        placeholder="Password"
-      />
-      <p class="error-message" *ngIf="passwordError">{{ passwordError }}</p>
-    </div>
-    <a href="../ForgotPassword/forgotPassword.html" class="forgot-password"
-      >Forgot Password?</a
-    >
-    <button type="submit" class="btn login-btn">Log In</button>
-    <button
-      type="button"
-      class="btn create-account-btn"
-      (click)="openRegisterPanel()"
-    >
-      Create Account
-    </button>
-  </form>
-</div>
-
-<div
-  id="register-panel"
-  class="register-panel"
-  [class.open]="isRegisterPanelOpen"
->
-  <div class="register-header">
-    <h2>Register</h2>
-    <span id="close-register-panel" class="close-btn" (click)="closeAllPanels()"
-      >&times;</span
-    >
-  </div>
-  <form (submit)="register($event)">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input
-        type="text"
-        id="username"
-        [(ngModel)]="registerUsername"
-        name="username"
-        placeholder="Username"
-      />
-      <p class="error-message" *ngIf="usernameError">{{ usernameError }}</p>
-    </div>
-    <div class="form-group">
-      <label for="register-email">Email:</label>
-      <input
-        type="email"
-        id="register-email"
-        [(ngModel)]="registerEmail"
-        name="registerEmail"
-        placeholder="Email"
-      />
-      <p class="error-message" *ngIf="registerEmailError">
-        {{ registerEmailError }}
-      </p>
-    </div>
-    <div class="form-group">
-      <label for="register-password">Password:</label>
-      <input
-        type="password"
-        id="register-password"
-        [(ngModel)]="registerPassword"
-        name="registerPassword"
-        placeholder="Password"
-      />
-      <p class="error-message" *ngIf="registerPasswordError">
-        {{ registerPasswordError }}
-      </p>
-    </div>
-    <div class="form-group">
-      <label for="personal-id">Personal-ID:</label>
-      <input
-        type="text"
-        id="personal-id"
-        [(ngModel)]="registerPersonalId"
-        name="personalId"
-        placeholder="Personal-ID"
-      />
-      <p class="error-message" *ngIf="registerPersonalIdError">
-        {{ registerPersonalIdError }}
-      </p>
-    </div>
-    <a href="#" class="forgot-password">Forgot Password?</a>
-    <button
-      type="submit"
-      class="btn register-create-account-btn"
-      [disabled]="!isRegistrationFormValid()"
-    >
-      Create Account
-    </button>
-    <button type="button" class="btn login-btn" (click)="openLoginPanel()">
-      Back To Login
-    </button>
-  </form>
-</div>
-
+<app-navbar></app-navbar>
+<app-login></app-login>
+<app-profile-panel></app-profile-panel>
+<app-register></app-register>
 <div class="container reservation-container">
+  <div
+    *ngIf="showDeleteNotification"
+    class="notification-bar"
+    [class.error]="isDeleteError"
+  >
+    {{ deleteNotificationMessage }}
+  </div>
+  <div *ngIf="showSnackbar" class="notification-bar">
+    {{ snackbarMessage }}
+    <p class="close-alert">Köszönjük a foglalását!</p>
+  </div>
   <div class="step">
     <div
       [class.active]="currentStep === 1"
@@ -229,6 +29,7 @@
     </div>
   </div>
   <h2 class="reservation-title">A Foglalás megerősítése</h2>
+  <br />
   <div class="main">
     <div
       class="login-section"
@@ -292,8 +93,12 @@
         hasAvailableCars
       "
     >
-      <h3>A Cars oldalon kiválasztott autód adatai itt fognak megjelenni.</h3>
-      <p>Kérlek, menj a Cars oldalra és válassz egy autót a foglaláshoz!</p>
+      <h3 style="padding: 20px">
+        A Cars oldalon kiválasztott autód adatai itt fognak megjelenni.
+      </h3>
+      <p style="padding-bottom: 10px; justify-content: center; display: flex">
+        Kérlek, menj a Cars oldalra és válassz egy autót a foglaláshoz!
+      </p>
       <button class="btn" routerLink="/cars">Ugrás a Cars oldalra</button>
     </div>
     <div
@@ -308,7 +113,7 @@
       <h3>Jelenleg nincsenek elérhető autók a foglaláshoz.</h3>
     </div>
     <div *ngIf="isLoading && !isReservationSentStepCompleted" class="car-info">
-      <p>Az autó adatainak betöltése...</p>
+      <p>Itt fog megjelenni a kiválasztott autó...</p>
     </div>
 
     <div

@@ -109,6 +109,39 @@
   transition: 0.3s;
 }
 
+.login-required-box {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  color: #000;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.login-required-box p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.login-btn {
+  background-color: red;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+  margin: 0 auto;
+  display: block;
+  transition: background 0.3s;
+}
+
+.login-btn:hover {
+  background: darkred;
+}
 /* About szekció alapbeállítások */
 #about {
   background-color: #fff;
@@ -568,6 +601,7 @@
 .search-result-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 .search-result-card h3 {
@@ -592,4 +626,22 @@
   font-style: italic;
   color: #666;
   text-align: center;
+}
+
+.notification-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50; /* Sikeres szín */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 5px;
+  z-index: 1002; /* A login panel és overlay fölött legyen */
+  opacity: 0.9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.notification-bar.error {
+  background-color: #f44336; /* Hiba szín */
 }

@@ -6,6 +6,7 @@
     <div class="hero-content">
       <h1>Rent a Car Online &</h1>
       <p>Enjoy the Best Deals, Rates & Accessories</p>
+
       <div class="search-box">
         <form #searchForm="ngForm" (ngSubmit)="searchCars(searchForm)">
           <div class="form-row">
@@ -53,6 +54,13 @@
           <button type="submit" class="search-btn">Search</button>
         </form>
       </div>
+
+      <ng-template #notLoggedIn>
+        <div class="login-required-box">
+          <p>Időpont kereséshez és foglaláshoz kérlek, jelentkezz be!</p>
+          <button routerLink="/login" class="login-btn">Bejelentkezés</button>
+        </div>
+      </ng-template>
     </div>
   </section>
 </div>
@@ -80,7 +88,10 @@
       <p><strong>Leadás:</strong> {{ car.return_date }}</p>
     </div>
   </div>
-  <div *ngIf="searchResults.length === 0 && !searchError" class="no-results">
+  <div
+    *ngIf="searchResults.length === 0 && !searchError && hasSearched"
+    class="no-results"
+  >
     <p>Nincs elérhető autó a megadott feltételekkel.</p>
   </div>
 </div>

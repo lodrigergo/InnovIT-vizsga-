@@ -15,12 +15,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeService } from '../../_service/home.service';
 
 interface CarSearchResult {
-  pickup_date: string; // A backend stringként küldi a dátumokat
+  pickup_date: string;
   model: string;
   car_id: number;
   brand: string;
-  return_date: string; // A backend stringként küldi a dátumokat
-  // ... egyéb autó adatok, ha vannak
+  return_date: string;
 }
 
 @Component({
@@ -43,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   searchResults: CarSearchResult[] = [];
   searchError: string = '';
+  hasSearched: boolean = false; // Új állapotjelző
 
   pickupDate: Date | null = null;
   dropoffDate: Date | null = null;
@@ -86,6 +86,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   searchCars(form: NgForm): void {
+    this.hasSearched = true; // A keresés elindult
     if (form.valid && this.pickupDate && this.dropoffDate) {
       this.homeService.searchCars(this.pickupDate, this.dropoffDate).subscribe({
         next: (data) => {
@@ -116,7 +117,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   navigateToCarDetails(brand: string, model: string, carId: number): void {
     const carDetailsId = `${brand.toLowerCase().replace(/\s/g, '-')}-${model
       .toLowerCase()
-      .replace(/\s/g, '-')}-${carId}`; // Példa: toyota-corolla-101
+      .replace(/\s/g, '-')}-${carId}`;
     this.router.navigate(['/cars', carDetailsId]);
   }
 }

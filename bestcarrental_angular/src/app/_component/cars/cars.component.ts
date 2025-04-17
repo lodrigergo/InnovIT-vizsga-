@@ -2,15 +2,12 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { LoginService } from '../../_service/login.service';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { RegisterService } from '../../_service/register.service';
 import { Subscription } from 'rxjs';
 import { CarsService } from '../../_service/cars.service';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { LoginComponent } from '../login/login.component';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
+import { RegisterComponent } from '../register/register.component';
 
 interface Car {
   id: number;
@@ -33,7 +30,14 @@ interface Car {
 @Component({
   selector: 'app-cars',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NavbarComponent,
+    LoginComponent,
+    ProfilePanelComponent,
+    RegisterComponent,
+  ],
   templateUrl: './cars.component.html',
   styleUrls: ['./cars.component.css'],
 })
@@ -41,12 +45,6 @@ export class CarsComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   userName: string | null = null;
   profileImageUrl: string | null = null;
-  loginForm: FormGroup;
-  registerForm: FormGroup;
-  loginErrorMessage: string = '';
-  registerErrorMessage: string = '';
-  isLoginLoading = false; // Új állapotjelző a betöltéshez
-  showProfilePanel = false;
   private isLoggedInSubscription: Subscription | undefined;
   private userNameSubscription: Subscription | undefined;
   private profileImageUrlSubscription: Subscription | undefined;
@@ -214,25 +212,17 @@ export class CarsComponent implements OnInit, OnDestroy {
     fuel: [],
   };
   selectedCarId: number | null = null;
+  showProfilePanel: boolean = false;
+  showNotificationBar: boolean = false;
+  notificationMessage: string = '';
+  notificationType: 'success' | 'error' = 'success';
+  notificationTimeout: any;
 
   constructor(
     public loginService: LoginService,
-    public registerService: RegisterService,
-    private fb: FormBuilder,
     private router: Router,
     private carsService: CarsService
-  ) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-    });
-    this.registerForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      personalId: ['', Validators.required],
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loginService.checkLoginStatus();
@@ -260,98 +250,6 @@ export class CarsComponent implements OnInit, OnDestroy {
     }
     if (this.profileImageUrlSubscription) {
       this.profileImageUrlSubscription.unsubscribe();
-    }
-  }
-
-  openLoginPanel() {
-    this.loginService.openPanel();
-    this.loginErrorMessage = '';
-    this.loginForm.reset();
-  }
-
-  closeLoginPanel() {
-    this.loginService.closePanel();
-  }
-
-  openRegisterPanel() {
-    this.loginService.closePanel();
-    this.registerService.openPanel();
-    this.registerErrorMessage = '';
-    this.registerForm.reset();
-  }
-
-  closeRegisterPanel() {
-    this.registerService.closePanel();
-  }
-
-  openProfilePanel() {
-    this.showProfilePanel = true;
-  }
-
-  closeProfilePanel() {
-    this.showProfilePanel = false;
-  }
-
-  closeOverlay() {
-    this.loginService.closePanel();
-    this.registerService.closePanel();
-    this.closeProfilePanel();
-  }
-
-  submitLogin() {
-    if (this.loginForm.valid) {
-      this.isLoginLoading = true; // Betöltés jelző beállítása
-      this.loginErrorMessage = ''; // Hibaüzenet törlése
-      const { email, password } = this.loginForm.value;
-      this.loginService.login({ email, password }).subscribe({
-        next: (response) => {
-          console.log('Login successful response:', response);
-          this.isLoginLoading = false; // Betöltés jelző kikapcsolása
-          this.closeLoginPanel();
-          // Itt lehetne pl. egy sikeres bejelentkezés üzenet megjelenítése
-        },
-        error: (error) => {
-          console.error('Login error:', error);
-          this.isLoginLoading = false; // Betöltés jelző kikapcsolása
-          if (error && error.error && error.error.message) {
-            this.loginErrorMessage = error.error.message; // Szerveroldali hibaüzenet megjelenítése, ha van
-          } else if (error && error.status) {
-            this.loginErrorMessage = `Hiba a bejelentkezés során. Státusz: ${error.status}`;
-          } else {
-            this.loginErrorMessage =
-              'Ismeretlen hiba történt a bejelentkezés során.';
-          }
-        },
-      });
-    } else {
-      this.loginErrorMessage = 'Kérjük, töltse ki az összes mezőt érvényesen!';
-    }
-  }
-
-  submitRegister() {
-    if (this.registerForm.valid) {
-      this.registerService.register(this.registerForm.value).subscribe({
-        next: (response) => {
-          console.log('Registration successful:', response);
-          this.closeRegisterPanel();
-          this.openLoginPanel();
-          // Itt lehetne egy sikeres regisztráció üzenet megjelenítése
-        },
-        error: (error) => {
-          console.error('Registration error:', error);
-          if (error && error.error && error.error.message) {
-            this.registerErrorMessage = error.error.message;
-          } else if (error && error.status) {
-            this.registerErrorMessage = `Hiba a regisztráció során. Státusz: ${error.status}`;
-          } else {
-            this.registerErrorMessage =
-              'Ismeretlen hiba történt a regisztráció során.';
-          }
-        },
-      });
-    } else {
-      this.registerErrorMessage =
-        'Kérjük, töltse ki az összes mezőt érvényesen!';
     }
   }
 
@@ -469,5 +367,38 @@ export class CarsComponent implements OnInit, OnDestroy {
   onReservationClick(car: Car): void {
     this.carsService.setSelectedCar(car);
     this.router.navigate(['/reservation']);
+  }
+
+  openProfilePanel(): void {
+    this.showProfilePanel = true;
+  }
+
+  closeProfilePanel(): void {
+    this.showProfilePanel = false;
+  }
+
+  showLoginNotificationBar(): void {
+    console.log('showLoginNotificationBar() hívva');
+    this.notificationMessage = 'A foglaláshoz kérlek, jelentkezz be!';
+    this.notificationType = 'error';
+    this.showNotificationBar = true;
+    console.log(
+      'showLoginNotificationBar(), showNotificationBar:',
+      this.showNotificationBar,
+      'notificationMessage:',
+      this.notificationMessage
+    );
+
+    clearTimeout(this.notificationTimeout);
+    this.notificationTimeout = setTimeout(() => {
+      this.showNotificationBar = false;
+      this.notificationMessage = '';
+      console.log(
+        'setTimeout lefutott, showNotificationBar:',
+        this.showNotificationBar,
+        'notificationMessage:',
+        this.notificationMessage
+      );
+    }, 3000);
   }
 }

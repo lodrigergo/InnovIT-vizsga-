@@ -5,6 +5,10 @@ import { RouterLink } from '@angular/router';
 import { LoginService } from '../../_service/login.service';
 import { Subscription } from 'rxjs';
 import { CarsService } from '../../_service/cars.service';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { LoginComponent } from '../login/login.component';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
+import { RegisterComponent } from '../register/register.component';
 
 export interface Car {
   id: number;
@@ -26,7 +30,15 @@ export interface Car {
 @Component({
   selector: 'app-reservation',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink],
+  imports: [
+    FormsModule,
+    CommonModule,
+    RouterLink,
+    NavbarComponent,
+    LoginComponent,
+    ProfilePanelComponent,
+    RegisterComponent,
+  ],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css',
 })
@@ -63,6 +75,11 @@ export class ReservationComponent implements OnInit, OnDestroy {
 
   username: string | null = null;
   profileImageSource: string | null = 'profile icon.webp';
+  showSnackbar: boolean = false;
+  snackbarMessage: string = '';
+  showDeleteNotification: boolean = false;
+  deleteNotificationMessage: string = '';
+  isDeleteError: boolean = false;
 
   private loginStatusSubscription: Subscription | undefined;
   private profileImageSubscription: Subscription | undefined;
@@ -336,11 +353,20 @@ export class ReservationComponent implements OnInit, OnDestroy {
       this.isReservationConfirmedStepActive = true;
       this.isReservationSentStepCompleted = true;
       this.confirmationMessage = `Köszönjük a ${this.selectedCar.brand} ${this.selectedCar.model} foglalását!`;
+      this.showSnackbar = true;
+      setTimeout(() => {
+        this.closeSnackbar();
+      }, 5000);
     } else if (!this.isLoggedIn) {
       alert('Kérlek jelentkezz be a foglalás véglegesítéséhez!');
     } else {
       alert('Nincs kiválasztott autó a foglaláshoz!');
     }
+  }
+
+  closeSnackbar(): void {
+    this.showSnackbar = false;
+    this.snackbarMessage = '';
   }
 
   deleteReservation(): void {
@@ -355,7 +381,18 @@ export class ReservationComponent implements OnInit, OnDestroy {
     this.isReservationConfirmedStepActive = false;
     this.isReservationSentStepCompleted = false;
     localStorage.removeItem('isReservationSentStepCompleted');
-    alert('A foglalás törölve.');
+    this.deleteNotificationMessage = 'A foglalás törölve.';
+    this.showDeleteNotification = true;
+    this.isDeleteError = false;
+    setTimeout(() => {
+      this.closeDeleteNotification();
+    }, 3000);
+  }
+
+  closeDeleteNotification(): void {
+    this.showDeleteNotification = false;
+    this.deleteNotificationMessage = '';
+    this.isDeleteError = false;
   }
 
   clearSelectedCarData(): void {
