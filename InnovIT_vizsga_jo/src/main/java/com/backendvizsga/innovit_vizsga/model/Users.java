@@ -120,6 +120,13 @@ public class Users implements Serializable {
         this.personalId = personalId;
     }
     
+     public Users(Integer id, String name, String email, String personalId) {
+         this.id = id;
+        this.name = name;
+        this.email = email;
+        this.personalId = personalId;
+    }
+    
      public Users(Integer id, String name, String email, String password, String personalId, boolean isAdmin, boolean isDeleted, Date createdAt, Date deletedAt ) {
         this.id = id;
         this.name = name;
