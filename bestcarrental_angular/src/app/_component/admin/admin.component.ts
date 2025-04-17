@@ -55,6 +55,8 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
   users: User[] = [];
   cars: Car[] = [];
   bookings: Booking[] = [];
+  admins: User[] = [];
+  
 
   isEditCarModalVisible: boolean = false;
   selectedCar: Car | null = null;
@@ -71,18 +73,27 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
   isDeleteBookingModalVisible: boolean = false;
   bookingToDeleteId: number | null = null;
 
+  isEditAdminModalVisible: boolean = false; // Admin szerkesztése modal láthatósága
+  selectedAdmin: User | null = null; // Kiválasztott admin szerkesztéshez
+
+  isDeleteAdminModalVisible: boolean = false; // Admin törlése modal láthatósága
+  adminToDeleteId: number | null = null; // Törlendő admin ID
+
   private usersSubscription: Subscription | undefined;
   private carsSubscription: Subscription | undefined;
   private bookingsSubscription: Subscription | undefined;
+  private adminsSubscription: Subscription | undefined;
+  private updateAdminSubscription: Subscription | undefined;
+  private deleteAdminSubscription: Subscription | undefined;
 
   @ViewChild('usersSection') usersSection!: ElementRef;
   @ViewChild('carsSection') carsSection!: ElementRef;
   @ViewChild('bookingsSection') bookingsSection!: ElementRef;
+  @ViewChild('adminsSection') adminsSection!: ElementRef;
 
   constructor(private http: HttpClient, private el: ElementRef) {}
 
   ngOnInit(): void {
-    // Az adatok betöltése a gombokra kattintva történik
   }
 
   ngAfterViewInit(): void {
@@ -98,6 +109,15 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (this.bookingsSubscription) {
       this.bookingsSubscription.unsubscribe();
+    }
+    if (this.adminsSubscription) {
+      this.adminsSubscription.unsubscribe();
+    }
+    if (this.updateAdminSubscription) {
+      this.updateAdminSubscription.unsubscribe();
+    }
+    if (this.deleteAdminSubscription) {
+      this.deleteAdminSubscription.unsubscribe();
     }
   }
 
@@ -129,6 +149,11 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
         behavior: 'smooth',
         block: 'start',
       });
+    } else if (targetId === 'admins' && this.adminsSection) { 
+      this.adminsSection.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   }
 
@@ -140,7 +165,7 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe({
         next: (data) => {
           if (data.statusCode === 200) {
-            this.users = data.users;
+            this.users = data.users.filter(user => !user.isAdmin); 
           } else {
             alert('Hiba: ' + data.message);
           }
@@ -149,6 +174,104 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
           console.error('Hiba a felhasználók lekérésekor:', error);
           alert('Hiba történt a felhasználók lekérésekor.');
         },
+      });
+  }
+
+  loadAdmins() {
+    this.adminsSubscription = this.http
+      .get<{ statusCode: number; users: User[]; message?: string }>(
+        'http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/getAllAdmin'
+      )
+      .subscribe({
+        next: (data) => {
+          if (data.statusCode === 200) {
+            this.admins = data.users;
+          } else {
+            alert('Hiba: ' + data.message);
+          }
+        },
+        error: (error) => {
+          console.error('Hiba az adminisztrátorok lekérésekor:', error);
+          alert('Hiba történt az adminisztrátorok lekérésekor.');
+        },
+      });
+  }
+
+  openEditAdminModal(admin: User) {
+    console.log('Admin szerkesztése gomb megnyomva:', admin); // Ellenőrzés
+    this.selectedAdmin = { ...admin };
+    this.isEditAdminModalVisible = true;
+  }
+
+  closeEditAdminModal() {
+    this.isEditAdminModalVisible = false;
+    this.selectedAdmin = null;
+  }
+
+  updateAdmin() {
+    if (this.selectedAdmin) {
+      const updateUrl = `http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/updateUserById?id=${this.selectedAdmin.id}`;
+      const payload = {
+        id: this.selectedAdmin.id,
+        name: this.selectedAdmin.name,
+        email: this.selectedAdmin.email,
+        password: this.selectedAdmin.password, 
+        isAdmin: true 
+      };
+
+      this.updateAdminSubscription = this.http.put<{ status?: string; errorMessage?: string }>(updateUrl, payload)
+        .subscribe({
+          next: (data) => {
+            if (data.status === 'success') {
+              alert('Adminisztrátor frissítve!');
+              this.loadAdmins();
+              this.closeEditAdminModal();
+            } else {
+              alert('Hiba történt a frissítés során: ' + (data.errorMessage || data.status));
+            }
+          },
+          error: (error) => {
+            console.error('Hiba az adminisztrátor frissítésekor:', error);
+            alert('Hiba történt az adminisztrátor frissítésekor.');
+          }
+        });
+    }
+  }
+
+  openDeleteAdminModal(adminId: number) {
+    console.log('Admin törlése gomb megnyomva:', adminId); 
+    this.adminToDeleteId = adminId;
+    this.isDeleteAdminModalVisible = true;
+  }
+
+  closeDeleteAdminModal() {
+    this.isDeleteAdminModalVisible = false;
+    this.adminToDeleteId = null;
+  }
+
+  confirmDeleteAdmin() {
+    if (this.adminToDeleteId !== null) {
+      this.deleteAdminRequest(this.adminToDeleteId);
+    }
+    this.closeDeleteAdminModal();
+  }
+
+  deleteAdminRequest(id: number) {
+    const deleteUrl = `http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/deleteUserById?id=${id}`;
+    this.deleteAdminSubscription = this.http.delete<{ result: string }>(deleteUrl)
+      .subscribe({
+        next: (data) => {
+          if (data.result === 'success') {
+            alert('Adminisztrátor törölve!');
+            this.loadAdmins();
+          } else {
+            alert('Hiba történt a törlés során.');
+          }
+        },
+        error: (error) => {
+          console.error('Hiba az adminisztrátor törlésekor:', error);
+          alert('Hiba történt az adminisztrátor törlésekor.');
+        }
       });
   }
 
@@ -240,6 +363,7 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
   }
+  
 
   loadCars() {
     this.carsSubscription = this.http

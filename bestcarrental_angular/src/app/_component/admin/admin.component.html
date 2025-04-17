@@ -56,6 +56,75 @@
       </tbody>
     </table>
   </section>
+  
+  <section id="admins" class="admin-section" #adminsSection>
+    <h2>Adminisztrátorok kezelése</h2>
+    <button id="load-admins-btn" class="action-btn" (click)="loadAdmins()">
+      Adminisztrátorok betöltése
+    </button>
+    <table id="admins-table" *ngIf="admins.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Műveletek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td>{{ admin.id }}</td>
+          <td>{{ admin.name }}</td>
+          <td>{{ admin.email }}</td>
+          <td>
+            <button class="edit-btn" (click)="openEditAdminModal(admin)">
+              Szerkesztés
+            </button>
+            <button class="delete-btn" (click)="openDeleteAdminModal(admin.id)">
+              Törlés
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  
+  <div class="edit-admin-modal" [class.show]="isEditAdminModalVisible">
+    <div class="modal-header">
+      <h2>Adminisztrátor szerkesztése</h2>
+      <button class="close-button" (click)="closeEditAdminModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="edit-admin-form" *ngIf="selectedAdmin">
+        <div class="form-group">
+          <label for="edit-admin-name">Név:</label>
+          <input type="text" id="edit-admin-name" name="name" [(ngModel)]="selectedAdmin.name" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-admin-email">Email:</label>
+          <input type="email" id="edit-admin-email" name="email" [(ngModel)]="selectedAdmin.email" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-admin-password">Jelszó:</label>
+          <input type="password" id="edit-admin-password" name="password" [(ngModel)]="selectedAdmin.password" />
+        </div>
+        <div class="form-group full-width">
+          <button type="button" class="action-btn" (click)="updateAdmin()">Mentés</button>
+          <button type="button" class="cancel-btn" (click)="closeEditAdminModal()">Mégse</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="delete-confirmation-modal" [class.show]="isDeleteAdminModalVisible">
+    <div class="modal-body">
+      <p>Biztosan törölni szeretnéd az adminisztrátort?</p>
+      <div class="full-width">
+        <button type="button" class="action-btn delete-btn" (click)="confirmDeleteAdmin()">Igen</button>
+        <button type="button" class="cancel-btn" (click)="closeDeleteAdminModal()">Nem</button>
+      </div>
+    </div>
+  </div>
 
   <section id="cars" class="admin-section" #carsSection>
     <h2>Autók kezelése</h2>
@@ -232,7 +301,9 @@
     isEditUserModalVisible ||
     isDeleteUserModalVisible ||
     isDeleteCarModalVisible ||
-    isDeleteBookingModalVisible
+    isDeleteBookingModalVisible ||
+    isEditAdminModalVisible ||
+    isDeleteAdminModalVisible
   "
 ></div>
 
