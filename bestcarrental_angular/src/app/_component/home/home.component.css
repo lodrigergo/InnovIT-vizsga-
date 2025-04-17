@@ -165,6 +165,10 @@
   text-align: center;
   padding: 40px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative; /* Hozzáadva a relatív pozicionálást az info-box-hoz */
+  display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 
 .feature-item:hover {
@@ -178,12 +182,6 @@
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 15px;
-}
-
-.feature-item {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
 }
 
 .feature-item h3 {
@@ -209,6 +207,7 @@
   border-radius: 5px;
   font-weight: bold;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer; /* Hozzáadva a kurzort a kattinthatóság jelzésére */
 }
 
 .feature-item a:hover {
@@ -239,15 +238,7 @@
   pointer-events: auto;
 }
 
-/* Close gomb stílusa */
-.close-info {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #333;
-}
+/* Close gomb stílusa (eltávolítva, mert a kattintás bárhol a lapon zárja be) */
 
 /* Infó doboz tartalma */
 .info-box h2 {
@@ -261,7 +252,6 @@
   color: #555;
   font-size: 16px;
 }
-
 /* Carousel konténer */
 .carousel-container {
   overflow: hidden;
@@ -549,4 +539,57 @@
 .footer-section a:hover {
   color: #007bff;
   transition: 0.5s;
+}
+
+.search-results-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.search-results-container {
+  width: 80%;
+  max-width: 960px;
+  margin-bottom: 20px;
+}
+
+/* Egyedi kártya stílus a keresési eredményekhez */
+.search-result-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.search-result-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.search-result-card h3 {
+  color: #007bff;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.search-result-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.no-results {
+  font-style: italic;
+  color: #666;
+  text-align: center;
 }

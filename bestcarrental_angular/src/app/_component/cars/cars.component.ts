@@ -38,8 +38,6 @@ interface Car {
   styleUrls: ['./cars.component.css'],
 })
 export class CarsComponent implements OnInit, OnDestroy {
-  showLoginPanel = false;
-  showRegisterPanel = false;
   isLoggedIn = false;
   userName: string | null = null;
   profileImageUrl: string | null = null;
@@ -47,12 +45,11 @@ export class CarsComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   loginErrorMessage: string = '';
   registerErrorMessage: string = '';
+  isLoginLoading = false; // Új állapotjelző a betöltéshez
   showProfilePanel = false;
-
   private isLoggedInSubscription: Subscription | undefined;
   private userNameSubscription: Subscription | undefined;
   private profileImageUrlSubscription: Subscription | undefined;
-
   allCars: Car[] = [
     {
       id: 1,
@@ -219,11 +216,11 @@ export class CarsComponent implements OnInit, OnDestroy {
   selectedCarId: number | null = null;
 
   constructor(
-    private loginService: LoginService,
-    private registerService: RegisterService,
+    public loginService: LoginService,
+    public registerService: RegisterService,
     private fb: FormBuilder,
     private router: Router,
-    private carsService: CarsService // Injektáld a CarsService-t
+    private carsService: CarsService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -239,7 +236,6 @@ export class CarsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loginService.checkLoginStatus();
-
     this.isLoggedInSubscription = this.loginService.isLoggedIn$.subscribe(
       (loggedIn) => (this.isLoggedIn = loggedIn)
     );
@@ -250,7 +246,6 @@ export class CarsComponent implements OnInit, OnDestroy {
       this.loginService.profileImageUrl$.subscribe(
         (profileImageUrl) => (this.profileImageUrl = profileImageUrl)
       );
-
     this.filteredCars = [...this.allCars];
     this.carsService.setAvailableCars(this.allCars);
     console.log('Available cars set in CarsComponent:', this.allCars);
@@ -269,58 +264,67 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   openLoginPanel() {
-    this.showLoginPanel = true;
-    this.showRegisterPanel = false;
-    document.getElementById('overlay')!.style.display = 'block';
+    this.loginService.openPanel();
     this.loginErrorMessage = '';
-  }
-
-  closeLoginPanel() {
-    this.showLoginPanel = false;
-    document.getElementById('overlay')!.style.display = 'none';
     this.loginForm.reset();
   }
 
+  closeLoginPanel() {
+    this.loginService.closePanel();
+  }
+
   openRegisterPanel() {
-    this.showRegisterPanel = true;
-    this.showLoginPanel = false;
-    document.getElementById('overlay')!.style.display = 'block';
+    this.loginService.closePanel();
+    this.registerService.openPanel();
     this.registerErrorMessage = '';
+    this.registerForm.reset();
   }
 
   closeRegisterPanel() {
-    this.showRegisterPanel = false;
-    document.getElementById('overlay')!.style.display = 'none';
-    this.registerForm.reset();
+    this.registerService.closePanel();
   }
 
   openProfilePanel() {
     this.showProfilePanel = true;
-    document.getElementById('overlay')!.style.display = 'block';
   }
 
   closeProfilePanel() {
     this.showProfilePanel = false;
-    document.getElementById('overlay')!.style.display = 'none';
   }
 
   closeOverlay() {
-    this.closeLoginPanel();
-    this.closeRegisterPanel();
+    this.loginService.closePanel();
+    this.registerService.closePanel();
     this.closeProfilePanel();
   }
 
   submitLogin() {
     if (this.loginForm.valid) {
+      this.isLoginLoading = true; // Betöltés jelző beállítása
+      this.loginErrorMessage = ''; // Hibaüzenet törlése
       const { email, password } = this.loginForm.value;
       this.loginService.login({ email, password }).subscribe({
         next: (response) => {
+          console.log('Login successful response:', response);
+          this.isLoginLoading = false; // Betöltés jelző kikapcsolása
           this.closeLoginPanel();
+          // Itt lehetne pl. egy sikeres bejelentkezés üzenet megjelenítése
         },
         error: (error) => {
-          this.loginErrorMessage = 'Hibás email vagy jelszó!';
+          console.error('Login error:', error);
+          this.isLoginLoading = false; // Betöltés jelző kikapcsolása
+          if (error && error.error && error.error.message) {
+            this.loginErrorMessage = error.error.message; // Szerveroldali hibaüzenet megjelenítése, ha van
+          } else if (error && error.status) {
+            this.loginErrorMessage = `Hiba a bejelentkezés során. Státusz: ${error.status}`;
+          } else {
+            this.loginErrorMessage =
+              'Ismeretlen hiba történt a bejelentkezés során.';
+          }
         },
       });
+    } else {
+      this.loginErrorMessage = 'Kérjük, töltse ki az összes mezőt érvényesen!';
     }
   }
 
@@ -328,13 +332,26 @@ export class CarsComponent implements OnInit, OnDestroy {
     if (this.registerForm.valid) {
       this.registerService.register(this.registerForm.value).subscribe({
         next: (response) => {
+          console.log('Registration successful:', response);
           this.closeRegisterPanel();
           this.openLoginPanel();
+          // Itt lehetne egy sikeres regisztráció üzenet megjelenítése
         },
         error: (error) => {
-          this.registerErrorMessage = 'A regisztráció sikertelen!';
+          console.error('Registration error:', error);
+          if (error && error.error && error.error.message) {
+            this.registerErrorMessage = error.error.message;
+          } else if (error && error.status) {
+            this.registerErrorMessage = `Hiba a regisztráció során. Státusz: ${error.status}`;
+          } else {
+            this.registerErrorMessage =
+              'Ismeretlen hiba történt a regisztráció során.';
+          }
         },
       });
+    } else {
+      this.registerErrorMessage =
+        'Kérjük, töltse ki az összes mezőt érvényesen!';
     }
   }
 
@@ -348,7 +365,6 @@ export class CarsComponent implements OnInit, OnDestroy {
 
   updateFilter(filterType: string, filterValue: string, event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
-
     if (isChecked) {
       this.activeFilters[filterType] = [
         ...this.activeFilters[filterType],
@@ -359,7 +375,6 @@ export class CarsComponent implements OnInit, OnDestroy {
         (value) => value !== filterValue
       );
     }
-
     this.filterCars();
   }
 
@@ -398,7 +413,6 @@ export class CarsComponent implements OnInit, OnDestroy {
           }
         }
       }
-
       return matchesAllFilters;
     });
   }
@@ -434,7 +448,6 @@ export class CarsComponent implements OnInit, OnDestroy {
     const clickedInsideCarCard = targetElement.closest('.car-card');
     const clickedOnDetailsButton =
       targetElement.classList.contains('details-btn');
-
     if (!clickedInsideCarCard && !clickedOnDetailsButton) {
       this.selectedCarId = null;
     }

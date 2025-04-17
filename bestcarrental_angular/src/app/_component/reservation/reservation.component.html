@@ -217,20 +217,23 @@
   <div class="step">
     <div
       [class.active]="currentStep === 1"
-      [class.completed]="isReservationCompleted"
+      [class.completed]="isReservationConfirmedStepActive"
     >
       1 Foglalás megerősítése
     </div>
     <div
       [class.active]="currentStep === 2"
-      [class.completed]="isReservationCompleted && currentStep > 1"
+      [class.completed]="isReservationSentStepCompleted"
     >
       2 Foglalás elküldve
     </div>
   </div>
   <h2 class="reservation-title">A Foglalás megerősítése</h2>
   <div class="main">
-    <div class="login-section" *ngIf="!isLoggedIn">
+    <div
+      class="login-section"
+      *ngIf="!isLoggedIn && !isReservationSentStepCompleted"
+    >
       <h3>Jelentkezz be vagy regisztrálj a foglalásért!</h3>
       <div class="btn-group">
         <button class="btn" (click)="openRegisterPanel()">
@@ -246,7 +249,72 @@
         Tovább
       </button>
     </div>
-    <div class="car-info" *ngIf="selectedCar">
+
+    <div
+      class="car-details-confirmed"
+      *ngIf="selectedCar && isReservationSentStepCompleted"
+    >
+      <h3>A lefoglalt jármű</h3>
+      <img
+        [src]="selectedCar.image || carImage"
+        alt="{{ selectedCar.brand }} {{ selectedCar.model }}"
+      />
+      <div class="details">
+        <p>Márka: {{ selectedCar.brand }}</p>
+        <p>Modell: {{ selectedCar.model }}</p>
+      </div>
+    </div>
+
+    <div
+      class="confirmation-message-section"
+      *ngIf="isReservationSentStepCompleted"
+    >
+      <h3>Köszönjük a foglalását!</h3>
+      <p>Foglalását rögzítettük.</p>
+      <p>
+        Amennyiben szeretné visszavonni a foglalását, kérjük, vegye fel velünk a
+        kapcsolatot.
+      </p>
+      <button
+        class="delete-button centered-delete-button"
+        (click)="deleteReservation()"
+      >
+        Rendelés törlése
+      </button>
+    </div>
+
+    <div
+      class="car-info"
+      *ngIf="
+        !selectedCar &&
+        isLoggedIn &&
+        !isReservationSentStepCompleted &&
+        hasAvailableCars
+      "
+    >
+      <h3>A Cars oldalon kiválasztott autód adatai itt fognak megjelenni.</h3>
+      <p>Kérlek, menj a Cars oldalra és válassz egy autót a foglaláshoz!</p>
+      <button class="btn" routerLink="/cars">Ugrás a Cars oldalra</button>
+    </div>
+    <div
+      class="car-info"
+      *ngIf="
+        !selectedCar &&
+        !isLoading &&
+        !hasAvailableCars &&
+        !isReservationSentStepCompleted
+      "
+    >
+      <h3>Jelenleg nincsenek elérhető autók a foglaláshoz.</h3>
+    </div>
+    <div *ngIf="isLoading && !isReservationSentStepCompleted" class="car-info">
+      <p>Az autó adatainak betöltése...</p>
+    </div>
+
+    <div
+      class="car-info confirm-section"
+      *ngIf="selectedCar && !isReservationSentStepCompleted"
+    >
       <h3>Jármű</h3>
       <img
         [src]="selectedCar.image || carImage"
@@ -266,32 +334,6 @@
       <button class="reservation-button" (click)="confirmReservation()">
         Lefoglalom
       </button>
-      <div class="confirmation-popup" *ngIf="isConfirmationPopupVisible">
-        <h3>{{ confirmationMessage }}</h3>
-        <div class="popup-buttons">
-          <button (click)="closeConfirmationPopup()">OK</button>
-          <button class="delete-button" (click)="deleteReservation()">
-            Törlés
-          </button>
-        </div>
-      </div>
-    </div>
-    <div
-      class="car-info"
-      *ngIf="!selectedCar && isLoggedIn && hasAvailableCars"
-    >
-      <h3>A Cars oldalon kiválasztott autód adatai itt fognak megjelenni.</h3>
-      <p>Kérlek, menj a Cars oldalra és válassz egy autót a foglaláshoz!</p>
-      <button class="btn" routerLink="/cars">Ugrás a Cars oldalra</button>
-    </div>
-    <div
-      class="car-info"
-      *ngIf="!selectedCar && !isLoading && !hasAvailableCars"
-    >
-      <h3>Jelenleg nincsenek elérhető autók a foglaláshoz.</h3>
-    </div>
-    <div *ngIf="isLoading" class="car-info">
-      <p>Az autó adatainak betöltése...</p>
     </div>
   </div>
 </div>

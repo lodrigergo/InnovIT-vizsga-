@@ -47,14 +47,16 @@
   id="overlay"
   class="overlay"
   (click)="closeOverlay()"
-  [style.display]="
-    showLoginPanel || showRegisterPanel || showProfilePanel ? 'block' : 'none'
+  [class.show]="
+    (loginService.loginPanelOpen$ | async) ||
+    (registerService.registerPanelOpen$ | async) ||
+    showProfilePanel
   "
 ></div>
 <div
   id="login-panel"
   class="login-panel"
-  [style.display]="showLoginPanel ? 'block' : 'none'"
+  [class.open]="loginService.loginPanelOpen$ | async"
 >
   <div class="login-header">
     <h2>LOGIN</h2>
@@ -127,7 +129,7 @@
 <div
   id="register-panel"
   class="register-panel"
-  [style.display]="showRegisterPanel ? 'block' : 'none'"
+  [class.open]="registerService.registerPanelOpen$ | async"
 >
   <div class="register-header">
     <h2>Register</h2>
