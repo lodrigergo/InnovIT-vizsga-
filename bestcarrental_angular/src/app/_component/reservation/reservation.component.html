@@ -31,24 +31,8 @@
   <h2 class="reservation-title">Confirmation of reservation!</h2>
   <br />
   <div class="main">
-    <div
-      class="login-section"
-      *ngIf="!isLoggedIn && !isReservationSentStepCompleted"
-    >
+    <div class="login-section">
       <h3>Log in or register for the reservation!</h3>
-      <div class="btn-group">
-        <button class="btn" (click)="openRegisterPanel()">
-          Create Account
-        </button>
-        <button class="btn" (click)="openLoginPanel()">Login</button>
-      </div>
-      <button
-        class="continue-btn"
-        (click)="goToNextStep()"
-        [disabled]="!isLoggedIn || !selectedCar"
-      >
-        Away
-      </button>
     </div>
 
     <div
