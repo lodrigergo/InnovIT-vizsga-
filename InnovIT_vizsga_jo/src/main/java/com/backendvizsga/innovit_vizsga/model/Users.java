@@ -545,7 +545,7 @@ public class Users implements Serializable {
 
     }
     
-    public Boolean updateUserById(Integer userId, String name, String email, String password, String personalId) {
+    public Boolean updateUserById(Integer userId, String name, String email, String personalId) {
         EntityManager em = emf.createEntityManager();
         Boolean toReturn = false;
 
@@ -557,13 +557,11 @@ public class Users implements Serializable {
             spq.registerStoredProcedureParameter("user_idIN", Integer.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("personal_idIN", String.class, ParameterMode.IN);
 
             spq.setParameter("user_idIN", userId);
             spq.setParameter("nameIN", name);
             spq.setParameter("emailIN", email);
-            spq.setParameter("passwordIN", password);
             spq.setParameter("personal_idIN", personalId);
 
             spq.execute();

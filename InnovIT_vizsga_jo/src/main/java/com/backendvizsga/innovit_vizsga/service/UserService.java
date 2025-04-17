@@ -253,7 +253,7 @@ public class UserService {
                 throw new IllegalArgumentException("Personal ID cannot be null or empty.");
             }
 
-            boolean result = layer.updateUserById(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getPersonalId());
+            boolean result = layer.updateUserById(u.getId(), u.getName(), u.getEmail(), u.getPersonalId());
 
             if (!result) {
                 status = "error";

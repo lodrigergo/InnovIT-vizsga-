@@ -287,7 +287,6 @@ public class UserControllerResource {
                     id,
                     jsonObject.getString("name"),
                     jsonObject.getString("email"),
-                    jsonObject.getString("password"),
                     jsonObject.getString("personalId")
             );
 
