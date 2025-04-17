@@ -2,24 +2,24 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-04-16T11:55:12 CEST" name="NavbarNavigationTest" finished-at="2025-04-16T11:55:27 CEST" duration-ms="15101">
+  <suite started-at="2025-04-17T10:29:42 CEST" name="CarsPageTest" finished-at="2025-04-17T10:29:54 CEST" duration-ms="11920">
     <groups>
     </groups>
-    <test started-at="2025-04-16T11:55:12 CEST" name="Command line test" finished-at="2025-04-16T11:55:27 CEST" duration-ms="15101">
-      <class name="NavbarNavigationTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:NavbarNavigationTest@731f8236]" started-at="2025-04-16T11:55:12 CEST" name="setUp" finished-at="2025-04-16T11:55:14 CEST" duration-ms="1597" status="PASS">
+    <test started-at="2025-04-17T10:29:42 CEST" name="Command line test" finished-at="2025-04-17T10:29:54 CEST" duration-ms="11920">
+      <class name="CarsPageTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:CarsPageTest@6b53e23f]" started-at="2025-04-17T10:29:42 CEST" name="setUp" finished-at="2025-04-17T10:29:45 CEST" duration-ms="3516" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testNavbarNavigation()[pri:0, instance:NavbarNavigationTest@731f8236]" started-at="2025-04-16T11:55:14 CEST" name="testNavbarNavigation" finished-at="2025-04-16T11:55:27 CEST" duration-ms="13282" status="PASS">
+        <test-method signature="testResetFilters()[pri:0, instance:CarsPageTest@6b53e23f]" started-at="2025-04-17T10:29:45 CEST" name="testResetFilters" finished-at="2025-04-17T10:29:53 CEST" duration-ms="7945" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testNavbarNavigation -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:NavbarNavigationTest@731f8236]" started-at="2025-04-16T11:55:27 CEST" name="tearDown" finished-at="2025-04-16T11:55:27 CEST" duration-ms="185" status="PASS">
+        </test-method> <!-- testResetFilters -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:CarsPageTest@6b53e23f]" started-at="2025-04-17T10:29:53 CEST" name="tearDown" finished-at="2025-04-17T10:29:54 CEST" duration-ms="371" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- NavbarNavigationTest -->
+      </class> <!-- CarsPageTest -->
     </test> <!-- Command line test -->
-  </suite> <!-- NavbarNavigationTest -->
+  </suite> <!-- CarsPageTest -->
 </testng-results>
