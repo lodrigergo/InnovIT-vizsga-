@@ -102,9 +102,6 @@ import { Subscription } from 'rxjs';
               <a href="#home"><i class="fa fa-home"></i> Home</a>
             </li>
             <li>
-              <a href="#about"><i class="fa fa-user"></i> About</a>
-            </li>
-            <li>
               <a href="../cars/cars.component.html"
                 ><i class="fa fa-car"></i> Cars</a
               >
@@ -112,6 +109,11 @@ import { Subscription } from 'rxjs';
             <li>
               <a href="..//reservation/reservation.component.html"
                 ><i class="fa fa-calendar"></i> Reservation</a
+              >
+            </li>
+            <li *ngIf="loginService.isAdmin$ | async">
+              <a routerLink="/admin"
+                ><i class="fa fa-cog"></i> Admin Dashboard</a
               >
             </li>
           </ul>

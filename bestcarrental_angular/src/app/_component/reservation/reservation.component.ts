@@ -381,7 +381,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
     this.isReservationConfirmedStepActive = false;
     this.isReservationSentStepCompleted = false;
     localStorage.removeItem('isReservationSentStepCompleted');
-    this.deleteNotificationMessage = 'A foglalás törölve.';
+    this.deleteNotificationMessage = 'The reservation is cancelled!';
     this.showDeleteNotification = true;
     this.isDeleteError = false;
     setTimeout(() => {

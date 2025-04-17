@@ -7,7 +7,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -56,7 +56,8 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
   cars: Car[] = [];
   bookings: Booking[] = [];
   admins: User[] = [];
-  
+
+  loggedInUser: User | null = null;
 
   isEditCarModalVisible: boolean = false;
   selectedCar: Car | null = null;
@@ -73,11 +74,25 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
   isDeleteBookingModalVisible: boolean = false;
   bookingToDeleteId: number | null = null;
 
-  isEditAdminModalVisible: boolean = false; // Admin szerkesztése modal láthatósága
-  selectedAdmin: User | null = null; // Kiválasztott admin szerkesztéshez
+  isEditAdminModalVisible: boolean = false;
+  selectedAdmin: User | null = null;
 
-  isDeleteAdminModalVisible: boolean = false; // Admin törlése modal láthatósága
-  adminToDeleteId: number | null = null; // Törlendő admin ID
+  isDeleteAdminModalVisible: boolean = false;
+  adminToDeleteId: number | null = null;
+
+  newAdmin: {
+    name: '';
+    email: '';
+    password: '';
+    personalId: '';
+    isAdmin: true;
+  } = {
+    name: '',
+    email: '',
+    password: '',
+    personalId: '',
+    isAdmin: true,
+  };
 
   private usersSubscription: Subscription | undefined;
   private carsSubscription: Subscription | undefined;
@@ -91,10 +106,19 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('bookingsSection') bookingsSection!: ElementRef;
   @ViewChild('adminsSection') adminsSection!: ElementRef;
 
-  constructor(private http: HttpClient, private el: ElementRef) {}
+  constructor(
+    private http: HttpClient,
+    private el: ElementRef,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {
+  logout(): void {
+    console.log('Kilépés gomb megnyomva.');
+    localStorage.removeItem('loggedInUser');
+    this.router.navigate(['/home']);
   }
+
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.handleNavigation();
@@ -149,7 +173,7 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
         behavior: 'smooth',
         block: 'start',
       });
-    } else if (targetId === 'admins' && this.adminsSection) { 
+    } else if (targetId === 'admins' && this.adminsSection) {
       this.adminsSection.nativeElement.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
@@ -165,7 +189,7 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe({
         next: (data) => {
           if (data.statusCode === 200) {
-            this.users = data.users.filter(user => !user.isAdmin); 
+            this.users = data.users.filter((user) => !user.isAdmin);
           } else {
             alert('Hiba: ' + data.message);
           }
@@ -198,7 +222,7 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openEditAdminModal(admin: User) {
-    console.log('Admin szerkesztése gomb megnyomva:', admin); // Ellenőrzés
+    console.log('Admin szerkesztése gomb megnyomva:', admin);
     this.selectedAdmin = { ...admin };
     this.isEditAdminModalVisible = true;
   }
@@ -215,11 +239,12 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
         id: this.selectedAdmin.id,
         name: this.selectedAdmin.name,
         email: this.selectedAdmin.email,
-        password: this.selectedAdmin.password, 
-        isAdmin: true 
+        personalId: this.selectedAdmin.personalId,
+        isAdmin: true,
       };
 
-      this.updateAdminSubscription = this.http.put<{ status?: string; errorMessage?: string }>(updateUrl, payload)
+      this.updateAdminSubscription = this.http
+        .put<{ status?: string; errorMessage?: string }>(updateUrl, payload)
         .subscribe({
           next: (data) => {
             if (data.status === 'success') {
@@ -227,19 +252,22 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
               this.loadAdmins();
               this.closeEditAdminModal();
             } else {
-              alert('Hiba történt a frissítés során: ' + (data.errorMessage || data.status));
+              alert(
+                'Hiba történt a frissítés során: ' +
+                  (data.errorMessage || data.status)
+              );
             }
           },
           error: (error) => {
             console.error('Hiba az adminisztrátor frissítésekor:', error);
             alert('Hiba történt az adminisztrátor frissítésekor.');
-          }
+          },
         });
     }
   }
 
   openDeleteAdminModal(adminId: number) {
-    console.log('Admin törlése gomb megnyomva:', adminId); 
+    console.log('Admin törlése gomb megnyomva:', adminId);
     this.adminToDeleteId = adminId;
     this.isDeleteAdminModalVisible = true;
   }
@@ -258,7 +286,8 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
 
   deleteAdminRequest(id: number) {
     const deleteUrl = `http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/deleteUserById?id=${id}`;
-    this.deleteAdminSubscription = this.http.delete<{ result: string }>(deleteUrl)
+    this.deleteAdminSubscription = this.http
+      .delete<{ result: string }>(deleteUrl)
       .subscribe({
         next: (data) => {
           if (data.result === 'success') {
@@ -271,7 +300,7 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
         error: (error) => {
           console.error('Hiba az adminisztrátor törlésekor:', error);
           alert('Hiba történt az adminisztrátor törlésekor.');
-        }
+        },
       });
   }
 
@@ -329,7 +358,6 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
         id: this.selectedUser.id,
         name: this.selectedUser.name,
         email: this.selectedUser.email,
-        password: this.selectedUser.password,
         personalId: this.selectedUser.personalId,
       });
       this.http
@@ -339,7 +367,6 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
             id: this.selectedUser.id,
             name: this.selectedUser.name,
             email: this.selectedUser.email,
-            password: this.selectedUser.password,
             personalId: this.selectedUser.personalId,
           }
         )
@@ -363,7 +390,38 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
   }
-  
+
+  registerNewAdmin() {
+    this.http
+      .post<{ status: string; statusCode: number; message?: string }>(
+        'http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/registerAdmin',
+        this.newAdmin
+      )
+      .subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            alert('Adminisztrátor sikeresen hozzáadva!');
+            this.loadAdmins();
+            this.newAdmin = {
+              name: '',
+              email: '',
+              password: '',
+              personalId: '',
+              isAdmin: true,
+            };
+          } else {
+            alert(
+              'Hiba a regisztráció során: ' +
+                (response.message || response.status)
+            );
+          }
+        },
+        error: (error) => {
+          console.error('Hiba az adminisztrátor regisztrációjakor:', error);
+          alert('Hiba történt az adminisztrátor regisztrációjakor.');
+        },
+      });
+  }
 
   loadCars() {
     this.carsSubscription = this.http
@@ -449,8 +507,6 @@ export class AdminComponent implements OnInit, OnDestroy, AfterViewInit {
       seats: seats,
       image: image,
     };
-
-    console.log('Elküldendő carData:', carData); // Debugging célból
 
     this.http
       .post<{ status?: string; errorMessage?: string }>(

@@ -28,10 +28,17 @@ import { ProfilePanelComponent } from '../profile-panel/profile-panel.component'
                 >Home</a
               >
             </li>
-            <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+
+            <li><a routerLink="/home" routerLinkActive="active">About</a></li>
+
             <li><a routerLink="/cars" routerLinkActive="active">Cars</a></li>
             <li>
               <a [routerLink]="['/reservation']">Reservations</a>
+            </li>
+            <li *ngIf="loginService.isAdmin$ | async">
+              <a routerLink="/admin" routerLinkActive="active"
+                ><i class="fa fa-cog"></i> Admin</a
+              >
             </li>
           </ul>
         </nav>

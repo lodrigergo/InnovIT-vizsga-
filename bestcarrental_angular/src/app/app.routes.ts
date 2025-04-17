@@ -18,5 +18,5 @@ export const routes: Routes = [
   { path: 'reservation', component: ReservationComponent },
   { path: 'navbar', component: NavbarComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'admin', component: AdminComponent /* canActivate: [AuthGuard] */ },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
 ];

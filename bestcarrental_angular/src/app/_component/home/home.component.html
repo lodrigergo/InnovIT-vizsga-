@@ -57,8 +57,10 @@
 
       <ng-template #notLoggedIn>
         <div class="login-required-box">
-          <p>Időpont kereséshez és foglaláshoz kérlek, jelentkezz be!</p>
-          <button routerLink="/login" class="login-btn">Bejelentkezés</button>
+          <p>
+            To search for an appointment and make a reservation, please log in!
+          </p>
+          <button routerLink="/login" class="login-btn">Login</button>
         </div>
       </ng-template>
     </div>
@@ -83,16 +85,15 @@
       >
         {{ car.brand }} {{ car.model }}
       </h3>
-      <p><strong>ID:</strong> {{ car.car_id }}</p>
-      <p><strong>Felvétel:</strong> {{ car.pickup_date }}</p>
-      <p><strong>Leadás:</strong> {{ car.return_date }}</p>
+      <p><strong>Recording:</strong> {{ car.pickup_date }}</p>
+      <p><strong>Delivery:</strong> {{ car.return_date }}</p>
     </div>
   </div>
   <div
     *ngIf="searchResults.length === 0 && !searchError && hasSearched"
     class="no-results"
   >
-    <p>Nincs elérhető autó a megadott feltételekkel.</p>
+    <p>There are no cars available with the specified conditions.</p>
   </div>
 </div>
 

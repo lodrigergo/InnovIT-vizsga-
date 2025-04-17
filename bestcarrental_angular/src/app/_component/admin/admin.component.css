@@ -1,4 +1,4 @@
-/* Alap beállítások */
+/* main settings */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,7 +12,7 @@ body {
   line-height: 1.6;
 }
 
-/* Fejléc stílusok */
+/* header stílusok */
 .admin-header {
   background-color: #333;
   color: #fff;
@@ -52,7 +52,7 @@ body {
   color: #ddd;
 }
 
-/* Fő tartalom stílusok */
+/* main content styles */
 .admin-content {
   width: 90%;
   max-width: 1200px;
@@ -72,7 +72,7 @@ body {
   padding-bottom: 5px;
 }
 
-/* Gombok */
+/* buttons */
 .action-btn,
 .edit-btn,
 .delete-btn,
@@ -124,7 +124,7 @@ body {
   background-color: #117a8b;
 }
 
-/* Táblázat stílusok */
+/* table styles  */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -147,7 +147,7 @@ table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-/* Lábléc stílusok */
+/* footer styles */
 .admin-footer {
   background-color: #333;
   color: #fff;
@@ -161,7 +161,7 @@ table tbody tr:nth-child(even) {
   margin: 0 auto;
 }
 
-/* Autó hozzáadás űrlap stílusa */
+/* car add form style */
 #add-car {
   margin: 20px auto;
   width: 90%;
@@ -254,7 +254,7 @@ table tbody tr:nth-child(even) {
   }
 }
 
-/* Mobil nézet (max-width: 768px) */
+/* mobile view max-width 768px */
 @media (max-width: 768px) {
   .admin-header .container {
     flex-direction: column;
@@ -276,14 +276,14 @@ table tbody tr:nth-child(even) {
     margin: 10px;
   }
 
-  /* Táblázatok görgethetővé tétele */
+  /* make tables scrollable*/
   table {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
 
-  /* Űrlap mezők oszlopos elrendezése */
+  /* form column layout of fields */
   #add-car-form {
     flex-direction: column;
   }
@@ -293,7 +293,7 @@ table tbody tr:nth-child(even) {
   }
 }
 
-/* Extra kis mobil eszközök (max-width: 480px) */
+/* extra small mobile devices max-width 480px */
 @media (max-width: 480px) {
   .admin-header h1 {
     font-size: 1.5em;
@@ -646,7 +646,7 @@ table tbody tr:nth-child(even) {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  width: 120px; 
+  width: 120px;
   height: 50px;
 }
 
@@ -722,4 +722,77 @@ table tbody tr:nth-child(even) {
 
 .delete-confirmation-modal .modal-body .cancel-btn:hover {
   background-color: #5a6268;
+}
+
+/* admin add form style similar to car*/
+#add-admin {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#add-admin h2 {
+  margin-bottom: 15px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 5px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#add-admin-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+#add-admin-form .form-group {
+  flex: 1 0 calc(50% - 15px);
+  display: flex;
+  flex-direction: column;
+}
+
+#add-admin-form .form-group.full-width {
+  flex: 1 0 100%;
+}
+
+#add-admin-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#add-admin-form input[type="text"],
+#add-admin-form input[type="email"],
+#add-admin-form input[type="password"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#add-admin-form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#add-admin-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Mobil nézet igazítások (ha szükséges) */
+@media (max-width: 768px) {
+  #add-admin-form {
+    flex-direction: column;
+  }
+
+  #add-admin-form .form-group {
+    flex: 1 0 100%;
+  }
 }

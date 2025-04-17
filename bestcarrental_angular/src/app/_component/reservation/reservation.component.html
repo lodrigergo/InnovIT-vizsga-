@@ -12,30 +12,30 @@
   </div>
   <div *ngIf="showSnackbar" class="notification-bar">
     {{ snackbarMessage }}
-    <p class="close-alert">Köszönjük a foglalását!</p>
+    <p class="close-alert">Thank you for your reservation!</p>
   </div>
   <div class="step">
     <div
       [class.active]="currentStep === 1"
       [class.completed]="isReservationConfirmedStepActive"
     >
-      1 Foglalás megerősítése
+      1. confirmation of reservation!
     </div>
     <div
       [class.active]="currentStep === 2"
       [class.completed]="isReservationSentStepCompleted"
     >
-      2 Foglalás elküldve
+      2. bookings sent!
     </div>
   </div>
-  <h2 class="reservation-title">A Foglalás megerősítése</h2>
+  <h2 class="reservation-title">Confirmation of reservation!</h2>
   <br />
   <div class="main">
     <div
       class="login-section"
       *ngIf="!isLoggedIn && !isReservationSentStepCompleted"
     >
-      <h3>Jelentkezz be vagy regisztrálj a foglalásért!</h3>
+      <h3>Log in or register for the reservation!</h3>
       <div class="btn-group">
         <button class="btn" (click)="openRegisterPanel()">
           Create Account
@@ -47,7 +47,7 @@
         (click)="goToNextStep()"
         [disabled]="!isLoggedIn || !selectedCar"
       >
-        Tovább
+        Away
       </button>
     </div>
 
@@ -55,14 +55,14 @@
       class="car-details-confirmed"
       *ngIf="selectedCar && isReservationSentStepCompleted"
     >
-      <h3>A lefoglalt jármű</h3>
+      <h3>the seized vehicle</h3>
       <img
         [src]="selectedCar.image || carImage"
         alt="{{ selectedCar.brand }} {{ selectedCar.model }}"
       />
       <div class="details">
-        <p>Márka: {{ selectedCar.brand }}</p>
-        <p>Modell: {{ selectedCar.model }}</p>
+        <p>Brand: {{ selectedCar.brand }}</p>
+        <p>Model: {{ selectedCar.model }}</p>
       </div>
     </div>
 
@@ -70,17 +70,14 @@
       class="confirmation-message-section"
       *ngIf="isReservationSentStepCompleted"
     >
-      <h3>Köszönjük a foglalását!</h3>
-      <p>Foglalását rögzítettük.</p>
-      <p>
-        Amennyiben szeretné visszavonni a foglalását, kérjük, vegye fel velünk a
-        kapcsolatot.
-      </p>
+      <h3>Thank you for your reservation!</h3>
+      <p>Your booking has been recorded.</p>
+      <p>If you wish to cancel your reservation, please contact us.</p>
       <button
         class="delete-button centered-delete-button"
         (click)="deleteReservation()"
       >
-        Rendelés törlése
+        Cancel order
       </button>
     </div>
 
@@ -94,12 +91,12 @@
       "
     >
       <h3 style="padding: 20px">
-        A Cars oldalon kiválasztott autód adatai itt fognak megjelenni.
+        The details of your car selected on the cars page will appear here!
       </h3>
       <p style="padding-bottom: 10px; justify-content: center; display: flex">
-        Kérlek, menj a Cars oldalra és válassz egy autót a foglaláshoz!
+        Please go to the cars page and choose a car to book.
       </p>
-      <button class="btn" routerLink="/cars">Ugrás a Cars oldalra</button>
+      <button class="btn" routerLink="/cars">Go to Cars Page!</button>
     </div>
     <div
       class="car-info"
@@ -110,34 +107,34 @@
         !isReservationSentStepCompleted
       "
     >
-      <h3>Jelenleg nincsenek elérhető autók a foglaláshoz.</h3>
+      <h3>There are currently no cars available for booking!</h3>
     </div>
     <div *ngIf="isLoading && !isReservationSentStepCompleted" class="car-info">
-      <p>Itt fog megjelenni a kiválasztott autó...</p>
+      <p>The selected car will appear here...</p>
     </div>
 
     <div
       class="car-info confirm-section"
       *ngIf="selectedCar && !isReservationSentStepCompleted"
     >
-      <h3>Jármű</h3>
+      <h3>Car</h3>
       <img
         [src]="selectedCar.image || carImage"
         alt="{{ selectedCar.brand }} {{ selectedCar.model }}"
       />
       <div class="details">
-        <p>Márka: {{ selectedCar.brand }}</p>
-        <p>Modell: {{ selectedCar.model }}</p>
+        <p>Brand: {{ selectedCar.brand }}</p>
+        <p>Model: {{ selectedCar.model }}</p>
       </div>
       <div class="rental-location"></div>
       <div class="details">
-        <p>Felvétel: Csak helybe!</p>
-        <p>Leadás: Csak helybe!</p>
+        <p>Pickup Date: Just in place.</p>
+        <p>Drop Date: Just in place.</p>
       </div>
-      <h3>Összesen:</h3>
-      <p>Ügyfélszolgálati pultnál fizetendő</p>
+      <h3>All:</h3>
+      <p>To be paid at customer service desk!</p>
       <button class="reservation-button" (click)="confirmReservation()">
-        Lefoglalom
+        Book now
       </button>
     </div>
   </div>

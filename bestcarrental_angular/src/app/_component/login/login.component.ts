@@ -46,10 +46,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
             class="error-message"
           >
             <div *ngIf="loginForm.get('email')?.errors?.['required']">
-              Email cím megadása kötelező.
+              E-mail address required
             </div>
             <div *ngIf="loginForm.get('email')?.errors?.['email']">
-              Kérjük, érvényes email címet adjon meg.
+              Please enter a valid email address
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
             class="error-message"
           >
             <div *ngIf="loginForm.get('password')?.errors?.['required']">
-              Jelszó megadása kötelező.
+              password is required
             </div>
           </div>
         </div>
@@ -151,10 +151,12 @@ export class LoginComponent implements OnInit {
           const profileImageUrl =
             response.result.profileImageUrl || 'profile icon.webp';
           const token = response.result.jwt;
+          const isAdmin = response.result.isAdmin || false;
           this.loginService.loginSuccess(
             profileImageUrl,
             token,
-            response.result.name
+            response.result.name,
+            isAdmin
           );
           this.loginError = '';
           this.showNotification('Sikeres bejelentkezés!');

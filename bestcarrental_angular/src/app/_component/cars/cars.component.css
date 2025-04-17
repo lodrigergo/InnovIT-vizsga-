@@ -13,7 +13,7 @@ body {
   background-color: #f9f9f9;
 }
 
-/* ========== Layout Alapok ========== */
+/* ========== Layout Base ========== */
 
 .container {
   display: flex;
@@ -26,7 +26,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* ========== Navbar és Logó ========== */
+/* ========== Navbar and logo ========== */
 
 .navbar {
   background: rgba(0, 0, 0, 0.7);
@@ -78,7 +78,7 @@ h1 {
   }
 }
 
-/* ========== Navigáció ========== */
+/* ========== navbar ========== */
 
 .nav-links {
   list-style: none;
@@ -128,7 +128,7 @@ h1 {
   animation-delay: 1.1s;
 }
 
-/* ========== Gombok és Login Elem ========== */
+/* ========== buttons and Login element ========== */
 
 @keyframes loginButtonFloatIn {
   0% {
@@ -157,7 +157,7 @@ h1 {
   background: darkred;
 }
 
-/* ========== Panelok: Login, Regisztráció, Profil ========== */
+/* ========== Panels: Login, register, profil ========== */
 
 .login-panel,
 .register-panel,
@@ -213,7 +213,7 @@ h1 {
   color: red;
 }
 
-/* ========== Formok ========== */
+/* ========== forms ========== */
 
 .form-group {
   margin-bottom: 10px;
@@ -292,7 +292,7 @@ h1 {
   display: block;
 }
 
-/* ========== Profil Panel ========== */
+/* ========== Profile Panel ========== */
 
 .profile-header {
   display: flex;
@@ -362,7 +362,7 @@ h1 {
   background-color: darkred;
 }
 
-/* ========== Oldalsáv, Szűrők és Fő Tartalom ========== */
+/* ========== side bar, filter and main content ========== */
 
 .sidebar {
   width: 20%;
@@ -547,7 +547,7 @@ h1 {
   background: linear-gradient(135deg, #e60000, #cc0000);
 }
 
-/* ========== Oldal Navigáció: Lapozás ========== */
+/* ========== side navbar: turning over ========== */
 
 .pagination {
   margin-top: 50px;
@@ -575,7 +575,7 @@ h1 {
   cursor: not-allowed;
 }
 
-/* ========== Lábléc ========== */
+/* ========== footer ========== */
 
 .footer {
   background-color: #000;
@@ -713,9 +713,7 @@ h1 {
   }
 }
 
-/* ========== RESPONSZÍV MÉDIA QUERY-K ========== */
-
-/* Tablet nézet (max-width: 1024px) */
+/* table view (max-width: 1024px) */
 @media (max-width: 1024px) {
   .container {
     flex-direction: column;
@@ -742,7 +740,7 @@ h1 {
   }
 }
 
-/* Mobil nézet (max-width: 768px) */
+/* Mobile view (max-width: 768px) */
 @media (max-width: 768px) {
   .navbar .container {
     flex-direction: column;
@@ -776,7 +774,7 @@ h1 {
   }
 }
 
-/* Extra kis mobil eszközök (max-width: 480px) */
+/* Extra small mobil tools (max-width: 480px) */
 @media (max-width: 480px) {
   h1 {
     font-size: 1.5rem;

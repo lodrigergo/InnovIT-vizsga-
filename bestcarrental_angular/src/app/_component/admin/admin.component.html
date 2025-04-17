@@ -4,18 +4,20 @@
     <nav>
       <ul class="nav-links">
         <li>
-          <a href="#users"><i class="fas fa-users"></i> Felhasználók</a>
+          <a href="#users"><i class="fas fa-users"></i> Users</a>
         </li>
         <li>
-          <a href="#cars"><i class="fas fa-car"></i> Autók</a>
+          <a href="#cars"><i class="fas fa-car"></i> Cars</a>
         </li>
         <li>
-          <a href="#bookings"><i class="fas fa-calendar-alt"></i> Foglalások</a>
-        </li>
-        <li>
-          <a href="../index.html" id="logout-btn"
-            ><i class="fas fa-sign-out-alt"></i> Kilépés</a
+          <a href="#bookings"
+            ><i class="fas fa-calendar-alt"></i> Reservations</a
           >
+        </li>
+        <li>
+          <a id="logout-btn" (click)="logout()" style="cursor: pointer">
+            <i class="fas fa-sign-out-alt"></i> Exit
+          </a>
         </li>
       </ul>
     </nav>
@@ -24,9 +26,9 @@
 
 <main class="admin-content">
   <section id="users" class="admin-section" #usersSection>
-    <h2>Felhasználók kezelése</h2>
+    <h2>Managing users</h2>
     <button id="load-users-btn" class="action-btn" (click)="loadUsers()">
-      Felhasználók betöltése
+      Load users
     </button>
     <table id="users-table">
       <thead>
@@ -34,8 +36,8 @@
           <th>ID</th>
           <th>Username</th>
           <th>Email</th>
-          <th>Szerep</th>
-          <th>Műveletek</th>
+          <th>Role</th>
+          <th>Operations</th>
         </tr>
       </thead>
       <tbody>
@@ -43,24 +45,24 @@
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.isAdmin ? "Admin" : "Felhasználó" }}</td>
+          <td>{{ user.isAdmin ? "Admin" : "User" }}</td>
           <td>
             <button class="edit-btn" (click)="openEditUserModal(user)">
-              Szerkesztés
+              Edit
             </button>
             <button class="delete-btn" (click)="openDeleteUserModal(user.id)">
-              Törlés
+              Delete
             </button>
           </td>
         </tr>
       </tbody>
     </table>
   </section>
-  
+
   <section id="admins" class="admin-section" #adminsSection>
-    <h2>Adminisztrátorok kezelése</h2>
+    <h2>Managing administrators</h2>
     <button id="load-admins-btn" class="action-btn" (click)="loadAdmins()">
-      Adminisztrátorok betöltése
+      Load administrators
     </button>
     <table id="admins-table" *ngIf="admins.length > 0">
       <thead>
@@ -68,7 +70,7 @@
           <th>ID</th>
           <th>Username</th>
           <th>Email</th>
-          <th>Műveletek</th>
+          <th>Operations</th>
         </tr>
       </thead>
       <tbody>
@@ -78,75 +80,118 @@
           <td>{{ admin.email }}</td>
           <td>
             <button class="edit-btn" (click)="openEditAdminModal(admin)">
-              Szerkesztés
+              Edit
             </button>
             <button class="delete-btn" (click)="openDeleteAdminModal(admin.id)">
-              Törlés
+              Delete
             </button>
           </td>
         </tr>
       </tbody>
     </table>
   </section>
-  
+
   <div class="edit-admin-modal" [class.show]="isEditAdminModalVisible">
     <div class="modal-header">
-      <h2>Adminisztrátor szerkesztése</h2>
-      <button class="close-button" (click)="closeEditAdminModal()">&times;</button>
+      <h2>Edit administrator</h2>
+      <button class="close-button" (click)="closeEditAdminModal()">
+        &times;
+      </button>
     </div>
     <div class="modal-body">
       <form id="edit-admin-form" *ngIf="selectedAdmin">
         <div class="form-group">
-          <label for="edit-admin-name">Név:</label>
-          <input type="text" id="edit-admin-name" name="name" [(ngModel)]="selectedAdmin.name" required />
+          <label for="edit-admin-username">Username:</label>
+          <input
+            type="text"
+            id="edit-admin-username"
+            name="name"
+            [(ngModel)]="selectedAdmin.name"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="edit-admin-email">Email:</label>
-          <input type="email" id="edit-admin-email" name="email" [(ngModel)]="selectedAdmin.email" required />
+          <input
+            type="email"
+            id="edit-admin-email"
+            name="email"
+            [(ngModel)]="selectedAdmin.email"
+            required
+          />
         </div>
         <div class="form-group">
-          <label for="edit-admin-password">Jelszó:</label>
-          <input type="password" id="edit-admin-password" name="password" [(ngModel)]="selectedAdmin.password" />
+          <label for="edit-admin-personalId">Personal ID:</label>
+          <input
+            type="text"
+            id="edit-admin-personalId"
+            name="personalId"
+            [(ngModel)]="selectedAdmin.personalId"
+            required
+          />
         </div>
         <div class="form-group full-width">
-          <button type="button" class="action-btn" (click)="updateAdmin()">Mentés</button>
-          <button type="button" class="cancel-btn" (click)="closeEditAdminModal()">Mégse</button>
+          <button type="button" class="action-btn" (click)="updateAdmin()">
+            Save
+          </button>
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="closeEditAdminModal()"
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>
   </div>
-  
-  <div class="delete-confirmation-modal" [class.show]="isDeleteAdminModalVisible">
+
+  <div
+    class="delete-confirmation-modal"
+    [class.show]="isDeleteAdminModalVisible"
+  >
     <div class="modal-body">
-      <p>Biztosan törölni szeretnéd az adminisztrátort?</p>
+      <p>Are you sure you want to delete the administrator?</p>
       <div class="full-width">
-        <button type="button" class="action-btn delete-btn" (click)="confirmDeleteAdmin()">Igen</button>
-        <button type="button" class="cancel-btn" (click)="closeDeleteAdminModal()">Nem</button>
+        <button
+          type="button"
+          class="action-btn delete-btn"
+          (click)="confirmDeleteAdmin()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="closeDeleteAdminModal()"
+        >
+          No
+        </button>
       </div>
     </div>
   </div>
 
   <section id="cars" class="admin-section" #carsSection>
-    <h2>Autók kezelése</h2>
+    <h2>Cars management</h2>
     <button id="load-cars-btn" class="action-btn" (click)="loadCars()">
-      Autók betöltése
+      Load cars
     </button>
     <table id="cars-table">
       <thead>
         <tr>
           <th>ID</th>
-          <th>Márka</th>
-          <th>Típus</th>
-          <th>Rendszám</th>
-          <th>Év</th>
-          <th>Üzemanyag</th>
-          <th>Napidíj</th>
-          <th>Váltó</th>
-          <th>Ajtók</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>License Plate</th>
+          <th>Year</th>
+          <th>Fuel</th>
+          <th>Daily price</th>
+          <th>Transmission</th>
+          <th>Doors</th>
           <th>AC</th>
-          <th>Ülések</th>
-          <th>Kép</th>
-          <th>Műveletek</th>
+          <th>Seats</th>
+          <th>Picture</th>
+          <th>Operations</th>
         </tr>
       </thead>
       <tbody>
@@ -174,10 +219,10 @@
           </td>
           <td>
             <button class="edit-btn" (click)="openEditCarModal(car)">
-              Szerkesztés
+              Edit
             </button>
             <button class="delete-btn" (click)="openDeleteCarModal(car.id)">
-              Törlés
+              Delete
             </button>
           </td>
         </tr>
@@ -186,19 +231,19 @@
   </section>
 
   <section id="bookings" class="admin-section" #bookingsSection>
-    <h2>Foglalások kezelése</h2>
+    <h2>Booking management</h2>
     <button id="load-bookings-btn" class="action-btn" (click)="loadBookings()">
-      Foglalások betöltése
+      Load reservations
     </button>
     <table id="bookings-table">
       <thead>
         <tr>
           <th>ID</th>
-          <th>User ID</th>
-          <th>Autó ID</th>
-          <th>Kezdés</th>
-          <th>Befejezés</th>
-          <th>Műveletek</th>
+          <th>UserID</th>
+          <th>CarID</th>
+          <th>Pickup Date</th>
+          <th>Return Date</th>
+          <th>Operations</th>
         </tr>
       </thead>
       <tbody>
@@ -213,7 +258,7 @@
               class="delete-btn"
               (click)="openDeleteBookingModal(booking.id)"
             >
-              Törlés
+              Delete
             </button>
           </td>
         </tr>
@@ -222,22 +267,22 @@
   </section>
 
   <section id="add-car" class="admin-section">
-    <h2>Autó hozzáadása</h2>
+    <h2>Add Car</h2>
     <form id="add-car-form">
       <div class="form-group">
-        <label for="car-brand">Márka:</label>
+        <label for="car-brand">Brand:</label>
         <input type="text" id="car-brand" name="brand" required />
       </div>
       <div class="form-group">
-        <label for="car-model">Típus:</label>
+        <label for="car-model">Model:</label>
         <input type="text" id="car-model" name="model" required />
       </div>
       <div class="form-group">
-        <label for="car-licensePlate">Rendszám:</label>
+        <label for="car-licensePlate">License Plate</label>
         <input type="text" id="car-licensePlate" name="licensePlate" required />
       </div>
       <div class="form-group">
-        <label for="car-year">Év:</label>
+        <label for="car-year">Year:</label>
         <input
           type="number"
           id="car-year"
@@ -247,11 +292,11 @@
         />
       </div>
       <div class="form-group">
-        <label for="car-fuelType">Üzemanyag:</label>
+        <label for="car-fuelType">Fuel:</label>
         <input type="text" id="car-fuelType" name="fuelType" required />
       </div>
       <div class="form-group">
-        <label for="car-price">Napidíj:</label>
+        <label for="car-price">Price:</label>
         <input
           type="number"
           step="0.01"
@@ -261,11 +306,11 @@
         />
       </div>
       <div class="form-group">
-        <label for="car-transmission">Váltó:</label>
+        <label for="car-transmission">Transmission:</label>
         <input type="text" id="car-transmission" name="transmission" required />
       </div>
       <div class="form-group">
-        <label for="car-doors">Ajtók száma:</label>
+        <label for="car-doors">Doors:</label>
         <input type="number" id="car-doors" name="doors" required />
       </div>
       <div class="form-group">
@@ -273,11 +318,11 @@
         <input type="checkbox" id="car-ac" name="ac" />
       </div>
       <div class="form-group">
-        <label for="car-seat">Ülések száma:</label>
+        <label for="car-seat">Seats:</label>
         <input type="number" id="car-seat" name="seats" required />
       </div>
       <div class="form-group">
-        <label for="car-image">Kép URL:</label>
+        <label for="car-image">Image URL:</label>
         <input type="text" id="car-image" name="image" required />
       </div>
       <div class="form-group full-width">
@@ -287,7 +332,7 @@
           class="action-btn"
           (click)="addCar()"
         >
-          Autó hozzáadása
+          Add Cars
         </button>
       </div>
     </form>
@@ -309,13 +354,13 @@
 
 <div class="edit-car-modal" [class.show]="isEditCarModalVisible">
   <div class="modal-header">
-    <h2>Autó szerkesztése</h2>
+    <h2>Car editing</h2>
     <button class="close-button" (click)="closeEditCarModal()">&times;</button>
   </div>
   <div class="modal-body">
     <form id="edit-car-form" *ngIf="selectedCar">
       <div class="form-group">
-        <label for="edit-car-brand">Márka:</label>
+        <label for="edit-car-brand">Brand:</label>
         <input
           type="text"
           id="edit-car-brand"
@@ -325,7 +370,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-model">Típus:</label>
+        <label for="edit-car-model">Model:</label>
         <input
           type="text"
           id="edit-car-model"
@@ -335,7 +380,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-licensePlate">Rendszám:</label>
+        <label for="edit-car-licensePlate">License Plate:</label>
         <input
           type="text"
           id="edit-car-licensePlate"
@@ -345,7 +390,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-year">Év:</label>
+        <label for="edit-car-year">Year:</label>
         <input
           type="number"
           id="edit-car-year"
@@ -355,7 +400,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-fuelType">Üzemanyag:</label>
+        <label for="edit-car-fuelType">Fuel:</label>
         <input
           type="text"
           id="edit-car-fuelType"
@@ -365,7 +410,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-price">Napidíj:</label>
+        <label for="edit-car-price">Price:</label>
         <input
           type="number"
           step="0.01"
@@ -376,7 +421,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-transmission">Váltó:</label>
+        <label for="edit-car-transmission">Transmission:</label>
         <input
           type="text"
           id="edit-car-transmission"
@@ -386,7 +431,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-doors">Ajtók száma:</label>
+        <label for="edit-car-doors">Doors:</label>
         <input
           type="number"
           id="edit-car-doors"
@@ -405,7 +450,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-seats">Ülések száma:</label>
+        <label for="edit-car-seats">Seats:</label>
         <input
           type="number"
           id="edit-car-seats"
@@ -415,7 +460,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-car-image">Kép URL:</label>
+        <label for="edit-car-image">Image URL:</label>
         <input
           type="text"
           id="edit-car-image"
@@ -426,10 +471,10 @@
       </div>
       <div class="form-group full-width">
         <button type="button" class="action-btn" (click)="updateCar()">
-          Mentés
+          Save
         </button>
         <button type="button" class="cancel-btn" (click)="closeEditCarModal()">
-          Mégse
+          Cancel
         </button>
       </div>
     </form>
@@ -442,13 +487,13 @@
   *ngIf="isEditUserModalVisible && selectedUser"
 >
   <div class="modal-header">
-    <h2>Felhasználó szerkesztése</h2>
+    <h2>Edit User</h2>
     <button class="close-button" (click)="closeEditUserModal()">&times;</button>
   </div>
   <div class="modal-body">
     <form id="edit-user-form">
       <div class="form-group">
-        <label for="edit-user-name">Név:</label>
+        <label for="edit-user-name">Name:</label>
         <input
           type="text"
           id="edit-user-name"
@@ -468,12 +513,13 @@
         />
       </div>
       <div class="form-group">
-        <label for="edit-user-password">Jelszó:</label>
+        <label for="edit-user-personalId">Personal Id:</label>
         <input
-          type="password"
-          id="edit-user-password"
-          name="password"
-          [(ngModel)]="selectedUser.password"
+          type="text"
+          id="edit-user-personalId"
+          name="personalId"
+          [(ngModel)]="selectedUser.personalId"
+          required
         />
       </div>
       <input
@@ -483,10 +529,10 @@
       />
       <div class="form-group full-width">
         <button type="button" class="action-btn" (click)="updateUser()">
-          Mentés
+          Save
         </button>
         <button type="button" class="cancel-btn" (click)="closeEditUserModal()">
-          Mégse
+          Cancel
         </button>
       </div>
     </form>
@@ -495,23 +541,23 @@
 
 <div class="delete-confirmation-modal" [class.show]="isDeleteUserModalVisible">
   <div class="modal-header">
-    <h2>Felhasználó törlése</h2>
+    <h2>Delete User</h2>
     <button class="close-button" (click)="closeDeleteUserModal()">
       &times;
     </button>
   </div>
   <div class="modal-body">
-    <p>Biztosan törölni szeretné a felhasználót?</p>
+    <p>Are you sure you want to delete the user?</p>
     <div class="form-group full-width">
       <button
         type="button"
         class="action-btn delete-btn"
         (click)="confirmDeleteUser()"
       >
-        Törlés
+        Delete
       </button>
       <button type="button" class="cancel-btn" (click)="closeDeleteUserModal()">
-        Mégse
+        Cancel
       </button>
     </div>
   </div>
@@ -519,23 +565,23 @@
 
 <div class="delete-confirmation-modal" [class.show]="isDeleteCarModalVisible">
   <div class="modal-header">
-    <h2>Autó törlése</h2>
+    <h2>car delete</h2>
     <button class="close-button" (click)="closeDeleteCarModal()">
       &times;
     </button>
   </div>
   <div class="modal-body">
-    <p>Biztosan törölni szeretné az autót?</p>
+    <p>Are you sure you want to delete the car?</p>
     <div class="form-group full-width">
       <button
         type="button"
         class="action-btn delete-btn"
         (click)="confirmDeleteCar()"
       >
-        Törlés
+        Delete
       </button>
       <button type="button" class="cancel-btn" (click)="closeDeleteCarModal()">
-        Mégse
+        Cancel
       </button>
     </div>
   </div>
@@ -546,28 +592,77 @@
   [class.show]="isDeleteBookingModalVisible"
 >
   <div class="modal-header">
-    <h2>Foglalás törlése</h2>
+    <h2>Delete bookings</h2>
     <button class="close-button" (click)="closeDeleteBookingModal()">
       &times;
     </button>
   </div>
   <div class="modal-body">
-    <p>Biztosan törölni szeretné a foglalást?</p>
+    <p>Are you sure you want to delete the booking?</p>
     <div class="form-group full-width">
       <button
         type="button"
         class="action-btn delete-btn"
         (click)="confirmDeleteBooking()"
       >
-        Törlés
+        Delete
       </button>
       <button
         type="button"
         class="cancel-btn"
         (click)="closeDeleteBookingModal()"
       >
-        Mégse
+        Cancel
       </button>
     </div>
   </div>
 </div>
+
+<section id="add-admin" class="admin-section">
+  <h2>Add Administrator</h2>
+  <form id="add-admin-form" (ngSubmit)="registerNewAdmin()">
+    <div class="form-group">
+      <label for="admin-name">Name:</label>
+      <input
+        type="text"
+        id="admin-name"
+        name="name"
+        [(ngModel)]="newAdmin.name"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="admin-email">Email:</label>
+      <input
+        type="email"
+        id="admin-email"
+        name="email"
+        [(ngModel)]="newAdmin.email"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="admin-password">Password:</label>
+      <input
+        type="password"
+        id="admin-password"
+        name="password"
+        [(ngModel)]="newAdmin.password"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="admin-personalId">Personal Id:</label>
+      <input
+        type="text"
+        id="admin-personalId"
+        name="personalId"
+        [(ngModel)]="newAdmin.personalId"
+        required
+      />
+    </div>
+    <div class="form-group full-width">
+      <button type="submit" class="action-btn">Add Administrator</button>
+    </div>
+  </form>
+</section>

@@ -1,3 +1,4 @@
+// login.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, from } from 'rxjs';
@@ -14,6 +15,9 @@ export class LoginService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
+  private isAdminSubject = new BehaviorSubject<boolean>(false);
+  isAdmin$ = this.isAdminSubject.asObservable();
+
   private profileImageUrlSubject = new BehaviorSubject<string | null>(
     'profile icon.webp'
   );
@@ -25,6 +29,7 @@ export class LoginService {
   private authTokenKey = 'authToken';
   private profileImageUrlKey = 'profileImageUrl';
   private userNameKey = 'userName';
+  private isAdminKey = 'isAdmin';
   private apiUrl =
     'http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/user/login';
 
@@ -32,11 +37,13 @@ export class LoginService {
     console.log('LoginService inicializálva');
     this.initializeFromLocalStorage().subscribe(() => {
       this.isLoggedInSubject.next(this.checkLoginStatus());
+      this.isAdminSubject.next(this.getIsAdmin());
       console.log(
         'Initial profileImageUrl:',
         this.profileImageUrlSubject.value
       );
       console.log('Initial userName:', this.userNameSubject.value);
+      console.log('Initial isAdmin:', this.isAdminSubject.value);
     });
   }
 
@@ -46,6 +53,7 @@ export class LoginService {
         const storedToken = localStorage.getItem(this.authTokenKey);
         const storedImageUrl = localStorage.getItem(this.profileImageUrlKey);
         const storedUserName = localStorage.getItem(this.userNameKey);
+        const storedIsAdmin = localStorage.getItem(this.isAdminKey); // Lekérdezzük az isAdmin-t
 
         if (storedToken) {
           this.isLoggedInSubject.next(true);
@@ -56,11 +64,15 @@ export class LoginService {
         if (storedUserName) {
           this.userNameSubject.next(storedUserName);
         }
+        if (storedIsAdmin) {
+          this.isAdminSubject.next(storedIsAdmin === 'true'); // Konvertáljuk boolean-ná
+        }
         console.log(
           'initializeFromLocalStorage - profileImageUrl:',
           storedImageUrl
         );
         console.log('initializeFromLocalStorage - userName:', storedUserName);
+        console.log('initializeFromLocalStorage - isAdmin:', storedIsAdmin);
       }),
       map(() => {})
     );
@@ -81,12 +93,14 @@ export class LoginService {
           response &&
           response.status === 'success' &&
           response.userName &&
-          response.profileImageUrl
+          response.profileImageUrl &&
+          response.isAdmin !== undefined // Ellenőrizzük, hogy az isAdmin létezik-e
         ) {
           this.loginSuccess(
             response.profileImageUrl,
             response.token,
-            response.userName
+            response.userName,
+            response.isAdmin
           );
           return response;
         }
@@ -95,26 +109,36 @@ export class LoginService {
     );
   }
 
-  loginSuccess(profileImageUrl: string, token: string, userName: string): void {
+  loginSuccess(
+    profileImageUrl: string,
+    token: string,
+    userName: string,
+    isAdmin: boolean
+  ): void {
     this.isLoggedInSubject.next(true);
+    this.isAdminSubject.next(isAdmin); // Beállítjuk az isAdmin állapotot
     this.profileImageUrlSubject.next(profileImageUrl);
     this.userNameSubject.next(userName);
     localStorage.setItem(this.authTokenKey, token);
     localStorage.setItem(this.profileImageUrlKey, profileImageUrl);
     localStorage.setItem(this.userNameKey, userName);
+    localStorage.setItem(this.isAdminKey, String(isAdmin)); // Tároljuk az isAdmin állapotot
     console.log('loginSuccess - profileImageUrl saved:', profileImageUrl);
     console.log('loginSuccess - userName saved:', userName);
+    console.log('loginSuccess - isAdmin saved:', isAdmin);
     this.closePanel();
     this.router.navigate(['/home']);
   }
 
   logout(): void {
     this.isLoggedInSubject.next(false);
+    this.isAdminSubject.next(false); // Kijelentkezéskor az isAdmin is false lesz
     this.profileImageUrlSubject.next('profile icon.webp');
     this.userNameSubject.next(null);
     localStorage.removeItem(this.authTokenKey);
     localStorage.removeItem(this.profileImageUrlKey);
     localStorage.removeItem(this.userNameKey);
+    localStorage.removeItem(this.isAdminKey); // Töröljük az isAdmin-t is
     this.router.navigate(['/login']);
   }
 
@@ -132,6 +156,10 @@ export class LoginService {
     return this.isLoggedInSubject.value;
   }
 
+  isAdmin(): boolean {
+    return this.isAdminSubject.value;
+  }
+
   public checkLoginStatus(): boolean {
     return !!localStorage.getItem(this.authTokenKey);
   }
@@ -142,5 +170,10 @@ export class LoginService {
 
   private getStoredUserName(): string | null {
     return localStorage.getItem(this.userNameKey);
+  }
+
+  private getIsAdmin(): boolean {
+    const storedIsAdmin = localStorage.getItem(this.isAdminKey);
+    return storedIsAdmin === 'true';
   }
 }
