@@ -1,1 +1,0 @@
-# InnovIT-vizsga-
