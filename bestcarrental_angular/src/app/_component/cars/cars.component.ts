@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  HostListener,
+  NgZone,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { LoginService } from '../../_service/login.service';
@@ -217,17 +223,28 @@ export class CarsComponent implements OnInit, OnDestroy {
   notificationMessage: string = '';
   notificationType: 'success' | 'error' = 'success';
   notificationTimeout: any;
+  showLoginPrompt: boolean = false;
+  selectedCarIdForPrompt: number | null = null;
 
   constructor(
     public loginService: LoginService,
     private router: Router,
-    private carsService: CarsService
+    private carsService: CarsService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
     this.loginService.checkLoginStatus();
     this.isLoggedInSubscription = this.loginService.isLoggedIn$.subscribe(
-      (loggedIn) => (this.isLoggedIn = loggedIn)
+      (loggedIn) => {
+        this.ngZone.run(() => {
+          this.isLoggedIn = loggedIn;
+          if (loggedIn) {
+            this.showLoginPrompt = false;
+            this.selectedCarIdForPrompt = null;
+          }
+        });
+      }
     );
     this.userNameSubscription = this.loginService.userName$.subscribe(
       (userName) => (this.userName = userName)
@@ -258,6 +275,8 @@ export class CarsComponent implements OnInit, OnDestroy {
     this.isLoggedIn = false;
     this.userName = null;
     this.profileImageUrl = null;
+    this.showLoginPrompt = false;
+    this.selectedCarIdForPrompt = null;
     this.router.navigate(['/']);
   }
 
@@ -333,6 +352,8 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   toggleDetails(carId: number) {
+    this.showLoginPrompt = false;
+    this.selectedCarIdForPrompt = null;
     if (this.selectedCarId === carId) {
       this.selectedCarId = null;
     } else {
@@ -348,6 +369,8 @@ export class CarsComponent implements OnInit, OnDestroy {
       targetElement.classList.contains('details-btn');
     if (!clickedInsideCarCard && !clickedOnDetailsButton) {
       this.selectedCarId = null;
+      this.showLoginPrompt = false;
+      this.selectedCarIdForPrompt = null;
     }
   }
 
@@ -377,7 +400,8 @@ export class CarsComponent implements OnInit, OnDestroy {
     this.showProfilePanel = false;
   }
 
-  showLoginNotificationBar(): void {
+  showLoginNotificationBar(event: Event): void {
+    event.stopPropagation();
     console.log('showLoginNotificationBar() hívva');
     this.notificationMessage = 'A foglaláshoz kérlek, jelentkezz be!';
     this.notificationType = 'error';
@@ -400,5 +424,22 @@ export class CarsComponent implements OnInit, OnDestroy {
         this.notificationMessage
       );
     }, 3000);
+  }
+
+  toggleLoginMessage(): void {
+    if (!this.isLoggedIn) {
+      this.showLoginPrompt = true;
+      const clickedButton = document.activeElement as HTMLElement;
+      const carCard = clickedButton.closest('.car-card');
+      if (carCard) {
+        const detailsButton = carCard.querySelector('.details-btn');
+        if (detailsButton && detailsButton.getAttribute('data-car-id')) {
+          this.selectedCarIdForPrompt = parseInt(
+            detailsButton.getAttribute('data-car-id')!,
+            10
+          );
+        }
+      }
+    }
   }
 }

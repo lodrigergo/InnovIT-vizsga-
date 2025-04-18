@@ -29,9 +29,9 @@ import { ProfilePanelComponent } from '../profile-panel/profile-panel.component'
               >
             </li>
 
-            <li><a routerLink="/home" routerLinkActive="active">About</a></li>
+            <li><a routerLink="/home" routerLinkActive="">About</a></li>
 
-            <li><a routerLink="/cars" routerLinkActive="active">Cars</a></li>
+            <li><a routerLink="/cars" routerLinkActive="">Cars</a></li>
             <li>
               <a [routerLink]="['/reservation']">Reservations</a>
             </li>

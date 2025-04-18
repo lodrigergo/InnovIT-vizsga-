@@ -547,6 +547,21 @@ h1 {
   background: linear-gradient(135deg, #e60000, #cc0000);
 }
 
+.disabled-reserve-btn {
+  background-color: #cccccc;
+  color: #666666;
+  border: 1px solid #999999;
+}
+
+.reservation-ready {
+  color: green;
+  font-weight: bold;
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+  padding: 2px;
+}
+
 /* ========== side navbar: turning over ========== */
 
 .pagination {

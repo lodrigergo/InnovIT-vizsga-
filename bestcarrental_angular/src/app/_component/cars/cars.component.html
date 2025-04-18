@@ -241,15 +241,37 @@
             </div>
           </div>
           <div class="price">{{ car.price }}€ / Day</div>
-          <button
-            class="reserve-btn"
-            (click)="
-              !isLoggedIn ? showLoginNotificationBar() : onReservationClick(car)
-            "
-            [disabled]="!isLoggedIn"
-          >
-            Reservation
-          </button>
+          <div class="reservation-container">
+            <button
+              class="reserve-btn"
+              (click)="
+                !isLoggedIn ? toggleLoginMessage() : onReservationClick(car)
+              "
+              [disabled]="!isLoggedIn"
+              [ngClass]="{ 'disabled-reserve-btn': !isLoggedIn }"
+              [style.cursor]="!isLoggedIn ? 'not-allowed' : 'pointer'"
+            >
+              Reservation
+            </button>
+            <div
+              id="login-prompt-{{ car.id }}"
+              class="login-prompt"
+              *ngIf="
+                !isLoggedIn &&
+                showLoginPrompt &&
+                selectedCarIdForPrompt === car.id
+              "
+            >
+              Log in to make a reservation
+            </div>
+            <div
+              id="reservation-ready-{{ car.id }}"
+              class="reservation-ready"
+              *ngIf="isLoggedIn"
+            >
+              You can reserve now!
+            </div>
+          </div>
         </div>
         <div
           *ngIf="showNotificationBar"
