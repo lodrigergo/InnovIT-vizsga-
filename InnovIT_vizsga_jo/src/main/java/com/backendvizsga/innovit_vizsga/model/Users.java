@@ -120,6 +120,13 @@ public class Users implements Serializable {
         this.personalId = personalId;
     }
     
+     public Users(Integer id, String name, String email, String personalId) {
+         this.id = id;
+        this.name = name;
+        this.email = email;
+        this.personalId = personalId;
+    }
+    
      public Users(Integer id, String name, String email, String password, String personalId, boolean isAdmin, boolean isDeleted, Date createdAt, Date deletedAt ) {
         this.id = id;
         this.name = name;
@@ -404,6 +411,31 @@ public class Users implements Serializable {
             em.close();
         }
     }
+    
+    public static Boolean isAdminExists(String email) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("isAdminExists");
+            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("resultOUT", Boolean.class, ParameterMode.OUT);
+
+            spq.setParameter("emailIN", email);
+
+            spq.execute();
+
+            Boolean result = Boolean.valueOf(spq.getOutputParameterValue("resultOUT").toString());
+
+            return result;
+
+        } catch (Exception ex) {
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            return null;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
 
     public static ArrayList<Users> getAllAdmin() {
         EntityManager em = emf.createEntityManager();
@@ -468,6 +500,32 @@ public class Users implements Serializable {
             em.close();
         }
     }
+    
+     public Boolean registerAdmin(Users a) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            StoredProcedureQuery spq = em.createStoredProcedureQuery("registerAdmin");
+            spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("personalIdIN", String.class, ParameterMode.IN);
+
+            spq.setParameter("nameIN", a.getName());
+            spq.setParameter("emailIN", a.getEmail());
+            spq.setParameter("passwordIN", a.getPassword());
+            spq.setParameter("personalIdIN", a.getPersonalId());
+            spq.execute();
+            return true;
+
+        } catch (Exception ex) {
+            System.err.println("Hiba: " + ex.getLocalizedMessage());
+            return false;
+        } finally {
+            em.clear();
+            em.close();
+        }
+    }
 
     public Boolean deleteUserById(Integer id) {
         EntityManager em = emf.createEntityManager();
@@ -494,7 +552,7 @@ public class Users implements Serializable {
 
     }
     
-    public Boolean updateUserById(Integer userId, String name, String email, String password, String personalId) {
+    public Boolean updateUserById(Integer userId, String name, String email, String personalId) {
         EntityManager em = emf.createEntityManager();
         Boolean toReturn = false;
 
@@ -506,13 +564,11 @@ public class Users implements Serializable {
             spq.registerStoredProcedureParameter("user_idIN", Integer.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("nameIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("emailIN", String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("passwordIN", String.class, ParameterMode.IN);
             spq.registerStoredProcedureParameter("personal_idIN", String.class, ParameterMode.IN);
 
             spq.setParameter("user_idIN", userId);
             spq.setParameter("nameIN", name);
             spq.setParameter("emailIN", email);
-            spq.setParameter("passwordIN", password);
             spq.setParameter("personal_idIN", personalId);
 
             spq.execute();
