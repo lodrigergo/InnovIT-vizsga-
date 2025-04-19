@@ -6,9 +6,9 @@
   height: 100%;
   background-color: #fff;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-  z-index: 2000;
+  z-index: 2001; /* Fontos, hogy az overlay felett legyen */
   overflow-y: auto;
-  transition: right 0.3s ease;
+  transition: right 0.3s ease-in-out; /* Javítva az ease-re */
 }
 
 .profile-panel.open {
@@ -103,7 +103,7 @@
   cursor: pointer;
   width: 100%;
   transition: background-color 0.3s ease;
-  margin-top: 30px;
+  margin-top: 150px;
 }
 
 .logout-btn:hover {
@@ -142,4 +142,60 @@
 #upload-image-btn i {
   font-size: 16px;
   color: #555;
+}
+
+.profile-image-selection {
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-wrap: wrap; /* Hogy a képek elférjenek több sorban */
+  justify-content: center; /* Középre igazítja a képeket vízszintesen */
+}
+
+.profile-image-selection h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  color: black;
+  width: 100%; /* Hogy a cím teljes szélességben megjelenjen */
+}
+
+.profile-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.profile-option:hover {
+  transform: scale(1.1);
+}
+
+.profile-panel-container {
+  position: relative; /* Szükséges az overlay abszolút pozicionálásához */
+  width: 100%;
+  height: 100%;
+}
+
+.profile-panel-overlay {
+  position: fixed; /* Lefedi a teljes képernyőt */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Áttetsző fekete */
+  z-index: 2000; /* A profil panel alatt */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0s 0.3s;
+}
+
+.profile-panel-overlay.show {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease-in-out, visibility 0s 0s;
 }

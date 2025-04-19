@@ -109,6 +109,39 @@
   transition: 0.3s;
 }
 
+.login-required-box {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  color: #000;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.login-required-box p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.login-btn {
+  background-color: red;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+  margin: 0 auto;
+  display: block;
+  transition: background 0.3s;
+}
+
+.login-btn:hover {
+  background: darkred;
+}
 /* About szekció alapbeállítások */
 #about {
   background-color: #fff;
@@ -165,6 +198,10 @@
   text-align: center;
   padding: 40px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative; /* Hozzáadva a relatív pozicionálást az info-box-hoz */
+  display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 
 .feature-item:hover {
@@ -178,12 +215,6 @@
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 15px;
-}
-
-.feature-item {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
 }
 
 .feature-item h3 {
@@ -209,6 +240,7 @@
   border-radius: 5px;
   font-weight: bold;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer; /* Hozzáadva a kurzort a kattinthatóság jelzésére */
 }
 
 .feature-item a:hover {
@@ -239,15 +271,7 @@
   pointer-events: auto;
 }
 
-/* Close gomb stílusa */
-.close-info {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #333;
-}
+/* Close gomb stílusa (eltávolítva, mert a kattintás bárhol a lapon zárja be) */
 
 /* Infó doboz tartalma */
 .info-box h2 {
@@ -261,7 +285,6 @@
   color: #555;
   font-size: 16px;
 }
-
 /* Carousel konténer */
 .carousel-container {
   overflow: hidden;
@@ -551,35 +574,74 @@
   transition: 0.5s;
 }
 
-.loader-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: none;
+.search-results-wrapper {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  z-index: 3000;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-/* Spinner stílus */
-.loader {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid red;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1.5s linear infinite;
+.search-results-container {
+  width: 80%;
+  max-width: 960px;
+  margin-bottom: 20px;
 }
 
-/* Forgó animáció */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+/* Egyedi kártya stílus a keresési eredményekhez */
+.search-result-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.search-result-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.search-result-card h3 {
+  color: #007bff;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.search-result-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.no-results {
+  font-style: italic;
+  color: #666;
+  text-align: center;
+}
+
+.notification-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50; /* Sikeres szín */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 5px;
+  z-index: 1002; /* A login panel és overlay fölött legyen */
+  opacity: 0.9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.notification-bar.error {
+  background-color: #f44336; /* Hiba szín */
 }

@@ -1,0 +1,488 @@
+.background-container {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
+    url("/talán\ a\ jó\ bg.jpg");
+  background-attachment: fixed;
+  color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero {
+  text-align: center;
+  padding: 50px 15px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+
+/* SEARCH BOX */
+.search-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  color: #000;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.search-box form .form-row {
+  margin-bottom: 20px;
+}
+
+.search-box form label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.search-box form input,
+.search-box form button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.vehicle-type {
+  display: flex;
+  gap: 10px;
+}
+
+.vehicle-option {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.vehicle-option.active {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.vehicle-option.active:hover {
+  background-color: blue;
+  transition: 0.3s;
+}
+
+.date-time {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.search-btn {
+  background: red;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+  margin: 0 auto;
+  display: block;
+}
+
+.search-btn:hover {
+  background: darkred;
+  transition: 0.3s;
+}
+
+/* About szekció alapbeállítások */
+#about {
+  background-color: #fff;
+  padding: 60px 20px;
+  text-align: center;
+  color: #333;
+}
+
+.about-header h2 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.about-header h2::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  margin: 0.5px auto 0;
+  transition: all 0.3s ease;
+  left: 0;
+  bottom: -5px;
+  position: absolute;
+  background: red;
+}
+
+.about-header h2:hover::after {
+  width: 100%;
+}
+
+.about-header p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 40px;
+  padding-left: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Features szekció */
+.about-features {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.feature-item {
+  flex: 1;
+  max-width: 300px;
+  text-align: center;
+  padding: 40px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.feature-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.feature-item h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.feature-item p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.feature-item a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.feature-item a:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Infó doboz alapstílusai */
+.info-box {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background-color: #fff;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.info-box.active {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Close gomb stílusa */
+.close-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Infó doboz tartalma */
+.info-box h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+}
+
+.info-box p {
+  line-height: 1.6;
+  color: #555;
+  font-size: 16px;
+}
+
+/* Carousel konténer */
+.carousel-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  height: 450px;
+  margin: 20px auto;
+}
+
+/* Carousel konténer */
+.carousel-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  height: 450px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Kártyák tárolója */
+.carousel {
+  display: flex;
+  gap: 20px;
+  animation: move-cards 40s linear infinite;
+  animation-delay: 5s;
+  max-width: 80%;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+/* Kártyák alapstílusa */
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 400px;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Első oldal stílusa */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.flip-card-front h3 {
+  font-size: 20px;
+  color: #333;
+}
+
+.flip-card-front .hover-info {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Hátsó oldal stílusa */
+.flip-card-back {
+  background-color: #007bff;
+  color: #ffffff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 10px;
+}
+
+.flip-card-back ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.flip-card-back ul li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.flip-card-back button {
+  background-color: #ffffff;
+  color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.flip-card-back button:hover {
+  background-color: #0056b3;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.about-quote {
+  font-size: 20px;
+  font-style: italic;
+  color: #555;
+  border-left: 4px solid #007bff;
+  padding-left: 15px;
+  margin: 0 auto;
+  max-width: 600px;
+  margin-top: 30px;
+  line-height: 1.6;
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Customer beállitása*/
+.customer-opinions {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.customer-opinions h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.customer-opinions p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.opinions-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.opinion-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stars {
+  color: #28a745;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.opinion-card p {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.customer-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.customer-info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.customer-info div {
+  display: flex;
+  flex-direction: column;
+}
+
+.customer-info strong {
+  font-size: 14px;
+  color: #333;
+}
+
+.customer-info p {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}

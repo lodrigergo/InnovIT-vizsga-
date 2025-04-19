@@ -1,1 +1,132 @@
-<p>reservation works!</p>
+<app-navbar></app-navbar>
+<app-login></app-login>
+<app-profile-panel></app-profile-panel>
+<app-register></app-register>
+<div class="container reservation-container">
+  <div
+    *ngIf="showDeleteNotification"
+    class="notification-bar"
+    [class.error]="isDeleteError"
+  >
+    {{ deleteNotificationMessage }}
+  </div>
+  <div *ngIf="showSnackbar" class="notification-bar">
+    {{ snackbarMessage }}
+    <p class="close-alert">Thank you for your reservation!</p>
+  </div>
+  <div class="step">
+    <div
+      [class.active]="currentStep === 1"
+      [class.completed]="isReservationConfirmedStepActive"
+    >
+      1. confirmation of reservation!
+    </div>
+    <div
+      [class.active]="currentStep === 2"
+      [class.completed]="isReservationSentStepCompleted"
+    >
+      2. bookings sent!
+    </div>
+  </div>
+  <h2 class="reservation-title">Confirmation of reservation!</h2>
+  <br />
+  <div class="main">
+    <div class="login-section">
+      <h3>Log in or register for the reservation!</h3>
+    </div>
+
+    <div
+      class="car-details-confirmed"
+      *ngIf="selectedCar && isReservationSentStepCompleted"
+    >
+      <h3>the seized vehicle</h3>
+      <img
+        [src]="selectedCar.image || carImage"
+        alt="{{ selectedCar.brand }} {{ selectedCar.model }}"
+      />
+      <div class="details">
+        <p>Brand: {{ selectedCar.brand }}</p>
+        <p>Model: {{ selectedCar.model }}</p>
+      </div>
+    </div>
+
+    <div
+      class="confirmation-message-section"
+      *ngIf="isReservationSentStepCompleted"
+    >
+      <h3>Thank you for your reservation!</h3>
+      <p>Your booking has been recorded.</p>
+      <p>If you wish to cancel your reservation, please contact us.</p>
+      <button
+        class="delete-button centered-delete-button"
+        (click)="deleteReservation()"
+      >
+        Cancel order
+      </button>
+    </div>
+
+    <div
+      class="car-info"
+      *ngIf="
+        !selectedCar &&
+        isLoggedIn &&
+        !isReservationSentStepCompleted &&
+        hasAvailableCars
+      "
+    >
+      <h3 style="padding: 20px">
+        The details of your car selected on the cars page will appear here!
+      </h3>
+      <p style="padding-bottom: 10px; justify-content: center; display: flex">
+        Please go to the cars page and choose a car to book.
+      </p>
+      <button class="btn" routerLink="/cars">Go to Cars Page!</button>
+    </div>
+    <div
+      class="car-info"
+      *ngIf="
+        !selectedCar &&
+        !isLoading &&
+        !hasAvailableCars &&
+        !isReservationSentStepCompleted
+      "
+    >
+      <h3>There are currently no cars available for booking!</h3>
+    </div>
+    <div *ngIf="isLoading && !isReservationSentStepCompleted" class="car-info">
+      <p>The selected car will appear here...</p>
+    </div>
+
+    <div
+      class="car-info confirm-section"
+      *ngIf="selectedCar && !isReservationSentStepCompleted"
+    >
+      <h3>Car</h3>
+      <img
+        [src]="selectedCar.image || carImage"
+        alt="{{ selectedCar.brand }} {{ selectedCar.model }}"
+      />
+      <div class="details">
+        <p>Brand: {{ selectedCar.brand }}</p>
+        <p>Model: {{ selectedCar.model }}</p>
+      </div>
+      <div class="rental-location"></div>
+      <div class="details">
+        <p>Pickup Date: Just in place.</p>
+        <p>Drop Date: Just in place.</p>
+      </div>
+      <h3>All:</h3>
+      <p>To be paid at customer service desk!</p>
+      <button class="reservation-button" (click)="confirmReservation()">
+        Book now
+      </button>
+    </div>
+  </div>
+</div>
+<div
+  id="loader-overlay"
+  class="loader-overlay"
+  [style.display]="isLoading ? 'flex' : 'none'"
+>
+  <div class="loader"></div>
+</div>

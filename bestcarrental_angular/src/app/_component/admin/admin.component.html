@@ -1,0 +1,668 @@
+<header class="admin-header">
+  <div class="container">
+    <h1>Admin Dashboard</h1>
+    <nav>
+      <ul class="nav-links">
+        <li>
+          <a href="#users"><i class="fas fa-users"></i> Users</a>
+        </li>
+        <li>
+          <a href="#cars"><i class="fas fa-car"></i> Cars</a>
+        </li>
+        <li>
+          <a href="#bookings"
+            ><i class="fas fa-calendar-alt"></i> Reservations</a
+          >
+        </li>
+        <li>
+          <a id="logout-btn" (click)="logout()" style="cursor: pointer">
+            <i class="fas fa-sign-out-alt"></i> Exit
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="admin-content">
+  <section id="users" class="admin-section" #usersSection>
+    <h2>Managing users</h2>
+    <button id="load-users-btn" class="action-btn" (click)="loadUsers()">
+      Load users
+    </button>
+    <table id="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Operations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.isAdmin ? "Admin" : "User" }}</td>
+          <td>
+            <button class="edit-btn" (click)="openEditUserModal(user)">
+              Edit
+            </button>
+            <button class="delete-btn" (click)="openDeleteUserModal(user.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="admins" class="admin-section" #adminsSection>
+    <h2>Managing administrators</h2>
+    <button id="load-admins-btn" class="action-btn" (click)="loadAdmins()">
+      Load administrators
+    </button>
+    <table id="admins-table" *ngIf="admins.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Operations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td>{{ admin.id }}</td>
+          <td>{{ admin.name }}</td>
+          <td>{{ admin.email }}</td>
+          <td>
+            <button class="edit-btn" (click)="openEditAdminModal(admin)">
+              Edit
+            </button>
+            <button class="delete-btn" (click)="openDeleteAdminModal(admin.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="edit-admin-modal" [class.show]="isEditAdminModalVisible">
+    <div class="modal-header">
+      <h2>Edit administrator</h2>
+      <button class="close-button" (click)="closeEditAdminModal()">
+        &times;
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="edit-admin-form" *ngIf="selectedAdmin">
+        <div class="form-group">
+          <label for="edit-admin-username">Username:</label>
+          <input
+            type="text"
+            id="edit-admin-username"
+            name="name"
+            [(ngModel)]="selectedAdmin.name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="edit-admin-email">Email:</label>
+          <input
+            type="email"
+            id="edit-admin-email"
+            name="email"
+            [(ngModel)]="selectedAdmin.email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="edit-admin-personalId">Personal ID:</label>
+          <input
+            type="text"
+            id="edit-admin-personalId"
+            name="personalId"
+            [(ngModel)]="selectedAdmin.personalId"
+            required
+          />
+        </div>
+        <div class="form-group full-width">
+          <button type="button" class="action-btn" (click)="updateAdmin()">
+            Save
+          </button>
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="closeEditAdminModal()"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="delete-confirmation-modal"
+    [class.show]="isDeleteAdminModalVisible"
+  >
+    <div class="modal-body">
+      <p>Are you sure you want to delete the administrator?</p>
+      <div class="full-width">
+        <button
+          type="button"
+          class="action-btn delete-btn"
+          (click)="confirmDeleteAdmin()"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="closeDeleteAdminModal()"
+        >
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section id="cars" class="admin-section" #carsSection>
+    <h2>Cars management</h2>
+    <button id="load-cars-btn" class="action-btn" (click)="loadCars()">
+      Load cars
+    </button>
+    <table id="cars-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>License Plate</th>
+          <th>Year</th>
+          <th>Fuel</th>
+          <th>Daily price</th>
+          <th>Transmission</th>
+          <th>Doors</th>
+          <th>AC</th>
+          <th>Seats</th>
+          <th>Picture</th>
+          <th>Operations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let car of cars">
+          <td>{{ car.id }}</td>
+          <td>{{ car.brand }}</td>
+          <td>{{ car.model }}</td>
+          <td>{{ car.licensePlate }}</td>
+          <td>{{ car.year }}</td>
+          <td>{{ car.fuelType }}</td>
+          <td>{{ car.pricePerDay }}</td>
+          <td>{{ car.transmission }}</td>
+          <td>{{ car.doors }}</td>
+          <td>{{ car.AC ? "Igen" : "Nem" }}</td>
+          <td>{{ car.seats }}</td>
+          <td>
+            <img
+              [src]="
+                'http://127.0.0.1:8080/InnovIT_vizsga-1.0-SNAPSHOT/webresources/images/' +
+                car.image
+              "
+              alt="Car Image"
+              style="width: 100px"
+            />
+          </td>
+          <td>
+            <button class="edit-btn" (click)="openEditCarModal(car)">
+              Edit
+            </button>
+            <button class="delete-btn" (click)="openDeleteCarModal(car.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="bookings" class="admin-section" #bookingsSection>
+    <h2>Booking management</h2>
+    <button id="load-bookings-btn" class="action-btn" (click)="loadBookings()">
+      Load reservations
+    </button>
+    <table id="bookings-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>UserID</th>
+          <th>CarID</th>
+          <th>Pickup Date</th>
+          <th>Return Date</th>
+          <th>Operations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td>{{ booking.id }}</td>
+          <td>{{ booking.userId }}</td>
+          <td>{{ booking.carId }}</td>
+          <td>{{ booking.pickupDate }}</td>
+          <td>{{ booking.returnDate }}</td>
+          <td>
+            <button
+              class="delete-btn"
+              (click)="openDeleteBookingModal(booking.id)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="add-car" class="admin-section">
+    <h2>Add Car</h2>
+    <form id="add-car-form">
+      <div class="form-group">
+        <label for="car-brand">Brand:</label>
+        <input type="text" id="car-brand" name="brand" required />
+      </div>
+      <div class="form-group">
+        <label for="car-model">Model:</label>
+        <input type="text" id="car-model" name="model" required />
+      </div>
+      <div class="form-group">
+        <label for="car-licensePlate">License Plate</label>
+        <input type="text" id="car-licensePlate" name="licensePlate" required />
+      </div>
+      <div class="form-group">
+        <label for="car-year">Year:</label>
+        <input
+          type="number"
+          id="car-year"
+          name="year"
+          pattern="[0-9]{4}"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="car-fuelType">Fuel:</label>
+        <input type="text" id="car-fuelType" name="fuelType" required />
+      </div>
+      <div class="form-group">
+        <label for="car-price">Price:</label>
+        <input
+          type="number"
+          step="0.01"
+          id="car-price"
+          name="pricePerDay"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="car-transmission">Transmission:</label>
+        <input type="text" id="car-transmission" name="transmission" required />
+      </div>
+      <div class="form-group">
+        <label for="car-doors">Doors:</label>
+        <input type="number" id="car-doors" name="doors" required />
+      </div>
+      <div class="form-group">
+        <label for="car-ac">AC:</label>
+        <input type="checkbox" id="car-ac" name="ac" />
+      </div>
+      <div class="form-group">
+        <label for="car-seat">Seats:</label>
+        <input type="number" id="car-seat" name="seats" required />
+      </div>
+      <div class="form-group">
+        <label for="car-image">Image URL:</label>
+        <input type="text" id="car-image" name="image" required />
+      </div>
+      <div class="form-group full-width">
+        <button
+          type="button"
+          id="add-car-btn"
+          class="action-btn"
+          (click)="addCar()"
+        >
+          Add Cars
+        </button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<div
+  class="modal-overlay"
+  [class.show]="
+    isEditCarModalVisible ||
+    isEditUserModalVisible ||
+    isDeleteUserModalVisible ||
+    isDeleteCarModalVisible ||
+    isDeleteBookingModalVisible ||
+    isEditAdminModalVisible ||
+    isDeleteAdminModalVisible
+  "
+></div>
+
+<div class="edit-car-modal" [class.show]="isEditCarModalVisible">
+  <div class="modal-header">
+    <h2>Car editing</h2>
+    <button class="close-button" (click)="closeEditCarModal()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <form id="edit-car-form" *ngIf="selectedCar">
+      <div class="form-group">
+        <label for="edit-car-brand">Brand:</label>
+        <input
+          type="text"
+          id="edit-car-brand"
+          name="brand"
+          [(ngModel)]="selectedCar.brand"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-model">Model:</label>
+        <input
+          type="text"
+          id="edit-car-model"
+          name="model"
+          [(ngModel)]="selectedCar.model"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-licensePlate">License Plate:</label>
+        <input
+          type="text"
+          id="edit-car-licensePlate"
+          name="licensePlate"
+          [(ngModel)]="selectedCar.licensePlate"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-year">Year:</label>
+        <input
+          type="number"
+          id="edit-car-year"
+          name="year"
+          [(ngModel)]="selectedCar.year"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-fuelType">Fuel:</label>
+        <input
+          type="text"
+          id="edit-car-fuelType"
+          name="fuelType"
+          [(ngModel)]="selectedCar.fuelType"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-price">Price:</label>
+        <input
+          type="number"
+          step="0.01"
+          id="edit-car-price"
+          name="pricePerDay"
+          [(ngModel)]="selectedCar.pricePerDay"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-transmission">Transmission:</label>
+        <input
+          type="text"
+          id="edit-car-transmission"
+          name="transmission"
+          [(ngModel)]="selectedCar.transmission"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-doors">Doors:</label>
+        <input
+          type="number"
+          id="edit-car-doors"
+          name="doors"
+          [(ngModel)]="selectedCar.doors"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-ac">AC:</label>
+        <input
+          type="checkbox"
+          id="edit-car-ac"
+          name="ac"
+          [(ngModel)]="selectedCar.AC"
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-seats">Seats:</label>
+        <input
+          type="number"
+          id="edit-car-seats"
+          name="seats"
+          [(ngModel)]="selectedCar.seats"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-car-image">Image URL:</label>
+        <input
+          type="text"
+          id="edit-car-image"
+          name="image"
+          [(ngModel)]="selectedCar.image"
+          required
+        />
+      </div>
+      <div class="form-group full-width">
+        <button type="button" class="action-btn" (click)="updateCar()">
+          Save
+        </button>
+        <button type="button" class="cancel-btn" (click)="closeEditCarModal()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  class="edit-user-modal"
+  [class.show]="isEditUserModalVisible"
+  *ngIf="isEditUserModalVisible && selectedUser"
+>
+  <div class="modal-header">
+    <h2>Edit User</h2>
+    <button class="close-button" (click)="closeEditUserModal()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <form id="edit-user-form">
+      <div class="form-group">
+        <label for="edit-user-name">Name:</label>
+        <input
+          type="text"
+          id="edit-user-name"
+          name="name"
+          [(ngModel)]="selectedUser.name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-user-email">Email:</label>
+        <input
+          type="email"
+          id="edit-user-email"
+          name="email"
+          [(ngModel)]="selectedUser.email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-user-personalId">Personal Id:</label>
+        <input
+          type="text"
+          id="edit-user-personalId"
+          name="personalId"
+          [(ngModel)]="selectedUser.personalId"
+          required
+        />
+      </div>
+      <input
+        type="hidden"
+        name="personalId"
+        [(ngModel)]="selectedUser.personalId"
+      />
+      <div class="form-group full-width">
+        <button type="button" class="action-btn" (click)="updateUser()">
+          Save
+        </button>
+        <button type="button" class="cancel-btn" (click)="closeEditUserModal()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="delete-confirmation-modal" [class.show]="isDeleteUserModalVisible">
+  <div class="modal-header">
+    <h2>Delete User</h2>
+    <button class="close-button" (click)="closeDeleteUserModal()">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the user?</p>
+    <div class="form-group full-width">
+      <button
+        type="button"
+        class="action-btn delete-btn"
+        (click)="confirmDeleteUser()"
+      >
+        Delete
+      </button>
+      <button type="button" class="cancel-btn" (click)="closeDeleteUserModal()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="delete-confirmation-modal" [class.show]="isDeleteCarModalVisible">
+  <div class="modal-header">
+    <h2>car delete</h2>
+    <button class="close-button" (click)="closeDeleteCarModal()">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the car?</p>
+    <div class="form-group full-width">
+      <button
+        type="button"
+        class="action-btn delete-btn"
+        (click)="confirmDeleteCar()"
+      >
+        Delete
+      </button>
+      <button type="button" class="cancel-btn" (click)="closeDeleteCarModal()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="delete-confirmation-modal"
+  [class.show]="isDeleteBookingModalVisible"
+>
+  <div class="modal-header">
+    <h2>Delete bookings</h2>
+    <button class="close-button" (click)="closeDeleteBookingModal()">
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the booking?</p>
+    <div class="form-group full-width">
+      <button
+        type="button"
+        class="action-btn delete-btn"
+        (click)="confirmDeleteBooking()"
+      >
+        Delete
+      </button>
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="closeDeleteBookingModal()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<section id="add-admin" class="admin-section">
+  <h2>Add Administrator</h2>
+  <form id="add-admin-form" (ngSubmit)="registerNewAdmin()">
+    <div class="form-group">
+      <label for="admin-name">Name:</label>
+      <input
+        type="text"
+        id="admin-name"
+        name="name"
+        [(ngModel)]="newAdmin.name"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="admin-email">Email:</label>
+      <input
+        type="email"
+        id="admin-email"
+        name="email"
+        [(ngModel)]="newAdmin.email"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="admin-password">Password:</label>
+      <input
+        type="password"
+        id="admin-password"
+        name="password"
+        [(ngModel)]="newAdmin.password"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="admin-personalId">Personal Id:</label>
+      <input
+        type="text"
+        id="admin-personalId"
+        name="personalId"
+        [(ngModel)]="newAdmin.personalId"
+        required
+      />
+    </div>
+    <div class="form-group full-width">
+      <button type="submit" class="action-btn">Add Administrator</button>
+    </div>
+  </form>
+</section>

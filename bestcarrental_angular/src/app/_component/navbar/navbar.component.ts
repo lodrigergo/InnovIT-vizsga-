@@ -1,12 +1,14 @@
-// src/app/_component/navbar/navbar.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../_service/login.service';
+import { ProfilePanelService } from '../../_service/profile-panel.service';
+import { Router, RouterModule } from '@angular/router';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProfilePanelComponent, RouterModule],
   template: `
     <header class="navbar">
       <div class="container">
@@ -18,33 +20,75 @@ import { LoginService } from '../../_service/login.service';
         />
         <nav>
           <ul class="nav-links">
-            <li><a href="#home" class="home-link" id="home-link">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="../cars/cars.component.html">Cars</a></li>
             <li>
-              <a href="../reservation/reservation.component.html"
-                >Reservations</a
+              <a
+                routerLink="/"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >Home</a
+              >
+            </li>
+
+            <li><a routerLink="/home" routerLinkActive="">About</a></li>
+
+            <li><a routerLink="/cars" routerLinkActive="">Cars</a></li>
+            <li>
+              <a [routerLink]="['/reservation']">Reservations</a>
+            </li>
+            <li *ngIf="loginService.isAdmin$ | async">
+              <a routerLink="/admin" routerLinkActive="active"
+                ><i class="fa fa-cog"></i> Admin</a
               >
             </li>
           </ul>
         </nav>
-        <!-- A login gomb megnyomásával meghívjuk a service openPanel() metódusát -->
-        <button class="login-btn" (click)="openLoginPanel()">Login</button>
+        <button
+          *ngIf="!(loginService.isLoggedIn$ | async)"
+          class="login-btn"
+          (click)="openLoginPanel()"
+        >
+          Login
+        </button>
         <img
-          src="profile icon.webp"
+          *ngIf="loginService.isLoggedIn$ | async"
+          [src]="loginService.profileImageUrl$ | async"
           alt="Profile Icon"
           id="profile-icon"
-          style="display: none; width: 40px; height: 40px; border-radius: 30%; margin-right: 20px;"
+          class="profileIconInHomePage"
+          style="width: 40px; height: 40px; border-radius: 30%; margin-right: 20px; cursor: pointer; transition: transform 0.3s ease;"
+          (click)="openProfilePanel()"
         />
       </div>
     </header>
+    <app-profile-panel></app-profile-panel>
+    <div
+      *ngIf="profilePanelService.profilePanelOpen$ | async"
+      class="overlay show"
+      (click)="closeProfilePanel()"
+    ></div>
   `,
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
-  constructor(private loginService: LoginService) {}
+  constructor(
+    public loginService: LoginService,
+    public profilePanelService: ProfilePanelService,
+    private router: Router
+  ) {}
 
   openLoginPanel(): void {
     this.loginService.openPanel();
+  }
+
+  openProfilePanel(): void {
+    this.profilePanelService.openPanel();
+  }
+
+  closeProfilePanel(): void {
+    this.profilePanelService.closePanel();
+  }
+
+  logout(): void {
+    this.loginService.logout();
   }
 }

@@ -1,1 +1,340 @@
+<app-navbar></app-navbar>
+<app-login></app-login>
+<app-profile-panel></app-profile-panel>
+<app-register></app-register>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Filter</h2>
+    <div class="filter-group">
+      <h3>Brand</h3>
+      <label
+        ><input
+          type="checkbox"
+          id="Fiat"
+          name="Fiat"
+          (change)="updateFilter('brand', 'Fiat', $event)"
+        />
+        Fiat</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Honda"
+          name="Honda"
+          (change)="updateFilter('brand', 'Honda', $event)"
+        />
+        Honda</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Volkswagen"
+          name="Volkswagen"
+          (change)="updateFilter('brand', 'Volkswagen', $event)"
+        />
+        Volkswagen</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Volvo"
+          name="Volvo"
+          (change)="updateFilter('brand', 'Volvo', $event)"
+        />
+        Volvo</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Toyota"
+          name="Toyota"
+          (change)="updateFilter('brand', 'Toyota', $event)"
+        />
+        Toyota</label
+      >
+    </div>
+    <div class="filter-group">
+      <h3>Persons</h3>
+      <label
+        ><input
+          type="checkbox"
+          id="9"
+          name="9"
+          (change)="updateFilter('persons', '9', $event)"
+        />
+        9</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="7"
+          name="7"
+          (change)="updateFilter('persons', '7', $event)"
+        />
+        7</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="5"
+          name="5"
+          (change)="updateFilter('persons', '5', $event)"
+        />
+        5</label
+      >
+    </div>
+    <div class="filter-group">
+      <h3>Price</h3>
+      <label
+        ><input
+          type="checkbox"
+          id="10€-30€"
+          name="10€-30€"
+          (change)="updateFilter('price', '10€-30€', $event)"
+        />
+        10€ - 30€</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="30€-50€"
+          name="30€-50€"
+          (change)="updateFilter('price', '30€-50€', $event)"
+        />
+        30€ - 50€</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="50€-61€"
+          name="50€-61€"
+          (change)="updateFilter('price', '50€-61€', $event)"
+        />
+        50€ - 61€</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="61€-85€"
+          name="61€-85€"
+          (change)="updateFilter('price', '61€-85€', $event)"
+        />
+        61€ - 85€</label
+      >
+    </div>
+    <div class="filter-group">
+      <h3>Year</h3>
+      <label
+        ><input
+          type="checkbox"
+          id="2018"
+          name="2018"
+          (change)="updateFilter('year', '2018', $event)"
+        />
+        2018</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2019"
+          name="2019"
+          (change)="updateFilter('year', '2019', $event)"
+        />
+        2019</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2020"
+          name="2020"
+          (change)="updateFilter('year', '2020', $event)"
+        />
+        2020</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2021"
+          name="2021"
+          (change)="updateFilter('year', '2021', $event)"
+        />
+        2021</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="2022"
+          name="2022"
+          (change)="updateFilter('year', '2022', $event)"
+        />
+        2022</label
+      >
+    </div>
+    <div class="filter-group">
+      <h3>Fuel</h3>
+      <label
+        ><input
+          type="checkbox"
+          id="Petrol"
+          name="Petrol"
+          (change)="updateFilter('fuel', 'Petrol', $event)"
+        />
+        Petrol</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Diesel"
+          name="Diesel"
+          (change)="updateFilter('fuel', 'Diesel', $event)"
+        />
+        Diesel</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          id="Hybrid"
+          name="Hybrid"
+          (change)="updateFilter('fuel', 'Hybrid', $event)"
+        />
+        Hybrid</label
+      >
+    </div>
+    <button class="reset-filters-btn" (click)="resetFilters()">
+      Reset Filters
+    </button>
+  </aside>
+  <main class="main-content">
+    <h1>Cars</h1>
+    <div class="arrangement">
+      <label for="arrange"> Arrangement:</label>
+      <select id="arrange" (change)="onArrangementChange($event)">
+        <option value="none">None</option>
+        <option value="price">Increases by price</option>
+        <option value="price-desc">Descending by price</option>
+      </select>
+    </div>
+    <div class="cars-grid">
+      <div *ngFor="let car of filteredCars" class="car-card">
+        <img [src]="car.image" [alt]="car.brand + ' ' + car.model" />
+        <h3>{{ car.brand }} {{ car.model }}</h3>
+        <button class="details-btn" (click)="toggleDetails(car.id)">
+          Check out our car
+        </button>
+        <div
+          class="details-panel"
+          [ngClass]="{ active: selectedCarId === car.id }"
+        >
+          <div class="details">
+            <div><i class="fas fa-car"></i> {{ car.details.doors }} doors</div>
+            <div>
+              <i class="fas fa-gas-pump"></i> {{ car.details.fuelType }}
+            </div>
+            <div>
+              <i class="fas fa-cogs"></i> {{ car.details.transmission }}
+            </div>
+            <div *ngIf="car.details.airConditioning">
+              <i class="fas fa-snowflake"></i> AC
+            </div>
+            <div>
+              <i class="fas fa-user-friends"></i> {{ car.details.seats }} seats
+            </div>
+          </div>
+          <div class="price">{{ car.price }}€ / Day</div>
+          <div class="reservation-container">
+            <button
+              class="reserve-btn"
+              (click)="
+                !isLoggedIn ? toggleLoginMessage() : onReservationClick(car)
+              "
+              [disabled]="!isLoggedIn"
+              [ngClass]="{ 'disabled-reserve-btn': !isLoggedIn }"
+              [style.cursor]="!isLoggedIn ? 'not-allowed' : 'pointer'"
+            >
+              Reservation
+            </button>
+            <div
+              id="login-prompt-{{ car.id }}"
+              class="login-prompt"
+              *ngIf="
+                !isLoggedIn &&
+                showLoginPrompt &&
+                selectedCarIdForPrompt === car.id
+              "
+            >
+              Log in to make a reservation
+            </div>
+            <div
+              id="reservation-ready-{{ car.id }}"
+              class="reservation-ready"
+              *ngIf="isLoggedIn"
+            >
+              You can reserve now!
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="showNotificationBar"
+          class="notification-bar"
+          [ngClass]="{ error: notificationType === 'error' }"
+        >
+          {{ notificationMessage }}
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3 class="horizontal">Best Car Rental</h3>
+      <p class="aligned-text">
+        We are a trusted car rental company dedicated to providing reliable
+        vehicles and exceptional service to meet all your travel needs. Explore
+        hassle-free rentals with flexible options and competitive rates.
+      </p>
+    </div>
+    <div class="footer-section">
+      <h3>Take it up with us connection</h3>
+      <p><i class="fas fa-address-book"></i> Contact</p>
+      <p><i class="fas fa-phone"></i> 06/20 123 4567</p>
+      <p>
+        <i class="fas fa-envelope"></i>
+        <a href="https://mail.google.com/mail/u/1/" target="_blank">
+          bestcarrentalmadeinhungary"&#64;"gmail.com</a
+        >
+      </p>
+    </div>
+    <div class="footer-section">
+      <h3>Who are we?</h3>
+      <a [routerLink]="['/']" fragment="about"
+        ><i class="fas fa-info-circle"></i> About</a
+      >
+    </div>
+    <div class="footer-section">
+      <h3>Follow us!</h3>
+      <p>
+        <a
+          href="https://www.facebook.com/profile.php?id=100010122408583&locale=hu_HU"
+          target="_blank"
+        >
+          <i class="fab fa-facebook"></i> Facebook</a
+        >
+      </p>
+      <p>
+        <a href="https://www.instagram.com/timar._david/" target="_blank">
+          <i class="fab fa-instagram"></i> Instagram</a
+        >
+      </p>
+      <p>
+        <a href="https://x.com/home" target="_blank">
+          <i class="fab fa-twitter"></i> Twitter</a
+        >
+      </p>
+    </div>
+  </div>
+</footer>
 
+<div id="loader-overlay" class="loader-overlay" style="display: none">
+  <div class="loader"></div>
+</div>
