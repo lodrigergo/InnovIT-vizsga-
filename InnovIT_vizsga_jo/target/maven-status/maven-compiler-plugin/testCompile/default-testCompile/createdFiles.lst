@@ -1,3 +1,5 @@
-RegisterTest.class
-SearchTest\SearchTest.class
+testSearchDateAndCarList.class
+CarsPageTest.class
 LoginTest.class
+RegisterTest.class
+NavbarNavigationTest.class
