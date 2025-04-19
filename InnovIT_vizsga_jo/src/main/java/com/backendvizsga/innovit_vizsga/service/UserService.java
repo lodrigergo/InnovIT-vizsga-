@@ -95,11 +95,6 @@ public class UserService {
         return toReturn;
     }
 
-
-
-
-
-
     
     public ArrayList<Users> getAllUser() {
         ArrayList<Users> userList = new ArrayList<>();
@@ -177,6 +172,51 @@ public class UserService {
     toReturn.put("statusCode", statusCode);
     return toReturn;
 }
+   
+    public JSONObject registerAdmin(Users a) {
+    JSONObject toReturn = new JSONObject();
+    String status = "success";
+    int statusCode = 200;
+
+     //Ellenőrizzük az e-mail formátumot
+    if (isValidEmail(a.getEmail())) {
+        // Ellenőrizzük a jelszó formátumot
+        if (isValidPassword(a.getPassword())) {
+            // Ellenőrizzük, hogy létezik-e a felhasználó
+            Boolean adminIsExists = Users.isAdminExists(a.getEmail());
+
+            if (adminIsExists == null) {
+                // Ha a metódus null értéket adott vissza
+                status = "DatabaseError";
+                statusCode = 500;
+            } else if (adminIsExists) {
+                // Ha a felhasználó már létezik
+                status = "AdminAlreadyExists";
+                statusCode = 417;
+            } else {
+                // Új felhasználó regisztrálása
+                boolean registerAdmin = layer.registerAdmin(a);
+                if (!registerAdmin) {
+                    // Ha a regisztráció sikertelen
+                    status = "RegistrationFailed";
+                    statusCode = 417;
+                }
+            }
+        } else {
+            // Ha a jelszó nem érvényes
+            status = "InvalidPassword";
+            statusCode = 417;
+        }
+    } else {
+        // Ha az email nem érvényes
+        status = "InvalidEmail";
+        statusCode = 417;
+    }
+
+    toReturn.put("status", status);
+    toReturn.put("statusCode", statusCode);
+    return toReturn;
+}
 
    public Boolean deleteUserById(Integer id){
         Users u = getUserById(id);
@@ -208,7 +248,7 @@ public class UserService {
                 throw new IllegalArgumentException("Personal ID cannot be null or empty.");
             }
 
-            boolean result = layer.updateUserById(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getPersonalId());
+            boolean result = layer.updateUserById(u.getId(), u.getName(), u.getEmail(), u.getPersonalId());
 
             if (!result) {
                 status = "error";
