@@ -241,9 +241,7 @@ public class UserService {
             if (!isValidEmail(u.getEmail())) {
                 throw new IllegalArgumentException("Invalid email format.");
             }
-            if (!isValidPassword(u.getPassword())) {
-                throw new IllegalArgumentException("Invalid password format.");
-            }
+           
             if (u.getPersonalId() == null || u.getPersonalId().trim().isEmpty()) {
                 throw new IllegalArgumentException("Personal ID cannot be null or empty.");
             }

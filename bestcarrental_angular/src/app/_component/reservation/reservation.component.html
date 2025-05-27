@@ -19,27 +19,25 @@
       [class.active]="currentStep === 1"
       [class.completed]="isReservationConfirmedStepActive"
     >
-      1. confirmation of reservation!
+      1. Confirmation Of Reservation
     </div>
     <div
       [class.active]="currentStep === 2"
       [class.completed]="isReservationSentStepCompleted"
     >
-      2. bookings sent!
+      2. Booking Sent
     </div>
   </div>
-  <h2 class="reservation-title">Confirmation of reservation!</h2>
+  <h2 class="reservation-title">Confirmation Of Reservation!</h2>
   <br />
   <div class="main">
-    <div class="login-section">
-      <h3>Log in or register for the reservation!</h3>
-    </div>
+   
 
     <div
       class="car-details-confirmed"
       *ngIf="selectedCar && isReservationSentStepCompleted"
     >
-      <h3>the seized vehicle</h3>
+      <h3>Reserved vehicle</h3>
       <img
         [src]="selectedCar.image || carImage"
         alt="{{ selectedCar.brand }} {{ selectedCar.model }}"
@@ -56,7 +54,7 @@
     >
       <h3>Thank you for your reservation!</h3>
       <p>Your booking has been recorded.</p>
-      <p>If you wish to cancel your reservation, please contact us.</p>
+      <p>If you wish to cancel your reservation.</p>
       <button
         class="delete-button centered-delete-button"
         (click)="deleteReservation()"
@@ -75,7 +73,7 @@
       "
     >
       <h3 style="padding: 20px">
-        The details of your car selected on the cars page will appear here!
+         Your selected car will appear here!
       </h3>
       <p style="padding-bottom: 10px; justify-content: center; display: flex">
         Please go to the cars page and choose a car to book.
@@ -94,7 +92,7 @@
       <h3>There are currently no cars available for booking!</h3>
     </div>
     <div *ngIf="isLoading && !isReservationSentStepCompleted" class="car-info">
-      <p>The selected car will appear here...</p>
+      <p>The reserved car will appear here...</p>
     </div>
 
     <div
@@ -112,10 +110,9 @@
       </div>
       <div class="rental-location"></div>
       <div class="details">
-        <p>Pickup Date: Just in place.</p>
-        <p>Drop Date: Just in place.</p>
+        <p>Pickup Date: At our office.</p>
+        <p>Drop Date: At our office.</p>
       </div>
-      <h3>All:</h3>
       <p>To be paid at customer service desk!</p>
       <button class="reservation-button" (click)="confirmReservation()">
         Book now

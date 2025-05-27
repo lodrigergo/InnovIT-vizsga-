@@ -29,7 +29,7 @@ import { ProfilePanelComponent } from '../profile-panel/profile-panel.component'
               >
             </li>
 
-            <li><a routerLink="/home" routerLinkActive="">About</a></li>
+            <li><a routerLink="/home#about" routerLinkActive="">About</a></li>
 
             <li><a routerLink="/cars" routerLinkActive="">Cars</a></li>
             <li>
