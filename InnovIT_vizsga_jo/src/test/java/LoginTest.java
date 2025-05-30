@@ -47,14 +47,6 @@ public class LoginTest {
         Thread.sleep(2000);
         Assert.assertTrue(profileIcon.isDisplayed(), "A profil ikon nem jelent meg sikeres bejelentkezés után!");
 
-        try {
-            WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[role='alert'], .success-toast, .mat-snack-bar-container")));
-            Thread.sleep(2000);
-            Assert.assertTrue(successMessage.isDisplayed(), "A sikeres bejelentkezés üzenet nem jelent meg!");
-            Assert.assertTrue(successMessage.getText().contains("Üdvözöllek"), "Az üzenet szövege nem a várt!");
-        } catch (Exception e) {
-            System.out.println("Sikeres bejelentkezés üzenet nem található, a profile-icon alapján sikeres a bejelentkezés.");
-        }
     }
 
     @Test

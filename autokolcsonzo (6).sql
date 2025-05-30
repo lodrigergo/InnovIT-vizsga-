@@ -53,7 +53,7 @@ UPDATE `users`
     SET `users`.`password` = SHA1(newPasswordIN)
     WHERE `users`.`id` = idIN;
 ELSE
-SELECT "Nincs jogos ehhez csicska";
+SELECT "Nincs jogod ehhez!";
 END IF;
 
 END$$
