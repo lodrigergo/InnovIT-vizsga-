@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:8889
--- Létrehozás ideje: 2025. Ápr 27. 21:59
+-- Létrehozás ideje: 2025. Máj 30. 12:54
 -- Kiszolgáló verziója: 8.0.40
 -- PHP verzió: 8.3.14
 
@@ -20,11 +20,14 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `autokolcsonzo`
 --
+CREATE DATABASE IF NOT EXISTS `autokolcsonzo` DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci;
+USE `autokolcsonzo`;
 
 DELIMITER $$
 --
 -- Eljárások
 --
+DROP PROCEDURE IF EXISTS `addBookings`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addBookings` (IN `user_idIN` INT(11), IN `car_idIN` INT(11), IN `pickup_dateIN` DATETIME, IN `return_dateIN` DATETIME, IN `total_priceIN` DECIMAL(8,2), IN `full_to_fullIN` BOOLEAN)   BEGIN
     INSERT INTO `bookings` 
     (`bookings`.`user_id`, `bookings`.`car_id`, `bookings`.`pickup_date`, `bookings`.`return_date`, `bookings`.`total_price`, `bookings`.`full_to_fulll`)
@@ -32,6 +35,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addBookings` (IN `user_idIN` INT(11
     (user_idIN, car_idIN, pickup_dateIN, return_dateIN, total_priceIN, full_to_fullIN);
 END$$
 
+DROP PROCEDURE IF EXISTS `addCar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addCar` (IN `brandIN` ENUM('Toyota','Honda','Volvo','Fiat','Volkswagen') CHARSET utf8mb4, IN `modelIN` VARCHAR(50) CHARSET utf8mb4, IN `license_plateIN` VARCHAR(50) CHARSET utf8mb4, IN `yearIN` YEAR, IN `fuel_typeIN` ENUM('Diesel','Benzin','Hybrid','Elektromos') CHARSET utf8mb4, IN `priceIN` DECIMAL(7,2), IN `transmissionIN` VARCHAR(50), IN `doorsIN` INT(9), IN `ACIN` BOOLEAN, IN `seatIN` INT(9), IN `imageIN` TEXT CHARSET utf8mb4)   BEGIN
     INSERT INTO `cars` 
     (`cars`.`brand`, `cars`.`model`, `cars`.`license_plate`, `cars`.`year`, `cars`.`fuel_type`, `cars`.`price_per_day`, `cars`.`transmission`, `cars`.`doors`, `cars`.`AC`, `cars`.`seats`,`cars`.`image`)
@@ -39,6 +43,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addCar` (IN `brandIN` ENUM('Toyota'
     (brandIN, modelIN, license_plateIN, yearIN, fuel_typeIN, priceIN, transmissionIN, doorsIN, ACIN, seatIN, imageIN);
 END$$
 
+DROP PROCEDURE IF EXISTS `addCarExtra`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addCarExtra` (IN `car_idIN` INT(11), IN `extra_nameIN` VARCHAR(50), IN `extra_costIN` DECIMAL(8,2))   BEGIN
     INSERT INTO `car_extras` 
     (`car_id`, `extra_name`, `extra_cost`)
@@ -46,43 +51,40 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addCarExtra` (IN `car_idIN` INT(11)
     (car_idIN, extra_nameIN, extra_costIN);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `changePassword` (IN `idIN` INT(11), IN `newPasswordIN` VARCHAR(255), IN `creatorIN` INT(11))   BEGIN
-
-IF creatorIN = idIN THEN
-UPDATE `users`
-    SET `users`.`password` = SHA1(newPasswordIN)
-    WHERE `users`.`id` = idIN;
-ELSE
-SELECT "Nincs jogod ehhez!";
-END IF;
-
-END$$
-
+DROP PROCEDURE IF EXISTS `deleteBookingById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteBookingById` (IN `idIN` INT(11))   UPDATE `bookings` 
 SET `bookings`.`is_deleted` = 1
 WHERE `bookings`.`id` = idIN$$
 
+DROP PROCEDURE IF EXISTS `deleteCarById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteCarById` (IN `idIN` INT(11))   UPDATE `cars` 
 SET `cars`.`is_deleted` = 1
 WHERE `cars`.`id` = idIN$$
 
+DROP PROCEDURE IF EXISTS `deleteCarExtra`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteCarExtra` (IN `idIN` INT(11))   DELETE FROM `car_extras` WHERE `car_extras`.`id` = idIN$$
 
+DROP PROCEDURE IF EXISTS `deleteUserById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUserById` (IN `user_idIN` INT(11))   UPDATE `users` 
 SET `users`.`is_deleted` = 1
 WHERE `users`.`id` = user_idIN$$
 
+DROP PROCEDURE IF EXISTS `getAllAdmin`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAdmin` ()   SELECT * FROM `users` WHERE `users`.`is_admin` = 1 AND `users`.`is_deleted` = 0$$
 
+DROP PROCEDURE IF EXISTS `getAllAvailableCar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAvailableCar` ()   BEGIN
     SELECT * FROM `car_availability` 
     WHERE `car_availability`.`status` = 1 AND `car_availability`.`is_deleted` = 0 ;
 END$$
 
+DROP PROCEDURE IF EXISTS `getAllBookings`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllBookings` ()   SELECT * FROM `bookings` WHERE `bookings`.`is_deleted` = 0$$
 
+DROP PROCEDURE IF EXISTS `getAllCar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllCar` ()   SELECT * FROM `cars` WHERE `cars`.`is_deleted` = 0$$
 
+DROP PROCEDURE IF EXISTS `getAllCarsPage`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllCarsPage` (IN `amountIN` INT(11), IN `pageIN` INT(11), OUT `rowCountOUT` INT(11))   BEGIN
 
 DECLARE page INT;
@@ -113,31 +115,40 @@ SELECT COUNT(`cars`.`id`)
 
 END$$
 
+DROP PROCEDURE IF EXISTS `getAllReservedCar`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReservedCar` ()   BEGIN
     SELECT * FROM `car_availability` 
     WHERE `car_availability`.`status` = 0 AND `car_availability`.`is_deleted` = 0;   
 END$$
 
+DROP PROCEDURE IF EXISTS `getAllUser`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   SELECT * FROM `users` WHERE `users`.`is_admin` = 0 AND `users`.`is_deleted` = 0$$
 
+DROP PROCEDURE IF EXISTS `getBookingById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getBookingById` (IN `idIN` INT(11))   SELECT * FROM `bookings` WHERE `bookings`.`id` = idIN$$
 
+DROP PROCEDURE IF EXISTS `getBookingByUserId`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getBookingByUserId` (IN `user_idIN` INT(11))   BEGIN
     SELECT * FROM `bookings` WHERE `bookings`.`user_id` = user_idIN;
 END$$
 
+DROP PROCEDURE IF EXISTS `getCarAvailabilityByCarId`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getCarAvailabilityByCarId` (IN `car_idIN` INT(11))   BEGIN
 
 SELECT `car_availability`.`status` FROM `car_availability` WHERE `car_availability`.`car_id` = car_idIN;
 
 END$$
 
+DROP PROCEDURE IF EXISTS `getCarById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getCarById` (IN `idIN` INT(11))   SELECT * FROM `cars` WHERE `cars`.`id` = idIN$$
 
+DROP PROCEDURE IF EXISTS `getPage1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPage1` ()   SELECT * FROM `cars` LIMIT 9$$
 
+DROP PROCEDURE IF EXISTS `getPage2`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPage2` ()   SELECT * FROM `cars` LIMIT 9 OFFSET 9$$
 
+DROP PROCEDURE IF EXISTS `getPageInput`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPageInput` (IN `pageIN` INT(8))   BEGIN
 
 DECLARE amount INT;
@@ -147,8 +158,10 @@ SELECT * FROM `cars` LIMIT 9 OFFSET amount;
 
 END$$
 
+DROP PROCEDURE IF EXISTS `getUserById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserById` (IN `user_idIN` INT(11))   SELECT * FROM `users` WHERE `users`.`id` = user_idIN$$
 
+DROP PROCEDURE IF EXISTS `getUserDetailsByCarId`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserDetailsByCarId` (IN `car_idIN` INT(11))   BEGIN
     SELECT u.*
     FROM Users u
@@ -156,20 +169,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserDetailsByCarId` (IN `car_idI
     WHERE b.car_id = car_idIN;
 END$$
 
+DROP PROCEDURE IF EXISTS `isAdminExists`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `isAdminExists` (IN `emailIN` VARCHAR(100), OUT `resultOUT` BOOLEAN)   SET resultOUT = EXISTS(SELECT `users`.`id` FROM `users` WHERE `users`.`email` = emailIN AND `users`.`is_admin` = 1)$$
 
+DROP PROCEDURE IF EXISTS `isUserExists`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `isUserExists` (IN `emailIN` VARCHAR(100), OUT `resultOUT` BOOLEAN)   BEGIN
 SET resultOUT = EXISTS(SELECT `users`.`id` FROM `users` WHERE `users`.`email` = emailIN);
 END$$
 
+DROP PROCEDURE IF EXISTS `login`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(100), IN `passwordIN` VARCHAR(255))   SELECT * FROM `users` WHERE `users`.`email` = emailIN AND `users`.`password` = SHA1(passwordIN)$$
 
+DROP PROCEDURE IF EXISTS `registerAdmin`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registerAdmin` (IN `nameIN` VARCHAR(100), IN `emailIN` VARCHAR(100), IN `passwordIN` TEXT, IN `personal_idIN` VARCHAR(50))   INSERT INTO `users` (`users`.`name`, `users`.`email`, `users`.`password`, `users`.`personal_id`, `users`.`is_admin`)
 VALUES(nameIN, emailIN, SHA1(passwordIN), personal_idIN,1)$$
 
+DROP PROCEDURE IF EXISTS `registerUser`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registerUser` (IN `nameIN` VARCHAR(100), IN `emailIN` VARCHAR(100), IN `passwordIN` TEXT, IN `personal_idIN` VARCHAR(50))   INSERT INTO `users` (`users`.`name`,`users`.`email`, `users`.`password`, `users`.`personal_id`, `users`.`is_admin`)
 VALUES(nameIN, emailIN, SHA1(passwordIN), personal_idIN, 0)$$
 
+DROP PROCEDURE IF EXISTS `searchCarsBetweenDates`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `searchCarsBetweenDates` (IN `pickup_DateIN` DATETIME, IN `return_DateIN` DATETIME)   BEGIN
     SELECT c.id AS car_id, c.brand, c.model, b.pickup_date, b.return_date
     FROM bookings b
@@ -180,11 +199,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `searchCarsBetweenDates` (IN `pickup
       AND ca.status = 1;
 END$$
 
+DROP PROCEDURE IF EXISTS `updateCarAvailability`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCarAvailability` (IN `idIN` INT(11), IN `dateIN` DATETIME, IN `statusIN` TINYINT)   BEGIN
 UPDATE `car_availability` SET `car_availability`.`date` = dateIN WHERE `car_availability`.`id` = idIN;
 UPDATE `car_availability` SET `car_availability`.`status` = statusIN WHERE `car_availability`.`id` = idIN;
 END$$
 
+DROP PROCEDURE IF EXISTS `updateCarById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCarById` (IN `idIN` INT(11), IN `brandIN` ENUM('Toyota','Honda','Volvo','Fiat','Volkswagen'), IN `modelIN` VARCHAR(50), IN `license_lateIN` VARCHAR(50), IN `yearIN` YEAR, IN `fuel_typeIN` ENUM('Diesel','Benzin','Hibryd','Elektromos'), IN `price_per_dayIN` DECIMAL(7,2), IN `transmissionIN` VARCHAR(50), IN `doorsIN` INT(2), IN `ACIN` TINYINT, IN `seatIN` INT(2), IN `imageIN` TEXT)   BEGIN
 UPDATE `cars` SET `cars`.`brand` = brandIN WHERE `cars`.`id` = idIN;
 UPDATE `cars` SET `cars`.`model` = modelIN WHERE `cars`.`id` = idIN;
@@ -199,26 +220,32 @@ UPDATE `cars` SET `cars`.`seats` = seatIN WHERE `cars`.`id` = idIN;
 UPDATE `cars` SET `cars`.`image` = imageIN WHERE `cars`.`id` = idIN;
 END$$
 
+DROP PROCEDURE IF EXISTS `updateCarService`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCarService` (IN `car_idIN` INT(11), IN `service_dateIN` DATETIME, IN `descriptionIN` TEXT, IN `costIN` DECIMAL(8,2))   BEGIN
 UPDATE `car_service` SET `car_service`.`service_date` = service_dateIN WHERE `car_service`.`car_id` = car_idIN;
 UPDATE `car_service` SET `car_service`.`description` = descriptionIN WHERE `car_service`.`car_id` = car_idIN;
 UPDATE `car_service` SET `car_service`.`cost` = costIN WHERE `car_service`.`car_id` = car_idIN;
 END$$
 
+DROP PROCEDURE IF EXISTS `updatePaymentCost`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePaymentCost` (IN `idIN` INT(11), IN `amountIN` DECIMAL(8,2))   UPDATE `payment` SET `payment`.`amount` = amountIN WHERE `payment`.`id` = idIN$$
 
+DROP PROCEDURE IF EXISTS `updatePaymentStatus`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePaymentStatus` (IN `idIN` INT(11), IN `payment_statusID` ENUM('Completed','Pending','Failed'))   BEGIN
 UPDATE `payment` SET `payment`.`payment_status` = payment_statusID WHERE `payment`.`id` = idIN;
 END$$
 
+DROP PROCEDURE IF EXISTS `updateUserById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUserById` (IN `user_idIN` INT(11), IN `nameIN` VARCHAR(100), IN `emailIN` VARCHAR(100), IN `personal_idIN` VARCHAR(50))   BEGIN
 UPDATE `users` SET `users`.`name` = nameIN WHERE `users`.`id` = user_idIN;
 UPDATE `users` SET `users`.`email` = emailIN WHERE `users`.`id` = user_idIN;
 UPDATE `users` SET `users`.`personal_id` = personal_idIN WHERE `users`.`id` = user_idIN;
 END$$
 
+DROP PROCEDURE IF EXISTS `verifyAdmin`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `verifyAdmin` (IN `emailIN` VARCHAR(100), OUT `resultOUT` BOOLEAN)   SET resultOUT = EXISTS(SELECT `users`.`id` FROM `users` WHERE `users`.`email` = emailIN AND `users`.`is_admin` = 1)$$
 
+DROP PROCEDURE IF EXISTS `verifyUser`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `verifyUser` (IN `login_idIN` INT(11), IN `emailIN` VARCHAR(100), IN `passwordIN` TEXT)   BEGIN 
 
 DECLARE login_exists INT; 
@@ -257,6 +284,7 @@ DECLARE user_exists INT;
 
 END$$
 
+DROP PROCEDURE IF EXISTS `verifyUserr`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `verifyUserr` (IN `emailIN` VARCHAR(100), OUT `resultOUT` BOOLEAN)   SET resultOUT = EXISTS(SELECT `users`.`id` FROM `users` WHERE `users`.`email` = emailIN AND `users`.`is_admin` = 0)$$
 
 DELIMITER ;
@@ -267,6 +295,7 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `bookings`
 --
 
+DROP TABLE IF EXISTS `bookings`;
 CREATE TABLE `bookings` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
@@ -310,6 +339,7 @@ INSERT INTO `bookings` (`id`, `user_id`, `car_id`, `pickup_date`, `return_date`,
 -- Tábla szerkezet ehhez a táblához `booking_x_car_extras`
 --
 
+DROP TABLE IF EXISTS `booking_x_car_extras`;
 CREATE TABLE `booking_x_car_extras` (
   `id` int NOT NULL,
   `booking_id` int NOT NULL,
@@ -322,6 +352,7 @@ CREATE TABLE `booking_x_car_extras` (
 -- Tábla szerkezet ehhez a táblához `cars`
 --
 
+DROP TABLE IF EXISTS `cars`;
 CREATE TABLE `cars` (
   `id` int NOT NULL,
   `brand` enum('Toyota','Honda','Volvo','Fiat','Volkswagen') NOT NULL,
@@ -363,7 +394,8 @@ INSERT INTO `cars` (`id`, `brand`, `model`, `license_plate`, `year`, `fuel_type`
 (117, 'Honda', 'Jazz', 'MNQ-864', '2020', 'Benzin', 40.00, 'Manual', 5, 1, 5, 'honda_jazz_2020.jpg', 0, '2024-09-13 13:27:11', NULL),
 (118, 'Volvo', 'XC60', 'SDF-753', '2019', 'Hybrid', 70.00, 'Automatic', 5, 1, 5, 'volvo_xc60_2019.jpg', 0, '2024-09-13 13:27:11', NULL),
 (119, 'Fiat', 'Ducato', 'LGH-852', '2022', 'Diesel', 80.00, 'Manual', 4, 1, 9, 'fiat_ducato_2022.jpg', 0, '2024-09-13 13:27:11', NULL),
-(122, 'Toyota', 'Yaris', 'PEP-232', '2020', 'Diesel', 60.00, 'Manual', 5, 1, 5, 'yaris.jpg', 1, '2025-02-27 09:58:57', NULL);
+(122, 'Toyota', 'Yaris', 'PEP-232', '2020', 'Diesel', 60.00, 'Manual', 5, 1, 5, 'yaris.jpg', 1, '2025-02-27 09:58:57', NULL),
+(124, 'Toyota', 'Yaris', 'LDM-928', '2011', 'Diesel', 88.00, 'Manual', 5, 1, 5, 'car.jpeg', 1, '2025-05-27 20:50:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -371,6 +403,7 @@ INSERT INTO `cars` (`id`, `brand`, `model`, `license_plate`, `year`, `fuel_type`
 -- Tábla szerkezet ehhez a táblához `car_availability`
 --
 
+DROP TABLE IF EXISTS `car_availability`;
 CREATE TABLE `car_availability` (
   `id` int NOT NULL,
   `car_id` int NOT NULL,
@@ -412,6 +445,7 @@ INSERT INTO `car_availability` (`id`, `car_id`, `status`, `is_deleted`, `created
 -- Tábla szerkezet ehhez a táblához `car_extras`
 --
 
+DROP TABLE IF EXISTS `car_extras`;
 CREATE TABLE `car_extras` (
   `id` int NOT NULL,
   `car_id` int NOT NULL,
@@ -439,6 +473,7 @@ INSERT INTO `car_extras` (`id`, `car_id`, `user_id`, `extra_name`, `extra_cost`,
 -- Tábla szerkezet ehhez a táblához `car_service`
 --
 
+DROP TABLE IF EXISTS `car_service`;
 CREATE TABLE `car_service` (
   `id` int NOT NULL,
   `car_id` int NOT NULL,
@@ -477,6 +512,7 @@ INSERT INTO `car_service` (`id`, `car_id`, `service_date`, `description`, `cost`
 -- Tábla szerkezet ehhez a táblához `login`
 --
 
+DROP TABLE IF EXISTS `login`;
 CREATE TABLE `login` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
@@ -515,6 +551,7 @@ INSERT INTO `login` (`id`, `user_id`, `login_time`) VALUES
 -- Tábla szerkezet ehhez a táblához `payment`
 --
 
+DROP TABLE IF EXISTS `payment`;
 CREATE TABLE `payment` (
   `id` int NOT NULL,
   `booking_id` int NOT NULL,
@@ -556,6 +593,7 @@ INSERT INTO `payment` (`id`, `booking_id`, `payment_method`, `payment_date`, `am
 -- Tábla szerkezet ehhez a táblához `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -579,14 +617,14 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `personal_id`, `is_admin
 (4, 'Emily Davis', 'emily.davis@hotmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '456789D', 0, 0, '2024-09-13 13:19:15', NULL),
 (5, 'Michael Brown', 'michael.brown@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '567890E', 0, 0, '2024-09-13 13:19:15', NULL),
 (6, 'Jessica Wilson', 'jessica.wilson@yahoo.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '678901F', 0, 0, '2024-09-13 13:19:15', NULL),
-(7, 'Chris Lee', 'chris.lee@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '789012G', 0, 0, '2024-09-13 13:19:15', NULL),
+(7, 'Chris Lee', 'chris.lee@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '789012G', 1, 0, '2024-09-13 13:19:15', NULL),
 (8, 'Sarah Lewis', 'sarah.lewis@hotmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '890123H', 0, 0, '2024-09-13 13:19:15', NULL),
-(9, 'David Young', 'david.young@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '901234I', 0, 0, '2024-09-13 13:19:15', NULL),
+(9, 'David Young', 'david.young@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '901234I', 1, 0, '2024-09-13 13:19:15', NULL),
 (10, 'Anna Scott', 'anna.scott@yahoo.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '012345J', 0, 0, '2024-09-13 13:19:15', NULL),
-(11, 'George King', 'george.king@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '123450K', 0, 0, '2024-09-13 13:19:15', NULL),
+(11, 'George King', 'george.king@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '123450K', 1, 0, '2024-09-13 13:19:15', NULL),
 (12, 'Laura Wright', 'laura.wright@yahoo.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '234561L', 0, 0, '2024-09-13 13:19:15', NULL),
 (13, 'Steven Baker', 'steven.baker@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '345672M', 0, 0, '2024-09-13 13:19:15', NULL),
-(14, 'Michelle Green', 'michelle.green@hotmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '456783N', 0, 0, '2024-09-13 13:19:15', NULL),
+(14, 'Michelle Green', 'michelle.green@coldmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '456783N', 1, 0, '2024-09-13 13:19:15', NULL),
 (15, 'Matthew Carter', 'matthew.carter@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '567894O', 0, 0, '2024-09-13 13:19:15', NULL),
 (16, 'Samantha Rivera', 'samantha.rivera@yahoo.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '678905P', 0, 0, '2024-09-13 13:19:15', NULL),
 (17, 'Andrew Reed', 'andrew.reed@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '789016Q', 0, 0, '2024-09-13 13:19:15', NULL),
@@ -594,19 +632,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `personal_id`, `is_admin
 (19, 'Brandon Ross', 'brandon.ross@gmail.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '901238S', 0, 0, '2024-09-13 13:19:15', NULL),
 (20, 'Emma Gray', 'emma.gray@yahoo.com', '4476585e1256365bbf247e3e7becd4938b7f751e', '012349T', 0, 0, '2024-09-13 13:19:15', NULL),
 (21, 'Lódri Geroge', 'george@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '199956A', 0, 0, '2025-01-09 12:49:28', NULL),
-(22, 'Lódri G', 'lodri@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '176453P', 0, 0, '2025-01-09 13:18:51', NULL),
-(27, 'Alma', 'alma@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '122956A', 0, 0, '2025-02-27 09:54:39', NULL),
-(32, 'newuser', 'neoxevil@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '435678A', 0, 1, '2025-03-04 15:38:28', NULL),
-(34, 'Lódri sadasdasderoge', 'georgeeeeee@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '191256A', 0, 0, '2025-04-15 11:22:37', NULL),
-(35, 'Lódri saddasderoge', 'georgeeee@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '191222A', 0, 0, '2025-04-15 11:26:15', NULL),
-(36, 'dasdsdsa', 'sadsadsa@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '861234PE', 1, 0, '2025-04-15 11:27:08', NULL),
-(37, 'adsadsa', 'asdsss@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '827384PE', 1, 0, '2025-04-15 11:27:51', NULL),
-(38, 'John Doe', 'asdd@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '128723P', 1, 0, '2025-04-15 11:28:59', NULL),
-(39, 'asd', 'adsss@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '982642PE', 0, 0, '2025-04-15 11:30:13', NULL),
-(40, 'Lódri hiiiiiiii', 'ihiahdihai@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '196622A', 0, 1, '2025-04-15 11:32:25', NULL),
-(41, 'Lódri hiiiii', 'ooooooo@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '196772A', 0, 0, '2025-04-15 11:34:14', NULL),
-(42, 'Lódri hiiiidsdsi', 'aaaaaaaaaaaaaa@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '191172A', 1, 0, '2025-04-15 11:40:54', NULL),
-(43, 'korte', 'korte@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '491823K', 1, 0, '2025-04-19 09:52:08', NULL);
+(47, 'newuser', 'neoxevil@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '435678A', 0, 0, '2025-05-30 12:14:20', NULL),
+(48, 'vizsga', 'vizsga@gmail.com', 'a93cdd134f322b08944fab09b7941b6a16d35cee', '654425P', 0, 0, '2025-05-30 12:20:13', NULL);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -690,7 +717,7 @@ ALTER TABLE `booking_x_car_extras`
 -- AUTO_INCREMENT a táblához `cars`
 --
 ALTER TABLE `cars`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- AUTO_INCREMENT a táblához `car_availability`
@@ -726,7 +753,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- Megkötések a kiírt táblákhoz
